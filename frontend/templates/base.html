@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sections.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 {% block head_extra %}{% endblock %}
 </head>
@@ -53,7 +54,7 @@
   <div class="footer-marquee" aria-hidden="true">
     <div class="footer-marquee-track">
       {% for _ in range(2) %}
-      <span>{{ site.brand_en }}</span><span>Choral Society</span><span>Beirut</span><span>{{ site.brand_ar }}</span><span>جمعية كورالية</span><span>Since {{ site.founded_year }}</span>
+      <span>{{ site.brand_en }}</span><span>Choral Society</span><span>{{ site.address_line1 }}</span><span>{{ site.brand_ar }}</span><span>جمعية كورالية</span><span>Since {{ site.founded_year }}</span>
       {% endfor %}
     </div>
   </div>
