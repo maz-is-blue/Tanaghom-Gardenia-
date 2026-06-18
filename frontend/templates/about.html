@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}About · {{ site.brand_en }}{% endblock %}
+
+{% block content %}
+<!-- ─── PAGE HEAD ─── -->
+<section class="page-head">
+  <div class="clef">𝄞</div>
+  <div class="inner">
+    <div class="breadcrumb">
+      <a href="{{ url_for('pages.home') }}">Home</a><span class="sep">/</span><span>About</span>
+    </div>
+    <div class="section-eyebrow">Our Society</div>
+    <h1>About <em>Us</em></h1>
+    <span class="ar">عن الجمعية</span>
+    <p class="lede">
+      A non-profit choral society of two ensembles, founded in Beirut in {{ site.founded_year }}.
+      We sing in Arabic and the wider repertoire, share a single rehearsal hall, and open our doors twice a year to anyone with a voice and the patience to use it well.
+    </p>
+  </div>
+</section>
+
+<!-- ─── MISSION ─── -->
+<section class="mission reveal">
+  <div class="mission-grid">
+    <div>
+      <div class="section-eyebrow">Mission</div>
+      <p class="mission-lead">
+        We exist to keep the <em>choral tradition</em> alive in Lebanon — patient, generous, and unmistakably ours.
+      </p>
+    </div>
+    <div class="mission-body">
+      <p>
+        {{ site.brand_en }} was founded in {{ site.founded_year }} by a small circle of singers who believed that the human voice — disciplined, joyful, and trained — remains the most honest expression of community. Seven seasons later, two ensembles share our home in Achrafieh: one a mixed choir working in the great European choral tradition, the other a chamber group devoted to Arabic art-song and the sacred repertoire of the Levant.
+      </p>
+      <p>
+        We perform in concert halls, churches, and gardens. We commission new work from Arab composers, restore neglected repertoire from regional archives, and run a youth outreach programme with three Beirut schools.
+      </p>
+      <div class="ar-pull">
+        تأسّست جمعية تناغم وغاردينيا في عام ٢٠١٩ على إيمانٍ بأن الصوت البشري — بصبره ودقّته وفرحه — يبقى أصدق تعبيرٍ عن الجماعة. تشترك جوقتانا في القاعات والمراجع والقناعة الواحدة: أن للأغنية صدىً أبعد حين تُغنّى معاً.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VALUES ─── -->
+<section class="values reveal">
+  <div class="values-head">
+    <div class="section-eyebrow" style="margin: 0 auto;">What We Believe</div>
+    <h2 class="section-title">Four chords we keep returning to<span class="ar">أربعة أصواتٍ نعود إليها</span></h2>
+  </div>
+
+  <div class="values-grid">
+    {% for v in values %}
+    <div class="value-card">
+      <div class="v-num">{{ "%02d"|format(loop.index) }}</div>
+      <h3>{{ v.title_en }}<span class="ar">{{ v.title_ar }}</span></h3>
+      <p>{{ v.body }}</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─── TIMELINE ─── -->
+<section class="timeline-sec reveal">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div class="section-eyebrow">History</div>
+    <h2 class="section-title">Seven <em>seasons</em><span class="ar">سبعة مواسم</span></h2>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline-track">
+      {% for t in timeline %}
+      <div class="tl-item{% if t.active %} active{% endif %}">
+        <div class="tl-year">{{ t.year }}</div>
+        <div class="tl-title">{{ t.title_en }}<span class="ar">{{ t.title_ar }}</span></div>
+        <p class="tl-body">{{ t.body }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS BAND ─── -->
+<section class="stats-band">
+  <div class="row">
+    {% for s in stats %}
+    <div class="cell">
+      <div class="big"><span data-counter="{{ s.value }}" {% if s.format %}data-format="{{ s.format }}"{% endif %}>0</span></div>
+      <div class="lbl">{{ s.label }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─── LEADERSHIP ─── -->
+<section class="leadership reveal">
+  <div class="lead-head">
+    <div class="section-eyebrow" style="margin: 0 auto;">People</div>
+    <h2 class="section-title">Leadership<span class="ar">القيادة</span></h2>
+    <p style="margin-top: 18px; color: var(--gray);">Three full-time staff, four volunteer board members, and forty singers who turn up on Tuesdays and Thursdays.</p>
+  </div>
+
+  <div class="lead-grid reveal-stagger">
+    {% for p in leadership %}
+    <div class="lead-card">
+      <div class="lead-portrait">
+        <div class="ph-mark">{{ p.initials }}</div>
+        <div class="ph-tag">Portrait · Coming Soon</div>
+      </div>
+      <div class="lead-meta">
+        <div class="role">{{ p.role }}</div>
+        <h3>{{ p.name_en }}<span class="ar">{{ p.name_ar }}</span></h3>
+        <p>{{ p.bio }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-band reveal">
+  <div class="section-eyebrow" style="margin: 0 auto;">Get Involved</div>
+  <h2 class="section-title" style="margin-top: 22px;">Support our work<span class="ar">ادعموا عملنا</span></h2>
+  <p style="max-width: 540px; margin: 22px auto 0; color: var(--gray);">We are a registered non-profit. Every season is funded by ticket sales, a handful of long-time patrons, and small individual donations.</p>
+
+  <form class="join-form" id="patronForm" data-kind="patron" novalidate>
+    <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
+    <input type="email" name="email" placeholder="Email address" required aria-label="Email address">
+    <textarea name="message" rows="2" placeholder="How would you like to help? (optional)" aria-label="Message"></textarea>
+    <button type="submit" class="cta magnetic">Become a Patron <span class="arrow">→</span></button>
+    <p class="form-status" data-status hidden></p>
+  </form>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script src="{{ url_for('static', filename='js/about.page.js') }}"></script>
+<script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+{% endblock %}

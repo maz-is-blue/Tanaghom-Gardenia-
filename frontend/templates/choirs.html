@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% block title %}Our Choirs · {{ site.brand_en }}{% endblock %}
+
+{% block content %}
+<!-- ─── PAGE HEAD ─── -->
+<section class="page-head">
+  <div class="clef">𝄞</div>
+  <div class="inner">
+    <div class="breadcrumb">
+      <a href="{{ url_for('pages.home') }}">Home</a><span class="sep">/</span><span>Choirs</span>
+    </div>
+    <div class="section-eyebrow">Two Ensembles</div>
+    <h1>Our <em>Choirs</em></h1>
+    <span class="ar">جوقتانا</span>
+    <p class="lede">
+      Two ensembles share our rehearsal hall — one in the great choral tradition, one devoted to Arabic art-song and sacred music.
+      Different repertoires, the same room, twice a week.
+    </p>
+  </div>
+</section>
+
+<!-- ─── TABS ─── -->
+<div class="choir-tabs-wrap">
+  <div class="choir-tabs" role="tablist">
+    {% for c in choirs %}
+    <button class="choir-tab{% if loop.first %} active{% endif %}" data-tab="{{ c.slug }}"><span class="num">{{ "%02d"|format(loop.index) }}</span> {{ c.name_en }} <span class="ar" style="opacity: 0.6;">{{ c.name_ar }}</span></button>
+    {% endfor %}
+    <div class="tab-underline" id="tabUnderline"></div>
+  </div>
+</div>
+
+{% for c in choirs %}
+{% set gardenia = c.slug == 'gardenia' %}
+<!-- ─── {{ c.name_en|upper }} ─── -->
+<section class="choir-detail cd-{{ c.slug }}{% if loop.first %} active{% endif %}" id="{{ c.slug }}">
+  <!-- hero -->
+  <div class="cd-hero">
+    <div>
+      <div class="section-eyebrow">{{ c.detail_label_en }} · {{ c.count_ar }}</div>
+      <h2>{{ c.name_en }}<span class="ar">{{ c.name_ar }}</span></h2>
+      <p class="desc">{{ c.desc }}</p>
+      <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <a href="#{{ c.slug }}-listen" class="cta magnetic"{% if gardenia %} style="background: var(--sage-deep); border-color: var(--sage-deep); color: var(--white);"{% endif %}>Listen <span class="arrow">→</span></a>
+        <a href="#{{ c.slug }}-audition" class="text-link {% if gardenia %}{% else %}on-dark{% endif %}"{% if gardenia %} style="color: var(--black); padding: 18px 0;"{% endif %}>Audition Info <span>→</span></a>
+      </div>
+    </div>
+    <div class="meta-stack">
+      <div class="pair"><span class="k">Founded</span><span class="v">{{ c.founded }}</span></div>
+      <div class="pair"><span class="k">Voices</span><span class="v">{{ c.voices }}</span></div>
+      <div class="pair"><span class="k">Parts</span><span class="v">{{ c.parts }}</span></div>
+      <div class="pair"><span class="k">{{ c.conductor_label }}</span><span class="v">{{ c.conductor }}</span></div>
+      <div class="pair"><span class="k">Rehearses</span><span class="v">{{ c.rehearses }}</span></div>
+      <div class="pair"><span class="k">Season</span><span class="v">{{ c.season }}</span></div>
+    </div>
+  </div>
+
+  <!-- voice sections -->
+  <div class="voice-block reveal">
+    <div class="section-eyebrow">Voice Parts</div>
+    <h3 class="section-title">{{ c.voice_parts_title_en }}<span class="ar">{{ c.voice_parts_title_ar }}</span></h3>
+    <div class="voice-grid">
+      {% for vp in c.voice_parts %}
+      <div class="voice-cell">
+        <div class="pitch-glyph">{{ vp.glyph }}</div>
+        <h4>{{ vp.name_en }}<span class="ar">{{ vp.name_ar }}</span></h4>
+        <div class="count">{{ vp.count }}<span class="lbl">voices</span></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- listen -->
+  <div class="listen-block reveal" id="{{ c.slug }}-listen">
+    <div class="section-eyebrow">Listen</div>
+    <h3 class="section-title">From the archive<span class="ar">من الأرشيف</span></h3>
+    <div class="player" data-player="">
+      <div class="row1">
+        <div class="track-info">
+          <div class="label">{{ c.player.label }}</div>
+          <h4>{{ c.player.title }}</h4>
+          <div class="composer">{{ c.player.composer }}</div>
+        </div>
+        <button class="play-btn" data-play="">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg>
+        </button>
+      </div>
+      <div class="waves" data-waves=""></div>
+      <div class="meta-row">
+        <span data-time="">0:00</span>
+        <span>{{ c.player.duration }}</span>
+      </div>
+    </div>
+  </div>
+
+  {% if c.voicemix %}
+  <!-- voice mix interactive -->
+  <div class="voicemix reveal">
+    <div class="section-eyebrow">Try it</div>
+    <h3 class="section-title">Solo a part<span class="ar">عَزَلْ صوتاً</span></h3>
+    <p style="max-width: 540px; color: var(--gray); margin-top: 12px;">Tap a part to mute or solo it — see the texture of a four-voice piece change in real time. (Visualization only.)</p>
+    <div class="vm-card" data-voicemix="">
+      <div class="vm-head">
+        <h4>{{ c.voicemix.title }}</h4>
+        <span class="vm-hint">Click to mute</span>
+      </div>
+      {% for row in c.voicemix.rows %}
+      <div class="vm-row" data-vm-row="" data-color="{{ row.color }}">
+        <div class="vm-label">{{ row.label }}</div>
+        <div class="vm-bars"></div>
+        <div class="vm-toggle">{{ row.label[0] }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- repertoire -->
+  <div class="rep-block reveal">
+    <div class="section-eyebrow">Repertoire</div>
+    <h3 class="section-title">What we sing<span class="ar">ما نُغنّيه</span></h3>
+    <div class="rep-list">
+      {% for r in c.repertoire %}
+      <div class="rep-row"><span class="idx">{{ "%02d"|format(loop.index) }}</span><span class="title">{{ r.title }}</span><span class="composer">{{ r.composer }}</span><span class="year">{{ r.year }}</span></div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- audition -->
+  <div class="audition" id="{{ c.slug }}-audition">
+    <div>
+      <div class="section-eyebrow" style="color: {{ 'var(--gold)' if gardenia else 'var(--black)' }};">Audition</div>
+      <h3 style="margin-top: 20px;">{{ c.audition.heading_html|safe }}<span class="ar">{{ c.audition.heading_ar }}</span></h3>
+      <p>{{ c.audition.body }}</p>
+    </div>
+    <div class="next-list">
+      {% for d in c.audition.dates %}
+      <div class="row"><span class="when">{{ d.when }}</span><span class="where">{{ d.where }}</span></div>
+      {% endfor %}
+      <a href="#audition-request" class="cta magnetic" style="{% if gardenia %}background: var(--gold); color: var(--black); border-color: var(--gold);{% else %}background: var(--black); color: var(--gold); border-color: var(--black);{% endif %} align-self: flex-start;">{{ c.audition.cta_label }} <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+{% endfor %}
+
+<!-- ─── REQUEST FORM ─── -->
+<section class="cta-band reveal" id="audition-request">
+  <div class="section-eyebrow" style="margin: 0 auto;">Get In Touch</div>
+  <h2 class="section-title" style="margin-top: 22px;">Request an audition<span class="ar">اطلب اختباراً</span></h2>
+  <p style="max-width: 540px; margin: 22px auto 0; color: var(--gray);">Tell us a little about your voice and which ensemble interests you. We’ll reply with the next available round.</p>
+
+  <form class="join-form" id="choirAuditionForm" data-kind="audition" novalidate>
+    <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
+    <input type="email" name="email" placeholder="Email address" required aria-label="Email address">
+    <textarea name="message" rows="2" placeholder="Which choir, and a little about your experience" aria-label="Message"></textarea>
+    <button type="submit" class="cta magnetic">Send Request <span class="arrow">→</span></button>
+    <p class="form-status" data-status hidden></p>
+  </form>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script src="{{ url_for('static', filename='js/choirs.page.js') }}"></script>
+<script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+{% endblock %}

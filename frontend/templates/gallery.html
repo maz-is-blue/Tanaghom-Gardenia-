@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Gallery · {{ site.brand_en }}{% endblock %}
+
+{% block content %}
+<!-- ─── PAGE HEAD ─── -->
+<section class="page-head">
+  <div class="clef">𝄞</div>
+  <div class="inner">
+    <div class="breadcrumb">
+      <a href="{{ url_for('pages.home') }}">Home</a><span class="sep">/</span><span>Gallery</span>
+    </div>
+    <div class="section-eyebrow">Archive</div>
+    <h1>From the <em>stage</em></h1>
+    <span class="ar">من على المسرح</span>
+    <p class="lede">
+      Six seasons in photographs — concerts in halls and churches, rehearsals in our hall,
+      and the quieter moments between. Filter by season, ensemble, or kind.
+    </p>
+  </div>
+</section>
+
+<!-- ─── FILTERS ─── -->
+<div class="gal-filters-wrap">
+  <div class="gal-filters">
+    <div class="gal-filter-set" id="filterChips">
+      <button class="filter-chip active" data-filter="all">All <span class="count" data-c="all">{{ moment_count }}</span></button>
+      <button class="filter-chip" data-filter="concert">Concerts <span class="count" data-c="concert"></span></button>
+      <button class="filter-chip" data-filter="rehearsal">Rehearsals <span class="count" data-c="rehearsal"></span></button>
+      <button class="filter-chip" data-filter="gardenia">Gardenia <span class="count" data-c="gardenia"></span></button>
+      <button class="filter-chip" data-filter="tanaghom">Tanaghom <span class="count" data-c="tanaghom"></span></button>
+      <button class="filter-chip" data-filter="2025">2025 <span class="count" data-c="2025"></span></button>
+      <button class="filter-chip" data-filter="2024">2024 <span class="count" data-c="2024"></span></button>
+      <button class="filter-chip" data-filter="2023">2023 <span class="count" data-c="2023"></span></button>
+    </div>
+    <div class="gal-meta">
+      Showing <span class="num" id="filterCount">{{ moment_count }}</span> moments
+    </div>
+  </div>
+</div>
+
+<!-- ─── GRID ─── -->
+<section class="gallery-sec">
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<!-- ─── PRESS / ARCHIVE CTA ─── -->
+<section class="archive-cta reveal">
+  <div class="section-eyebrow" style="margin: 0 auto;">Press &amp; Media</div>
+  <h2 style="margin-top: 22px;">For press &amp; <em>media inquiries</em><span class="ar" style="display: block; margin-top: 14px; color: var(--gray); font-size: 0.55em;">للصحافة والإعلام</span></h2>
+  <p>High-resolution photographs, press releases for each concert, and biographies of our conductors and singers are available on request.</p>
+  <a href="mailto:{{ site.press_email }}" class="cta magnetic" style="margin-top: 38px;">{{ site.press_email }} <span class="arrow">→</span></a>
+</section>
+
+<!-- ─── LIGHTBOX ─── -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lbClose" aria-label="close">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M6 18L18 6"></path></svg>
+  </button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="previous">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"></path></svg>
+  </button>
+  <button class="lb-nav lb-next" id="lbNext" aria-label="next">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"></path></svg>
+  </button>
+
+  <div class="lb-stage">
+    <div class="lb-image" id="lbImage"></div>
+    <div class="lb-caption">
+      <div>
+        <div class="lc-title" id="lbTitle"></div>
+        <div class="lc-meta"><span id="lbDate"></span> <span style="color: var(--gold); margin: 0 10px;">·</span> <span id="lbVenue"></span></div>
+      </div>
+      <div class="lb-counter"><span id="lbIdx">1</span> / <span id="lbTotal">{{ moment_count }}</span></div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block page_js %}
+<script src="{{ url_for('static', filename='js/gallery.page.js') }}"></script>
+{% endblock %}

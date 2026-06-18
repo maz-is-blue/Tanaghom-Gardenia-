@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+{% block title %}{{ site.brand_en }} · Choral Society{% endblock %}
+
+{% block content %}
+<!-- ─── HERO ─── -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Choral Society · Est. {{ site.founded_year }}</div>
+  <h1>
+    <span class="word">{{ site.brand_word_a }}</span>
+    <em><span class="word">&amp;</span></em>
+    <span class="word">{{ site.brand_word_b }}</span>
+  </h1>
+  <div class="ar-name ar">{{ site.brand_ar }}</div>
+  <p class="tagline">
+    {{ site.tagline_en }}
+    <span class="ar">{{ site.tagline_ar }}</span>
+  </p>
+
+  <div class="waveform" id="waveform" aria-hidden="true"></div>
+
+  <div class="hero-cta-row">
+    <a href="{{ url_for('pages.choirs') }}" class="cta magnetic">Meet the Choirs <span class="arrow">→</span></a>
+    <a href="#events" class="cta-ghost magnetic">Upcoming Concerts</a>
+  </div>
+
+  <div class="scroll-hint">Scroll</div>
+</section>
+
+<!-- ─── MARQUEE ─── -->
+<div class="marquee-band" aria-hidden="true">
+  <div class="marquee-track">
+    {% for _ in range(2) %}
+    <span>Polyphony <span class="dot"></span> الموسيقى الكورالية <span class="dot"></span> Sacred Repertoire <span class="dot"></span> Arabic Art-Song <span class="dot"></span> Renaissance <span class="dot"></span> ترانيم وأناشيد <span class="dot"></span> Contemporary Commissions <span class="dot"></span></span>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- ─── INTRO ─── -->
+<section class="intro reveal" id="intro">
+  <div class="intro-inner">
+    <div>
+      <div class="section-eyebrow">Our Story</div>
+      <p class="intro-lead" style="margin-top: 26px;">
+        A choral society of two voices — <em>one in Arabic, one in the world's repertoire</em> — sharing the same rehearsal room since {{ site.founded_year }}.
+      </p>
+    </div>
+    <div class="intro-body">
+      <p class="dropcap">
+        {{ site.brand_en }} was founded by a small circle of singers and a single conviction: that the human voice, patient and disciplined, remains the most direct expression of community. We perform in concert halls, churches, and gardens; commission new work from Arab composers; and open our doors twice a year to new voices.
+      </p>
+      <p>
+        Today, two ensembles share our home — <strong>Gardenia</strong>, a mixed choir of twenty-four voices working in the great choral tradition, and <strong>Tanaghom</strong>, a chamber choir of sixteen specializing in Arabic art-song and sacred repertoire.
+      </p>
+      <a href="{{ url_for('pages.about') }}" class="text-link" style="margin-top: 22px;">Read Our Full Story <span>→</span></a>
+    </div>
+  </div>
+
+  <div class="intro-stats">
+    {% for s in stats %}
+    <div>
+      <div class="stat-num"><span data-counter="{{ s.value }}" {% if s.format %}data-format="{{ s.format }}"{% endif %}>0</span></div>
+      <div class="stat-label">{{ s.label }}</div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─── CHOIRS ─── -->
+<section class="choirs reveal">
+  {% for c in choirs %}
+  <div class="choir-panel {{ c.slug }}">
+    {% if c.slug == 'gardenia' %}
+    <svg class="choir-decor" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="currentColor" stroke-width="1.2" opacity="0.9">
+        <path d="M100 30 C 130 60, 130 100, 100 130 C 70 100, 70 60, 100 30 Z" fill="currentColor" fill-opacity="0.08"></path>
+        <path d="M30 100 C 60 70, 100 70, 130 100 C 100 130, 60 130, 30 100 Z" fill="currentColor" fill-opacity="0.08"></path>
+        <path d="M170 100 C 140 70, 100 70, 70 100 C 100 130, 140 130, 170 100 Z" fill="currentColor" fill-opacity="0.08"></path>
+        <path d="M100 170 C 130 140, 130 100, 100 70 C 70 100, 70 140, 100 170 Z" fill="currentColor" fill-opacity="0.08"></path>
+        <circle cx="100" cy="100" r="14" fill="currentColor" fill-opacity="0.4"></circle>
+      </g>
+    </svg>
+    {% else %}
+    <svg class="choir-decor" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g stroke="currentColor" stroke-width="2" fill="none" opacity="0.9">
+        <path d="M70 150 L70 50 C 90 40, 120 45, 130 60" stroke-linecap="round"></path>
+        <ellipse cx="58" cy="148" rx="18" ry="13" transform="rotate(-18 58 148)" fill="currentColor"></ellipse>
+        <ellipse cx="120" cy="62" rx="14" ry="10" transform="rotate(-18 120 62)" fill="currentColor"></ellipse>
+      </g>
+    </svg>
+    {% endif %}
+    <div class="choir-label">
+      <span class="equalizer" style="color: {{ '#ffffff' if c.slug == 'gardenia' else 'var(--gold)' }};"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
+      {{ c.label_en }} · {{ c.label_ar }}
+    </div>
+    <h3 class="choir-name">
+      {{ c.name_en }}
+      <span class="ar">{{ c.name_ar }}</span>
+    </h3>
+    <p class="choir-desc">{{ c.summary }}</p>
+    <div class="choir-meta-row">
+      <div class="item"><div class="num">{{ c.voices }}</div><div class="lbl">Voices</div></div>
+      <div class="item"><div class="num">{{ c.parts_count }}</div><div class="lbl">Parts</div></div>
+      <div class="item"><div class="num">{{ c.founded }}</div><div class="lbl">Founded</div></div>
+    </div>
+    <a href="{{ url_for('pages.choirs') }}#{{ c.slug }}" class="text-link {{ 'on-dark' if c.slug == 'gardenia' else 'gold' }} choir-cta">Meet {{ c.name_en }} <span>→</span></a>
+  </div>
+  {% if not loop.last %}<div class="staff-divider" aria-hidden="true"></div>{% endif %}
+  {% endfor %}
+</section>
+
+<!-- ─── EVENTS TEASER ─── -->
+<section class="events-teaser reveal" id="events">
+  <div style="max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap;">
+    <div>
+      <div class="section-eyebrow">Upcoming</div>
+      <h2 class="section-title">This <em>Season</em><span class="ar">موسمنا الجديد</span></h2>
+    </div>
+    <a href="#" class="text-link on-dark">Full Season Calendar <span>→</span></a>
+  </div>
+
+  <div class="events-list">
+    {% for e in events %}
+    <a href="{{ e.url or '#' }}" class="event-row">
+      <div>
+        <div class="ev-day">{{ e.day }}</div>
+        <div class="ev-month">{{ e.month }}</div>
+      </div>
+      <div class="ev-title">{{ e.title_en }}<span class="ar">{{ e.title_ar }}</span></div>
+      <div class="ev-where">{{ e.time }}<span class="place">{{ e.venue }}</span></div>
+      <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- ─── HIGHLIGHTS CARDS ─── -->
+<section class="highlights reveal">
+  <div style="max-width: 1180px; margin: 0 auto; text-align: center;">
+    <div class="section-eyebrow">Explore</div>
+    <h2 class="section-title">Inside the society<span class="ar">داخل الجمعية</span></h2>
+  </div>
+
+  <div class="hl-grid reveal-stagger">
+    <a href="{{ url_for('pages.about') }}" class="hl-card about">
+      <svg class="hl-deco" viewBox="0 0 200 200" fill="none">
+        <g stroke="currentColor" stroke-width="1" fill="none" opacity="0.6">
+          <circle cx="100" cy="100" r="80"></circle><circle cx="100" cy="100" r="60"></circle>
+          <circle cx="100" cy="100" r="40"></circle><circle cx="100" cy="100" r="20"></circle>
+        </g>
+      </svg>
+      <div class="hl-inner">
+        <div><div class="hl-num">01 / About</div><h3>The organization<span class="ar">من نحن</span></h3></div>
+        <div><p>Mission, history, leadership, and the seven seasons that brought us here.</p><div class="hl-link">Visit About <span>→</span></div></div>
+      </div>
+    </a>
+
+    <a href="{{ url_for('pages.choirs') }}" class="hl-card choirs">
+      <svg class="hl-deco" viewBox="0 0 200 200" fill="none">
+        <g stroke="currentColor" stroke-width="1" fill="none" opacity="0.6">
+          <path d="M40 50 H 160 M40 80 H 160 M40 110 H 160 M40 140 H 160 M40 170 H 160"></path>
+          <ellipse cx="60" cy="170" rx="10" ry="7" fill="currentColor"></ellipse><path d="M70 170 V 90"></path>
+          <ellipse cx="110" cy="140" rx="10" ry="7" fill="currentColor"></ellipse><path d="M120 140 V 60"></path>
+          <ellipse cx="150" cy="110" rx="10" ry="7" fill="currentColor"></ellipse>
+        </g>
+      </svg>
+      <div class="hl-inner">
+        <div><div class="hl-num">02 / Choirs</div><h3>Two voices<span class="ar">جوقتان</span></h3></div>
+        <div><p>Meet Gardenia and Tanaghom — repertoire, sections, conductors, and how to audition.</p><div class="hl-link">Visit Choirs <span>→</span></div></div>
+      </div>
+    </a>
+
+    <a href="{{ url_for('pages.gallery') }}" class="hl-card gallery">
+      <svg class="hl-deco" viewBox="0 0 200 200" fill="none">
+        <g stroke="currentColor" stroke-width="1" fill="none" opacity="0.6">
+          <rect x="30" y="30" width="60" height="80"></rect><rect x="100" y="50" width="70" height="60"></rect>
+          <rect x="40" y="120" width="80" height="50"></rect><rect x="130" y="120" width="40" height="50"></rect>
+        </g>
+      </svg>
+      <div class="hl-inner">
+        <div><div class="hl-num">03 / Gallery</div><h3>From the stage<span class="ar">من على المسرح</span></h3></div>
+        <div><p>Six seasons in photographs — concerts, rehearsals, and quiet moments backstage.</p><div class="hl-link">Visit Gallery <span>→</span></div></div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ─── JOIN ─── -->
+<section class="join reveal" id="contact">
+  <div class="join-inner">
+    <div class="section-eyebrow" style="justify-content: center;">Auditions Open</div>
+    <h2 style="margin-top: 22px;">
+      Lend us your voice.
+      <span class="ar">أَعِرنا صوتك.</span>
+    </h2>
+    <p>We hold open auditions every September and February. Bring a prepared piece — anything you love — and we'll find a place for you.</p>
+
+    <form class="join-form" id="auditionForm" data-kind="audition" novalidate>
+      <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
+      <input type="email" name="email" placeholder="Email address" required aria-label="Email address">
+      <textarea name="message" rows="2" placeholder="Tell us about your voice (optional)" aria-label="Message"></textarea>
+      <button type="submit" class="cta magnetic">Request an Audition <span class="arrow">→</span></button>
+      <p class="form-status" data-status hidden></p>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block page_js %}
+<script src="{{ url_for('static', filename='js/index.page.js') }}"></script>
+<script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+{% endblock %}
