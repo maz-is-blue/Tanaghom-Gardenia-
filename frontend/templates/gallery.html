@@ -1,5 +1,304 @@
 {% extends "base.html" %}
-{% block title %}Gallery · {{ site.brand_en }}{% endblock %}
+
+{% block title %}Gallery · Tanaghom Gardenia{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* ─── filters ─── */
+  .gal-filters-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--line);
+    padding: 0 36px;
+    position: sticky;
+    top: 78px;
+    z-index: 30;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(255,255,255,0.92);
+  }
+  .gal-filters {
+    max-width: 1480px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 22px 0;
+    flex-wrap: wrap;
+  }
+  .gal-filter-set {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .filter-chip {
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--gray);
+    transition: background 0.4s var(--ease), color 0.4s var(--ease), border-color 0.4s var(--ease);
+  }
+  .filter-chip:hover { color: var(--black); border-color: var(--black); }
+  .filter-chip.active {
+    background: var(--black);
+    color: var(--gold);
+    border-color: var(--black);
+  }
+  .filter-chip .count {
+    font-family: 'Playfair Display', serif;
+    margin-left: 6px;
+    opacity: 0.6;
+    letter-spacing: 0;
+  }
+  .gal-meta {
+    display: flex; align-items: center; gap: 12px;
+    color: var(--gray);
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+  .gal-meta .num {
+    font-family: 'Playfair Display', serif;
+    color: var(--black);
+    font-size: 18px;
+    letter-spacing: 0;
+  }
+
+  /* ─── grid ─── */
+  .gallery-sec {
+    padding: 60px 36px 130px;
+    background: var(--white);
+  }
+  .gallery-grid {
+    max-width: 1480px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 18px;
+    grid-auto-flow: dense;
+  }
+  .gal-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    background: var(--black);
+    color: var(--white);
+    transition: transform 0.5s var(--ease), opacity 0.4s var(--ease);
+    cursor: none;
+    grid-column: span 4;
+    aspect-ratio: 4 / 3;
+  }
+  .gal-card.size-tall {
+    grid-row: span 2;
+    aspect-ratio: 4 / 6;
+  }
+  .gal-card.size-wide {
+    grid-column: span 6;
+    aspect-ratio: 16 / 9;
+  }
+  .gal-card.size-square {
+    aspect-ratio: 1 / 1;
+  }
+  .gal-card.hide { display: none; }
+  .gal-card:hover { transform: scale(1.015); }
+  .gal-card .bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transition: transform 0.8s var(--ease);
+  }
+  .gal-card:hover .bg { transform: scale(1.05); }
+  .gal-card .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.78) 100%);
+  }
+  .gal-card .caption {
+    position: absolute;
+    left: 22px; right: 22px; bottom: 22px;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+    transform: translateY(8px);
+    opacity: 0.92;
+    transition: transform 0.4s, opacity 0.4s;
+  }
+  .gal-card:hover .caption { transform: translateY(0); opacity: 1; }
+  .gal-card .cap-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    line-height: 1.2;
+  }
+  .gal-card .cap-meta {
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+  .gal-card .cap-tag {
+    align-self: flex-start;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(245,208,0,0.92);
+    color: var(--black);
+    font-size: 9px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .gal-card .corner-num {
+    position: absolute;
+    top: 18px; left: 22px;
+    z-index: 2;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    letter-spacing: 0.18em;
+    color: rgba(255,255,255,0.62);
+  }
+
+  @media (max-width: 1100px) {
+    .gallery-grid { grid-template-columns: repeat(6, 1fr); }
+    .gal-card { grid-column: span 3; }
+    .gal-card.size-wide { grid-column: span 6; }
+  }
+  @media (max-width: 640px) {
+    .gallery-grid { grid-template-columns: 1fr; }
+    .gal-card, .gal-card.size-wide, .gal-card.size-square, .gal-card.size-tall {
+      grid-column: span 1; grid-row: auto; aspect-ratio: 4 / 3;
+    }
+  }
+
+  /* ─── lightbox ─── */
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: rgba(10, 10, 10, 0.96);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease);
+  }
+  .lightbox.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lb-stage {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    height: 100%;
+    max-height: 720px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: var(--black);
+  }
+  .lb-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s, border-color 0.3s;
+    z-index: 152;
+  }
+  .lb-close:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s, color 0.3s, border-color 0.3s, transform 0.4s;
+    z-index: 152;
+  }
+  .lb-nav:hover { background: var(--gold); color: var(--black); border-color: var(--gold); }
+  .lb-prev { left: 16px; }
+  .lb-next { right: 16px; }
+  .lb-image {
+    position: absolute; inset: 0; z-index: 0;
+    transition: opacity 0.45s var(--ease);
+  }
+  .lb-caption {
+    position: absolute;
+    left: 36px; right: 36px; bottom: 32px;
+    z-index: 2;
+    color: var(--white);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .lb-caption::before {
+    content: "";
+    position: absolute;
+    left: -36px; right: -36px; bottom: -32px; top: -120px;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    z-index: -1;
+  }
+  .lb-caption .lc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    line-height: 1.15;
+  }
+  .lb-caption .lc-meta {
+    margin-top: 8px;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+  .lb-counter {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+  }
+  @media (max-width: 640px) {
+    .lightbox { padding: 20px; }
+    .lb-prev { left: 4px; } .lb-next { right: 4px; }
+    .lb-caption { left: 22px; right: 22px; bottom: 18px; }
+    .lb-caption .lc-title { font-size: 22px; }
+  }
+
+  /* ─── archive cta ─── */
+  .archive-cta {
+    background: var(--black);
+    color: var(--white);
+    padding: 130px 36px;
+    text-align: center;
+    position: relative;
+  }
+  .archive-cta h2 {
+    font-size: clamp(36px, 4.8vw, 60px);
+    line-height: 1.05;
+  }
+  .archive-cta h2 em { color: var(--gold); font-style: italic; }
+  .archive-cta p { color: var(--gray); margin: 18px auto 0; max-width: 560px; }
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- ─── PAGE HEAD ─── -->
@@ -7,7 +306,7 @@
   <div class="clef">𝄞</div>
   <div class="inner">
     <div class="breadcrumb">
-      <a href="{{ url_for('pages.home') }}">Home</a><span class="sep">/</span><span>Gallery</span>
+      <a href="/">Home</a><span class="sep">/</span><span>Gallery</span>
     </div>
     <div class="section-eyebrow">Archive</div>
     <h1>From the <em>stage</em></h1>
@@ -23,7 +322,7 @@
 <div class="gal-filters-wrap">
   <div class="gal-filters">
     <div class="gal-filter-set" id="filterChips">
-      <button class="filter-chip active" data-filter="all">All <span class="count" data-c="all">{{ moment_count }}</span></button>
+      <button class="filter-chip active" data-filter="all">All <span class="count" data-c="all">14</span></button>
       <button class="filter-chip" data-filter="concert">Concerts <span class="count" data-c="concert"></span></button>
       <button class="filter-chip" data-filter="rehearsal">Rehearsals <span class="count" data-c="rehearsal"></span></button>
       <button class="filter-chip" data-filter="gardenia">Gardenia <span class="count" data-c="gardenia"></span></button>
@@ -33,7 +332,7 @@
       <button class="filter-chip" data-filter="2023">2023 <span class="count" data-c="2023"></span></button>
     </div>
     <div class="gal-meta">
-      Showing <span class="num" id="filterCount">{{ moment_count }}</span> moments
+      Showing <span class="num" id="filterCount">14</span> moments
     </div>
   </div>
 </div>
@@ -43,26 +342,25 @@
   <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 
-<!-- ─── PRESS / ARCHIVE CTA ─── -->
+<!-- ─── ARCHIVE CTA ─── -->
 <section class="archive-cta reveal">
   <div class="section-eyebrow" style="margin: 0 auto;">Press &amp; Media</div>
   <h2 style="margin-top: 22px;">For press &amp; <em>media inquiries</em><span class="ar" style="display: block; margin-top: 14px; color: var(--gray); font-size: 0.55em;">للصحافة والإعلام</span></h2>
   <p>High-resolution photographs, press releases for each concert, and biographies of our conductors and singers are available on request.</p>
-  <a href="mailto:{{ site.press_email }}" class="cta magnetic" style="margin-top: 38px;">{{ site.press_email }} <span class="arrow">→</span></a>
+  <a href="mailto:press@tanaghom-gardenia.org" class="cta magnetic" style="margin-top: 38px;">press@tanaghom-gardenia.org <span class="arrow">→</span></a>
 </section>
 
 <!-- ─── LIGHTBOX ─── -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
   <button class="lb-close" id="lbClose" aria-label="close">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M6 18L18 6"></path></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 6l12 12M6 18L18 6"/></svg>
   </button>
   <button class="lb-nav lb-prev" id="lbPrev" aria-label="previous">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"></path></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M15 18l-6-6 6-6"/></svg>
   </button>
   <button class="lb-nav lb-next" id="lbNext" aria-label="next">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"></path></svg>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 6l6 6-6 6"/></svg>
   </button>
-
   <div class="lb-stage">
     <div class="lb-image" id="lbImage"></div>
     <div class="lb-caption">
@@ -70,12 +368,12 @@
         <div class="lc-title" id="lbTitle"></div>
         <div class="lc-meta"><span id="lbDate"></span> <span style="color: var(--gold); margin: 0 10px;">·</span> <span id="lbVenue"></span></div>
       </div>
-      <div class="lb-counter"><span id="lbIdx">1</span> / <span id="lbTotal">{{ moment_count }}</span></div>
+      <div class="lb-counter"><span id="lbIdx">1</span> / <span id="lbTotal">14</span></div>
     </div>
   </div>
 </div>
 {% endblock %}
 
-{% block page_js %}
+{% block scripts %}
 <script src="{{ url_for('static', filename='js/gallery.page.js') }}"></script>
 {% endblock %}

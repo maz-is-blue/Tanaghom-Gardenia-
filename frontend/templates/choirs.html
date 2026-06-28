@@ -1,5 +1,460 @@
 {% extends "base.html" %}
-{% block title %}Our Choirs · {{ site.brand_en }}{% endblock %}
+
+{% block title %}Choirs · Tanaghom Gardenia{% endblock %}
+
+{% block head_extra %}
+<style>
+  /* ─── tab switcher ─── */
+  .choir-tabs-wrap {
+    background: var(--black);
+    color: var(--white);
+    padding: 0 36px;
+    border-bottom: 1px solid var(--line-dark);
+    position: sticky;
+    top: 78px;
+    z-index: 30;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(26,26,26,0.92);
+  }
+  .choir-tabs {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    position: relative;
+  }
+  .choir-tab {
+    padding: 26px 32px;
+    color: rgba(255,255,255,0.55);
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.4s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .choir-tab .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    letter-spacing: 0;
+    color: var(--gold);
+    opacity: 0.6;
+    transition: opacity 0.4s;
+  }
+  .choir-tab.active { color: var(--white); }
+  .choir-tab.active .num { opacity: 1; }
+  .choir-tab:hover { color: var(--white); }
+  .tab-underline {
+    position: absolute;
+    bottom: -1px; left: 0;
+    height: 2px;
+    background: var(--gold);
+    transition: transform 0.55s var(--ease), width 0.55s var(--ease);
+    width: 0;
+  }
+  @media (max-width: 600px) {
+    .choir-tab { padding: 22px 16px; font-size: 11px; }
+  }
+
+  /* ─── choir detail section ─── */
+  .choir-detail {
+    display: none;
+    padding: 100px 36px 130px;
+    position: relative;
+    overflow: hidden;
+  }
+  .choir-detail.active { display: block; animation: fadeUp 0.7s var(--ease); }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .cd-gardenia { background: var(--off-white); color: var(--black); }
+  .cd-gardenia .cd-accent { color: var(--sage-deep); }
+  .cd-tanaghom { background: var(--black); color: var(--white); }
+  .cd-tanaghom .cd-accent { color: var(--gold); }
+  .cd-tanaghom .section-eyebrow { color: var(--gold); }
+  .cd-tanaghom .section-title { color: var(--white); }
+  .cd-tanaghom .section-title .ar { color: rgba(255,255,255,0.6); }
+
+  .cd-hero {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 80px;
+    align-items: start;
+    padding-bottom: 80px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cd-tanaghom .cd-hero { border-bottom-color: var(--line-dark); }
+
+  .cd-hero h2 {
+    font-size: clamp(64px, 8vw, 124px);
+    line-height: 0.92;
+    margin: 22px 0 0;
+  }
+  .cd-hero h2 .ar {
+    display: block;
+    font-size: clamp(36px, 4.5vw, 64px);
+    margin-top: 18px;
+  }
+  .cd-gardenia h2 .ar { color: var(--sage-deep); }
+  .cd-tanaghom h2 .ar { color: var(--gold); }
+  .cd-hero .desc {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.4;
+    margin-top: 36px;
+    max-width: 480px;
+    opacity: 0.85;
+  }
+  .cd-hero .meta-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px;
+    border-radius: 4px;
+  }
+  .cd-gardenia .cd-hero .meta-stack { background: var(--white); border-left: 3px solid var(--sage); }
+  .cd-tanaghom .cd-hero .meta-stack { background: var(--soft-black); border-left: 3px solid var(--gold); }
+  .meta-stack .pair {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .cd-tanaghom .meta-stack .pair { border-bottom-color: var(--line-dark); }
+  .meta-stack .pair:last-child { padding-bottom: 0; border-bottom: 0; }
+  .meta-stack .k {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gray);
+    font-weight: 600;
+  }
+  .cd-tanaghom .meta-stack .k { color: var(--gray-light); }
+  .meta-stack .v {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    line-height: 1;
+  }
+  @media (max-width: 900px) {
+    .cd-hero { grid-template-columns: 1fr; gap: 36px; }
+  }
+
+  /* ─── voice sections ─── */
+  .voice-block {
+    max-width: 1280px;
+    margin: 90px auto 0;
+  }
+  .voice-grid {
+    display: grid;
+    gap: 4px;
+    margin-top: 50px;
+    background: var(--line);
+  }
+  .cd-tanaghom .voice-grid { background: var(--line-dark); }
+  .cd-gardenia .voice-grid { grid-template-columns: repeat(4, 1fr); }
+  .cd-tanaghom .voice-grid { grid-template-columns: repeat(4, 1fr); }
+  .voice-cell {
+    background: var(--off-white);
+    padding: 36px 28px;
+    transition: transform 0.4s var(--ease), background 0.5s var(--ease);
+    cursor: none;
+    position: relative;
+  }
+  .cd-tanaghom .voice-cell { background: var(--soft-black); }
+  .voice-cell:hover { transform: translateY(-4px); }
+  .voice-cell .pitch-glyph {
+    font-family: Georgia, serif;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.65;
+  }
+  .voice-cell h4 {
+    font-size: 22px;
+    margin-top: 14px;
+  }
+  .voice-cell .ar { display: block; font-size: 14px; opacity: 0.6; margin-top: 4px; }
+  .voice-cell .count {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    margin-top: 18px;
+    line-height: 1;
+  }
+  .voice-cell .count .lbl {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-left: 8px;
+  }
+  .cd-tanaghom .voice-cell .count .lbl { color: var(--gray-light); }
+  @media (max-width: 760px) {
+    .cd-gardenia .voice-grid,
+    .cd-tanaghom .voice-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* ─── repertoire ─── */
+  .rep-block {
+    max-width: 1280px;
+    margin: 90px auto 0;
+  }
+  .rep-list {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+  .cd-tanaghom .rep-list { border-top-color: var(--line-dark); }
+  .rep-row {
+    display: grid;
+    grid-template-columns: 60px 1.2fr 1fr 100px;
+    align-items: baseline;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.4s var(--ease), background 0.4s var(--ease);
+    grid-column: 1 / -1;
+    cursor: none;
+  }
+  .cd-tanaghom .rep-row { border-bottom-color: var(--line-dark); }
+  .rep-row:hover {
+    padding-left: 18px;
+    background: rgba(245,208,0,0.04);
+  }
+  .rep-row .idx {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 18px;
+  }
+  .rep-row .title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .rep-row .composer { color: var(--gray); font-size: 14px; }
+  .cd-tanaghom .rep-row .composer { color: var(--gray-light); }
+  .rep-row .year {
+    text-align: right;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--gray);
+  }
+  .cd-tanaghom .rep-row .year { color: var(--gray-light); }
+  @media (max-width: 760px) {
+    .rep-row { grid-template-columns: 40px 1fr; gap: 12px; }
+    .rep-row .composer, .rep-row .year { display: none; }
+  }
+
+  /* ─── listen player ─── */
+  .listen-block {
+    max-width: 1280px;
+    margin: 90px auto 0;
+  }
+  .player {
+    margin-top: 40px;
+    padding: 40px;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cd-gardenia .player { background: var(--white); border-left: 3px solid var(--sage); }
+  .cd-tanaghom .player { background: var(--soft-black); border-left: 3px solid var(--gold); }
+  .player .row1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+  .player .track-info .label {
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .player .track-info h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-top: 10px;
+  }
+  .player .track-info .composer { color: var(--gray); font-size: 14px; margin-top: 6px; }
+  .cd-tanaghom .player .track-info .composer { color: var(--gray-light); }
+  .play-btn {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.4s, transform 0.4s var(--ease), box-shadow 0.4s;
+    flex-shrink: 0;
+  }
+  .play-btn:hover { transform: scale(1.06); box-shadow: 0 12px 30px rgba(245,208,0,0.4); }
+  .play-btn svg { width: 26px; height: 26px; }
+  .play-btn.playing .icon-play { display: none; }
+  .play-btn:not(.playing) .icon-pause { display: none; }
+  .player .waves {
+    margin-top: 40px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .player .waves .w {
+    width: 3px;
+    background: rgba(0,0,0,0.18);
+    border-radius: 2px;
+    flex: 1;
+    transition: background 0.3s;
+  }
+  .cd-tanaghom .player .waves .w { background: rgba(255,255,255,0.16); }
+  .player .waves .w.played { background: var(--gold); }
+  .player.playing .waves .w.played { animation: wavePulse 1.4s ease-in-out infinite; }
+  @keyframes wavePulse {
+    0%, 100% { transform: scaleY(0.85); }
+    50%      { transform: scaleY(1.15); }
+  }
+  .player .meta-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--gray);
+  }
+  .cd-tanaghom .player .meta-row { color: var(--gray-light); }
+
+  /* ─── voice-mix interactive ─── */
+  .voicemix {
+    max-width: 1280px;
+    margin: 90px auto 0;
+  }
+  .vm-card {
+    margin-top: 40px;
+    padding: 40px;
+    border-radius: 4px;
+  }
+  .cd-gardenia .vm-card { background: var(--white); border-left: 3px solid var(--sage); }
+  .cd-tanaghom .vm-card { background: var(--soft-black); border-left: 3px solid var(--gold); }
+  .vm-card .vm-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .vm-card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+  }
+  .vm-card .vm-hint {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: var(--gray);
+    text-transform: uppercase;
+  }
+  .cd-tanaghom .vm-card .vm-hint { color: var(--gray-light); }
+  .vm-row {
+    display: grid;
+    grid-template-columns: 100px 1fr 50px;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 0;
+    border-top: 1px solid var(--line);
+    cursor: none;
+    transition: opacity 0.4s;
+  }
+  .cd-tanaghom .vm-row { border-top-color: var(--line-dark); }
+  .vm-row.muted { opacity: 0.3; }
+  .vm-label {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+  }
+  .vm-bars {
+    display: flex;
+    gap: 2px;
+    height: 28px;
+    align-items: flex-end;
+  }
+  .vm-bars .vm-bar {
+    flex: 1;
+    background: var(--gold);
+    border-radius: 1px;
+    transform-origin: bottom;
+    transition: height 0.16s ease-out, background 0.4s;
+  }
+  .vm-row.muted .vm-bar { background: rgba(0,0,0,0.18); }
+  .cd-tanaghom .vm-row.muted .vm-bar { background: rgba(255,255,255,0.12); }
+  .vm-toggle {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0.6;
+    transition: opacity 0.3s, background 0.3s, color 0.3s;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .vm-row:hover .vm-toggle { opacity: 1; }
+  .vm-row.muted .vm-toggle { opacity: 0.3; }
+
+  /* ─── audition CTA ─── */
+  .audition {
+    max-width: 1280px;
+    margin: 110px auto 0;
+    padding: 60px;
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 50px;
+    align-items: center;
+  }
+  .cd-gardenia .audition { background: var(--black); color: var(--white); }
+  .cd-tanaghom .audition { background: var(--gold); color: var(--black); }
+  .audition h3 { font-size: 40px; line-height: 1.1; }
+  .audition h3 .ar { display: block; margin-top: 12px; opacity: 0.72; font-size: 0.6em; }
+  .audition p {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.75;
+    max-width: 480px;
+  }
+  .cd-gardenia .audition p { color: rgba(255,255,255,0.78); }
+  .cd-tanaghom .audition p { color: rgba(26,26,26,0.78); }
+  .audition .next-list { display: flex; flex-direction: column; gap: 22px; }
+  .audition .next-list .row {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 14px;
+    border-bottom: 1px solid currentColor;
+    opacity: 0.85;
+  }
+  .audition .next-list .when {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+  }
+  .audition .next-list .where {
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+  }
+  @media (max-width: 800px) {
+    .audition { grid-template-columns: 1fr; padding: 36px; gap: 32px; }
+  }
+</style>
+{% endblock %}
 
 {% block content %}
 <!-- ─── PAGE HEAD ─── -->
@@ -7,7 +462,7 @@
   <div class="clef">𝄞</div>
   <div class="inner">
     <div class="breadcrumb">
-      <a href="{{ url_for('pages.home') }}">Home</a><span class="sep">/</span><span>Choirs</span>
+      <a href="/">Home</a><span class="sep">/</span><span>Choirs</span>
     </div>
     <div class="section-eyebrow">Two Ensembles</div>
     <h1>Our <em>Choirs</em></h1>
@@ -22,144 +477,254 @@
 <!-- ─── TABS ─── -->
 <div class="choir-tabs-wrap">
   <div class="choir-tabs" role="tablist">
-    {% for c in choirs %}
-    <button class="choir-tab{% if loop.first %} active{% endif %}" data-tab="{{ c.slug }}"><span class="num">{{ "%02d"|format(loop.index) }}</span> {{ c.name_en }} <span class="ar" style="opacity: 0.6;">{{ c.name_ar }}</span></button>
-    {% endfor %}
+    <button class="choir-tab active" data-tab="gardenia"><span class="num">01</span> Gardenia <span class="ar" style="opacity: 0.6;">غاردينيا</span></button>
+    <button class="choir-tab" data-tab="tanaghom"><span class="num">02</span> Tanaghom <span class="ar" style="opacity: 0.6;">تناغم</span></button>
     <div class="tab-underline" id="tabUnderline"></div>
   </div>
 </div>
 
-{% for c in choirs %}
-{% set gardenia = c.slug == 'gardenia' %}
-<!-- ─── {{ c.name_en|upper }} ─── -->
-<section class="choir-detail cd-{{ c.slug }}{% if loop.first %} active{% endif %}" id="{{ c.slug }}">
-  <!-- hero -->
+<!-- ─── GARDENIA ─── -->
+<section class="choir-detail cd-gardenia active" id="gardenia">
   <div class="cd-hero">
     <div>
-      <div class="section-eyebrow">{{ c.detail_label_en }} · {{ c.count_ar }}</div>
-      <h2>{{ c.name_en }}<span class="ar">{{ c.name_ar }}</span></h2>
-      <p class="desc">{{ c.desc }}</p>
+      <div class="section-eyebrow">Mixed Choir · ٢٤ صوتاً</div>
+      <h2>
+        Gardenia
+        <span class="ar">غاردينيا</span>
+      </h2>
+      <p class="desc">
+        A mixed choir of twenty-four voices — patient, generous, working in the great choral tradition from Renaissance polyphony to the contemporary Arab repertoire.
+      </p>
       <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
-        <a href="#{{ c.slug }}-listen" class="cta magnetic"{% if gardenia %} style="background: var(--sage-deep); border-color: var(--sage-deep); color: var(--white);"{% endif %}>Listen <span class="arrow">→</span></a>
-        <a href="#{{ c.slug }}-audition" class="text-link {% if gardenia %}{% else %}on-dark{% endif %}"{% if gardenia %} style="color: var(--black); padding: 18px 0;"{% endif %}>Audition Info <span>→</span></a>
+        <a href="#gardenia-listen" class="cta magnetic" style="background: var(--sage-deep); border-color: var(--sage-deep); color: var(--white);">Listen <span class="arrow">→</span></a>
+        <a href="#gardenia-audition" class="text-link" style="color: var(--black); padding: 18px 0;">Audition Info <span>→</span></a>
       </div>
     </div>
     <div class="meta-stack">
-      <div class="pair"><span class="k">Founded</span><span class="v">{{ c.founded }}</span></div>
-      <div class="pair"><span class="k">Voices</span><span class="v">{{ c.voices }}</span></div>
-      <div class="pair"><span class="k">Parts</span><span class="v">{{ c.parts }}</span></div>
-      <div class="pair"><span class="k">{{ c.conductor_label }}</span><span class="v">{{ c.conductor }}</span></div>
-      <div class="pair"><span class="k">Rehearses</span><span class="v">{{ c.rehearses }}</span></div>
-      <div class="pair"><span class="k">Season</span><span class="v">{{ c.season }}</span></div>
+      <div class="pair"><span class="k">Founded</span><span class="v">2019</span></div>
+      <div class="pair"><span class="k">Voices</span><span class="v">24</span></div>
+      <div class="pair"><span class="k">Parts</span><span class="v">SATB</span></div>
+      <div class="pair"><span class="k">Conductor</span><span class="v">M. Khoury</span></div>
+      <div class="pair"><span class="k">Rehearses</span><span class="v">Tue · Thu</span></div>
+      <div class="pair"><span class="k">Season</span><span class="v">5 concerts</span></div>
     </div>
   </div>
 
-  <!-- voice sections -->
   <div class="voice-block reveal">
     <div class="section-eyebrow">Voice Parts</div>
-    <h3 class="section-title">{{ c.voice_parts_title_en }}<span class="ar">{{ c.voice_parts_title_ar }}</span></h3>
+    <h3 class="section-title">Four parts, one room<span class="ar">أربعة أصوات</span></h3>
     <div class="voice-grid">
-      {% for vp in c.voice_parts %}
       <div class="voice-cell">
-        <div class="pitch-glyph">{{ vp.glyph }}</div>
-        <h4>{{ vp.name_en }}<span class="ar">{{ vp.name_ar }}</span></h4>
-        <div class="count">{{ vp.count }}<span class="lbl">voices</span></div>
+        <div class="pitch-glyph">𝄞</div>
+        <h4>Soprano<span class="ar">سوبرانو</span></h4>
+        <div class="count">7<span class="lbl">voices</span></div>
       </div>
-      {% endfor %}
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄞</div>
+        <h4>Alto<span class="ar">ألتو</span></h4>
+        <div class="count">6<span class="lbl">voices</span></div>
+      </div>
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄢</div>
+        <h4>Tenor<span class="ar">تينور</span></h4>
+        <div class="count">5<span class="lbl">voices</span></div>
+      </div>
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄢</div>
+        <h4>Bass<span class="ar">باص</span></h4>
+        <div class="count">6<span class="lbl">voices</span></div>
+      </div>
     </div>
   </div>
 
-  <!-- listen -->
-  <div class="listen-block reveal" id="{{ c.slug }}-listen">
+  <div class="listen-block reveal" id="gardenia-listen">
     <div class="section-eyebrow">Listen</div>
     <h3 class="section-title">From the archive<span class="ar">من الأرشيف</span></h3>
-    <div class="player" data-player="">
+    <div class="player" data-player>
       <div class="row1">
         <div class="track-info">
-          <div class="label">{{ c.player.label }}</div>
-          <h4>{{ c.player.title }}</h4>
-          <div class="composer">{{ c.player.composer }}</div>
+          <div class="label">Live · Spring Concert · 2025</div>
+          <h4>Sicut cervus — desiderat fontes</h4>
+          <div class="composer">Giovanni Pierluigi da Palestrina · 1604</div>
         </div>
-        <button class="play-btn" data-play="">
-          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
-          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"></path></svg>
+        <button class="play-btn" data-play>
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
         </button>
       </div>
-      <div class="waves" data-waves=""></div>
+      <div class="waves" data-waves></div>
       <div class="meta-row">
-        <span data-time="">0:00</span>
-        <span>{{ c.player.duration }}</span>
+        <span data-time>0:00</span>
+        <span>4:32</span>
       </div>
     </div>
   </div>
 
-  {% if c.voicemix %}
-  <!-- voice mix interactive -->
   <div class="voicemix reveal">
     <div class="section-eyebrow">Try it</div>
     <h3 class="section-title">Solo a part<span class="ar">عَزَلْ صوتاً</span></h3>
     <p style="max-width: 540px; color: var(--gray); margin-top: 12px;">Tap a part to mute or solo it — see the texture of a four-voice piece change in real time. (Visualization only.)</p>
-    <div class="vm-card" data-voicemix="">
+    <div class="vm-card" data-voicemix>
       <div class="vm-head">
-        <h4>{{ c.voicemix.title }}</h4>
+        <h4>Sicut cervus — voice mix</h4>
         <span class="vm-hint">Click to mute</span>
       </div>
-      {% for row in c.voicemix.rows %}
-      <div class="vm-row" data-vm-row="" data-color="{{ row.color }}">
-        <div class="vm-label">{{ row.label }}</div>
+      <div class="vm-row" data-vm-row data-color="#A8B8A2">
+        <div class="vm-label">Soprano</div>
         <div class="vm-bars"></div>
-        <div class="vm-toggle">{{ row.label[0] }}</div>
+        <div class="vm-toggle">S</div>
       </div>
-      {% endfor %}
+      <div class="vm-row" data-vm-row data-color="#F5D000">
+        <div class="vm-label">Alto</div>
+        <div class="vm-bars"></div>
+        <div class="vm-toggle">A</div>
+      </div>
+      <div class="vm-row" data-vm-row data-color="#A8B8A2">
+        <div class="vm-label">Tenor</div>
+        <div class="vm-bars"></div>
+        <div class="vm-toggle">T</div>
+      </div>
+      <div class="vm-row" data-vm-row data-color="#F5D000">
+        <div class="vm-label">Bass</div>
+        <div class="vm-bars"></div>
+        <div class="vm-toggle">B</div>
+      </div>
     </div>
   </div>
-  {% endif %}
 
-  <!-- repertoire -->
   <div class="rep-block reveal">
     <div class="section-eyebrow">Repertoire</div>
     <h3 class="section-title">What we sing<span class="ar">ما نُغنّيه</span></h3>
     <div class="rep-list">
-      {% for r in c.repertoire %}
-      <div class="rep-row"><span class="idx">{{ "%02d"|format(loop.index) }}</span><span class="title">{{ r.title }}</span><span class="composer">{{ r.composer }}</span><span class="year">{{ r.year }}</span></div>
-      {% endfor %}
+      <div class="rep-row"><span class="idx">01</span><span class="title">Sicut cervus</span><span class="composer">Palestrina</span><span class="year">1604</span></div>
+      <div class="rep-row"><span class="idx">02</span><span class="title">Ave verum corpus</span><span class="composer">W. A. Mozart</span><span class="year">1791</span></div>
+      <div class="rep-row"><span class="idx">03</span><span class="title">Three Adonis Poems</span><span class="composer">Layla Saade · commissioned</span><span class="year">2022</span></div>
+      <div class="rep-row"><span class="idx">04</span><span class="title">Os justi</span><span class="composer">Anton Bruckner</span><span class="year">1879</span></div>
+      <div class="rep-row"><span class="idx">05</span><span class="title">Five Songs from the Levant</span><span class="composer">trad. arr. M. Khoury</span><span class="year">2024</span></div>
+      <div class="rep-row"><span class="idx">06</span><span class="title">There is sweet music here</span><span class="composer">Edward Elgar</span><span class="year">1907</span></div>
+      <div class="rep-row"><span class="idx">07</span><span class="title">Šestina (Six Songs of Quiet)</span><span class="composer">contemporary, premiere</span><span class="year">2026</span></div>
     </div>
   </div>
 
-  <!-- audition -->
-  <div class="audition" id="{{ c.slug }}-audition">
+  <div class="audition" id="gardenia-audition">
     <div>
-      <div class="section-eyebrow" style="color: {{ 'var(--gold)' if gardenia else 'var(--black)' }};">Audition</div>
-      <h3 style="margin-top: 20px;">{{ c.audition.heading_html|safe }}<span class="ar">{{ c.audition.heading_ar }}</span></h3>
-      <p>{{ c.audition.body }}</p>
+      <div class="section-eyebrow" style="color: var(--gold);">Audition</div>
+      <h3 style="margin-top: 20px;">Open auditions <em style="font-style: italic; color: var(--gold);">twice a year</em><span class="ar">اختبارات قبول</span></h3>
+      <p>Bring a prepared piece — anything you love, in any language. We hold open auditions every September and February. No prior choral experience required, only a steady ear and a willingness to learn.</p>
     </div>
     <div class="next-list">
-      {% for d in c.audition.dates %}
-      <div class="row"><span class="when">{{ d.when }}</span><span class="where">{{ d.where }}</span></div>
-      {% endfor %}
-      <a href="#audition-request" class="cta magnetic" style="{% if gardenia %}background: var(--gold); color: var(--black); border-color: var(--gold);{% else %}background: var(--black); color: var(--gold); border-color: var(--black);{% endif %} align-self: flex-start;">{{ c.audition.cta_label }} <span class="arrow">→</span></a>
+      <div class="row"><span class="when">18 Sep 2026</span><span class="where">Fall Round</span></div>
+      <div class="row"><span class="when">14 Feb 2027</span><span class="where">Spring Round</span></div>
+      <a href="#" class="cta magnetic" style="background: var(--gold); color: var(--black); border-color: var(--gold); align-self: flex-start;">Request Audition <span class="arrow">→</span></a>
     </div>
   </div>
 </section>
-{% endfor %}
 
-<!-- ─── REQUEST FORM ─── -->
-<section class="cta-band reveal" id="audition-request">
-  <div class="section-eyebrow" style="margin: 0 auto;">Get In Touch</div>
-  <h2 class="section-title" style="margin-top: 22px;">Request an audition<span class="ar">اطلب اختباراً</span></h2>
-  <p style="max-width: 540px; margin: 22px auto 0; color: var(--gray);">Tell us a little about your voice and which ensemble interests you. We’ll reply with the next available round.</p>
+<!-- ─── TANAGHOM ─── -->
+<section class="choir-detail cd-tanaghom" id="tanaghom">
+  <div class="cd-hero">
+    <div>
+      <div class="section-eyebrow">Chamber Choir · ١٦ صوتاً</div>
+      <h2>
+        Tanaghom
+        <span class="ar">تناغم</span>
+      </h2>
+      <p class="desc">
+        An intimate chamber choir of sixteen voices specializing in Arabic art-song, sacred repertoire of the Levant, and intricate harmonies that turn small rooms into cathedrals.
+      </p>
+      <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
+        <a href="#tanaghom-listen" class="cta magnetic">Listen <span class="arrow">→</span></a>
+        <a href="#tanaghom-audition" class="text-link on-dark">Audition Info <span>→</span></a>
+      </div>
+    </div>
+    <div class="meta-stack">
+      <div class="pair"><span class="k">Founded</span><span class="v">2021</span></div>
+      <div class="pair"><span class="k">Voices</span><span class="v">16</span></div>
+      <div class="pair"><span class="k">Parts</span><span class="v">SSAATTBB</span></div>
+      <div class="pair"><span class="k">Choirmaster</span><span class="v">R. Salameh</span></div>
+      <div class="pair"><span class="k">Rehearses</span><span class="v">Wed · Fri</span></div>
+      <div class="pair"><span class="k">Season</span><span class="v">4 concerts</span></div>
+    </div>
+  </div>
 
-  <form class="join-form" id="choirAuditionForm" data-kind="audition" novalidate>
-    <input type="text" name="name" placeholder="Your name" required aria-label="Your name">
-    <input type="email" name="email" placeholder="Email address" required aria-label="Email address">
-    <textarea name="message" rows="2" placeholder="Which choir, and a little about your experience" aria-label="Message"></textarea>
-    <button type="submit" class="cta magnetic">Send Request <span class="arrow">→</span></button>
-    <p class="form-status" data-status hidden></p>
-  </form>
+  <div class="voice-block reveal">
+    <div class="section-eyebrow">Voice Parts</div>
+    <h3 class="section-title">Divisi · eight parts<span class="ar">ثمانية أصوات</span></h3>
+    <div class="voice-grid">
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄞</div>
+        <h4>Soprano I / II<span class="ar">سوبرانو</span></h4>
+        <div class="count">4<span class="lbl">voices</span></div>
+      </div>
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄞</div>
+        <h4>Alto I / II<span class="ar">ألتو</span></h4>
+        <div class="count">4<span class="lbl">voices</span></div>
+      </div>
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄢</div>
+        <h4>Tenor I / II<span class="ar">تينور</span></h4>
+        <div class="count">4<span class="lbl">voices</span></div>
+      </div>
+      <div class="voice-cell">
+        <div class="pitch-glyph">𝄢</div>
+        <h4>Bass I / II<span class="ar">باص</span></h4>
+        <div class="count">4<span class="lbl">voices</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="listen-block reveal" id="tanaghom-listen">
+    <div class="section-eyebrow">Listen</div>
+    <h3 class="section-title">From the archive<span class="ar">من الأرشيف</span></h3>
+    <div class="player" data-player>
+      <div class="row1">
+        <div class="track-info">
+          <div class="label">Live · Winter Vespers · 2025</div>
+          <h4>يا أمّ الله — Ya umm Allah</h4>
+          <div class="composer">trad. Maronite · arr. Rami Salameh</div>
+        </div>
+        <button class="play-btn" data-play>
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+        </button>
+      </div>
+      <div class="waves" data-waves></div>
+      <div class="meta-row">
+        <span data-time>0:00</span>
+        <span>3:48</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rep-block reveal">
+    <div class="section-eyebrow">Repertoire</div>
+    <h3 class="section-title">What we sing<span class="ar">ما نُغنّيه</span></h3>
+    <div class="rep-list">
+      <div class="rep-row"><span class="idx">01</span><span class="title">Ya umm Allah · يا أمّ الله</span><span class="composer">trad. Maronite arr. R. Salameh</span><span class="year">2022</span></div>
+      <div class="rep-row"><span class="idx">02</span><span class="title">Three Adonis Poems · for double choir</span><span class="composer">Layla Saade · commissioned</span><span class="year">2022</span></div>
+      <div class="rep-row"><span class="idx">03</span><span class="title">Tantum Ergo</span><span class="composer">Maurice Duruflé</span><span class="year">1960</span></div>
+      <div class="rep-row"><span class="idx">04</span><span class="title">Wahdaki · وحدكِ</span><span class="composer">Wadih el-Safi arr. R. Salameh</span><span class="year">2023</span></div>
+      <div class="rep-row"><span class="idx">05</span><span class="title">Bogoroditse Devo</span><span class="composer">Sergei Rachmaninoff</span><span class="year">1915</span></div>
+      <div class="rep-row"><span class="idx">06</span><span class="title">Settings of Mahmoud Darwish</span><span class="composer">Hany Maalouf · premiere</span><span class="year">2026</span></div>
+    </div>
+  </div>
+
+  <div class="audition" id="tanaghom-audition">
+    <div>
+      <div class="section-eyebrow" style="color: var(--black);">Audition</div>
+      <h3 style="margin-top: 20px;">By invitation, then <em style="font-style: italic;">audition</em><span class="ar">دعوة، ثم اختبار</span></h3>
+      <p>Tanaghom recruits primarily from Gardenia after a full season of singing together. We hold an additional small audition each spring for voices with significant prior choral experience and a reading-level command of Arabic diction.</p>
+    </div>
+    <div class="next-list">
+      <div class="row"><span class="when">21 Mar 2027</span><span class="where">Spring Round</span></div>
+      <div class="row"><span class="when">By Invitation</span><span class="where">From Gardenia</span></div>
+      <a href="#" class="cta magnetic" style="background: var(--black); color: var(--gold); border-color: var(--black); align-self: flex-start;">Express Interest <span class="arrow">→</span></a>
+    </div>
+  </div>
 </section>
 {% endblock %}
 
-{% block page_js %}
+{% block scripts %}
 <script src="{{ url_for('static', filename='js/choirs.page.js') }}"></script>
-<script src="{{ url_for('static', filename='js/forms.js') }}"></script>
 {% endblock %}
