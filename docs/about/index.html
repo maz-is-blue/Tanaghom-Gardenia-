@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>About · Tanaghom Gardenia</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/Tanaghom-Gardenia-/static/css/styles.css" />
+
+<style>
+  /* ─── mission block ─── */
+  .mission {
+    padding: 140px 36px 130px;
+    background: var(--off-white);
+    position: relative;
+    overflow: hidden;
+  }
+  .mission::before {
+    content: "𝄞";
+    position: absolute;
+    top: 50%; left: -50px;
+    transform: translateY(-50%);
+    font-family: Georgia, serif;
+    font-size: 600px;
+    line-height: 1;
+    color: rgba(26,26,26,0.04);
+    pointer-events: none;
+  }
+  .mission-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 80px;
+    align-items: start;
+    position: relative;
+    z-index: 2;
+  }
+  .mission-lead {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.2;
+    color: var(--black);
+    margin-top: 26px;
+  }
+  .mission-lead em { font-style: italic; color: var(--gold); }
+  .mission-body p {
+    font-size: 17px;
+    line-height: 1.85;
+    color: #2a2a2a;
+    margin: 0 0 22px;
+  }
+  .mission-body p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    float: left;
+    line-height: 0.85;
+    margin: 8px 14px 0 0;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .mission-body .ar-pull {
+    direction: rtl;
+    margin: 32px 0 0;
+    padding: 22px 26px;
+    border-right: 3px solid var(--gold);
+    font-family: 'Noto Naskh Arabic', serif;
+    font-size: 19px;
+    line-height: 1.95;
+    color: #3a3a3a;
+    background: rgba(245, 208, 0, 0.05);
+  }
+  @media (max-width: 900px) {
+    .mission-grid { grid-template-columns: 1fr; gap: 40px; }
+  }
+
+  /* ─── values ─── */
+  .values {
+    padding: 130px 36px;
+    background: var(--white);
+  }
+  .values-head {
+    max-width: 720px;
+    margin: 0 auto 70px;
+    text-align: center;
+  }
+  .values-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    background: var(--line);
+  }
+  .value-card {
+    background: var(--white);
+    padding: 50px 32px;
+    transition: background 0.5s var(--ease), color 0.5s var(--ease);
+    position: relative;
+    cursor: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    min-height: 340px;
+  }
+  .value-card:hover {
+    background: var(--black);
+    color: var(--white);
+  }
+  .value-card .v-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    letter-spacing: 0.32em;
+    color: var(--gold);
+  }
+  .value-card h3 {
+    font-size: 26px;
+    line-height: 1.2;
+    margin: 0;
+    transition: color 0.5s;
+  }
+  .value-card h3 .ar {
+    display: block;
+    font-size: 18px;
+    margin-top: 6px;
+    color: var(--sage);
+  }
+  .value-card p {
+    margin: 0;
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.7;
+    transition: color 0.5s;
+  }
+  .value-card:hover p { color: rgba(255,255,255,0.78); }
+  .value-card:hover h3 .ar { color: var(--gold); }
+  @media (max-width: 900px) {
+    .values-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .values-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ─── timeline ─── */
+  .timeline-sec {
+    padding: 140px 36px 160px;
+    background: var(--black);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+  }
+  .timeline-sec .section-title { color: var(--white); }
+  .timeline-sec .section-title em { color: var(--gold); }
+  .timeline-sec::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(to bottom, transparent 0, transparent 38px, rgba(255,255,255,0.018) 38px, rgba(255,255,255,0.018) 39px);
+    pointer-events: none;
+  }
+  .timeline-wrap {
+    max-width: 1100px;
+    margin: 70px auto 0;
+    position: relative;
+    z-index: 2;
+  }
+  .timeline-track {
+    position: relative;
+    margin-left: 40px;
+    border-left: 1px solid rgba(255,255,255,0.12);
+    padding-left: 60px;
+  }
+  .tl-item {
+    position: relative;
+    padding-bottom: 70px;
+    cursor: none;
+  }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -68px;
+    top: 12px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    transition: background 0.4s, border-color 0.4s, transform 0.4s;
+  }
+  .tl-item::after {
+    content: "";
+    position: absolute;
+    left: -64px;
+    top: 16px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 0.4s;
+  }
+  .tl-item:hover::before { border-color: var(--gold); transform: scale(1.2); }
+  .tl-item:hover::after { background: var(--gold); }
+  .tl-item.active::before { border-color: var(--gold); }
+  .tl-item.active::after { background: var(--gold); }
+  .tl-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--gold);
+    font-weight: 500;
+  }
+  .tl-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin-top: 14px;
+    color: var(--white);
+  }
+  .tl-title .ar {
+    display: block;
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .tl-body {
+    margin-top: 14px;
+    max-width: 560px;
+    color: rgba(255,255,255,0.74);
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  @media (max-width: 600px) {
+    .timeline-track { margin-left: 24px; padding-left: 36px; }
+    .tl-item::before { left: -42px; }
+    .tl-item::after  { left: -38px; }
+  }
+
+  /* ─── leadership ─── */
+  .leadership {
+    padding: 140px 36px;
+    background: var(--paper);
+  }
+  .lead-head {
+    max-width: 720px;
+    margin: 0 auto 70px;
+    text-align: center;
+  }
+  .lead-grid {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+  }
+  .lead-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.5s var(--ease), box-shadow 0.5s var(--ease);
+    cursor: none;
+  }
+  .lead-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+  }
+  .lead-portrait {
+    aspect-ratio: 4 / 5;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .lead-portrait::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #2a3d28 0%, #1a1a1a 60%, #3a3414 100%);
+  }
+  .lead-card:nth-child(2) .lead-portrait::before {
+    background: linear-gradient(160deg, #3a3414 0%, #1a1a1a 60%, #2a3d28 100%);
+  }
+  .lead-card:nth-child(3) .lead-portrait::before {
+    background: linear-gradient(160deg, #4a4838 0%, #2a2a2a 60%, #1a1a1a 100%);
+  }
+  .lead-portrait .ph-mark {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    color: rgba(245, 208, 0, 0.25);
+    font-size: 96px;
+    line-height: 1;
+    font-style: italic;
+  }
+  .lead-portrait .ph-tag {
+    position: absolute;
+    bottom: 22px; left: 22px;
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .lead-meta {
+    padding: 26px 28px 32px;
+  }
+  .lead-meta .role {
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .lead-meta h3 {
+    font-size: 22px;
+    line-height: 1.2;
+  }
+  .lead-meta h3 .ar {
+    display: block;
+    color: var(--gray);
+    font-size: 16px;
+    margin-top: 4px;
+  }
+  .lead-meta p {
+    margin: 14px 0 0;
+    color: #3a3a3a;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  @media (max-width: 900px) { .lead-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .lead-grid { grid-template-columns: 1fr; } }
+
+  /* ─── stats band ─── */
+  .stats-band {
+    background: var(--gold);
+    color: var(--black);
+    padding: 80px 36px;
+    overflow: hidden;
+    position: relative;
+  }
+  .stats-band .row {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+  }
+  .stats-band .cell {
+    text-align: center;
+    position: relative;
+  }
+  .stats-band .cell:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 50%; right: 0;
+    transform: translateY(-50%);
+    width: 1px; height: 80px;
+    background: rgba(26,26,26,0.18);
+  }
+  .stats-band .big {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    line-height: 1;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .stats-band .lbl {
+    margin-top: 14px;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--soft-black);
+  }
+  @media (max-width: 760px) {
+    .stats-band .row { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .stats-band .cell::after { display: none; }
+  }
+
+  /* ─── CTA band ─── */
+  .cta-band {
+    padding: 130px 36px;
+    text-align: center;
+    background: var(--white);
+  }
+</style>
+
+</head>
+<body data-page="about">
+
+
+
+<!-- ─── NAV ─── -->
+<header class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="/Tanaghom-Gardenia-/" class="logo-mark">
+      <span class="logo-circle"><img src="/Tanaghom-Gardenia-/static/img/logo.png" alt="Tanaghom Gardenia" /></span>
+      <span class="logo-wordmark">Tanaghom <span class="accent">·</span> Gardenia</span>
+    </a>
+    <nav>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="/Tanaghom-Gardenia-/" >Home</a></li>
+        <li><a href="/Tanaghom-Gardenia-/about/" class="current">About</a></li>
+        <li><a href="/Tanaghom-Gardenia-/choirs/" >Choirs</a></li>
+        <li><a href="/Tanaghom-Gardenia-/gallery/" >Gallery</a></li>
+        <li><a href="/Tanaghom-Gardenia-/#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <div class="lang-toggle">
+        <button data-lang="ar">AR</button>
+        <button data-lang="en" class="active">EN</button>
+      </div>
+      <div class="hamburger" id="hamburger" aria-label="menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<!-- ─── PAGE HEAD ─── -->
+<section class="page-head">
+  <div class="clef">𝄞</div>
+  <div class="inner">
+    <div class="breadcrumb">
+      <a href="/Tanaghom-Gardenia-/">Home</a><span class="sep">/</span><span>About</span>
+    </div>
+    <div class="section-eyebrow">Our Society</div>
+    <h1>About <em>Us</em></h1>
+    <span class="ar">عن الجمعية</span>
+    <p class="lede">
+      A non-profit choral society of two ensembles, founded in Beirut in 2019.
+      We sing in Arabic and the wider repertoire, share a single rehearsal hall, and open our doors twice a year to anyone with a voice and the patience to use it well.
+    </p>
+  </div>
+</section>
+
+<!-- ─── MISSION ─── -->
+<section class="mission reveal">
+  <div class="mission-grid">
+    <div>
+      <div class="section-eyebrow">Mission</div>
+      <p class="mission-lead">
+        We exist to keep the <em>choral tradition</em> alive in Lebanon — patient, generous, and unmistakably ours.
+      </p>
+    </div>
+    <div class="mission-body">
+      <p>
+        Tanaghom Gardenia was founded in 2019 by a small circle of singers who believed that the human voice — disciplined, joyful, and trained — remains the most honest expression of community. Seven seasons later, two ensembles share our home in Achrafieh: one a mixed choir working in the great European choral tradition, the other a chamber group devoted to Arabic art-song and the sacred repertoire of the Levant.
+      </p>
+      <p>
+        We perform in concert halls, churches, and gardens. We commission new work from Arab composers, restore neglected repertoire from regional archives, and run a youth outreach programme with three Beirut schools.
+      </p>
+      <div class="ar-pull">
+        تأسّست جمعية تناغم وغاردينيا في عام ٢٠١٩ على إيمانٍ بأن الصوت البشري — بصبره ودقّته وفرحه — يبقى أصدق تعبيرٍ عن الجماعة. تشترك جوقتانا في القاعات والمراجع والقناعة الواحدة: أن للأغنية صدىً أبعد حين تُغنّى معاً.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── VALUES ─── -->
+<section class="values reveal">
+  <div class="values-head">
+    <div class="section-eyebrow" style="margin: 0 auto;">What We Believe</div>
+    <h2 class="section-title">Four chords we keep returning to<span class="ar">أربعة أصواتٍ نعود إليها</span></h2>
+  </div>
+
+  <div class="values-grid">
+    <div class="value-card">
+      <div class="v-num">01</div>
+      <h3>Patience<span class="ar">صبر</span></h3>
+      <p>A choir is built one rehearsal at a time. We trust the long, slow work of listening and adjusting.</p>
+    </div>
+    <div class="value-card">
+      <div class="v-num">02</div>
+      <h3>Two tongues<span class="ar">لسانان</span></h3>
+      <p>Arabic and the wider repertoire share equal weight in everything we program. Neither is a footnote.</p>
+    </div>
+    <div class="value-card">
+      <div class="v-num">03</div>
+      <h3>Open doors<span class="ar">أبواب مفتوحة</span></h3>
+      <p>We audition twice a year and never charge a fee. If you can carry a tune, we'll teach you the rest.</p>
+    </div>
+    <div class="value-card">
+      <div class="v-num">04</div>
+      <h3>New work<span class="ar">أعمال جديدة</span></h3>
+      <p>Every season we commission at least one new piece from a regional composer — alive, today, here.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── TIMELINE ─── -->
+<section class="timeline-sec reveal">
+  <div style="max-width: 1100px; margin: 0 auto;">
+    <div class="section-eyebrow">History</div>
+    <h2 class="section-title">Seven <em>seasons</em><span class="ar">سبعة مواسم</span></h2>
+  </div>
+
+  <div class="timeline-wrap">
+    <div class="timeline-track">
+      <div class="tl-item">
+        <div class="tl-year">2019</div>
+        <div class="tl-title">A small circle begins<span class="ar">بداية صغيرة</span></div>
+        <p class="tl-body">Eighteen singers gather in a borrowed church basement in Achrafieh. Our first conductor, Maya Khoury, leads the first rehearsal — a Palestrina motet, sung badly and joyfully.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2020</div>
+        <div class="tl-title">First public concert<span class="ar">الحفل الأوّل</span></div>
+        <p class="tl-body">"Songs for a Difficult Year" — performed outdoors, in a private garden, four months after the August explosion. Two hundred guests, one rehearsal-less programme, the beginnings of an audience.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2021</div>
+        <div class="tl-title">Tanaghom is born<span class="ar">ولادة تناغم</span></div>
+        <p class="tl-body">A chamber group splits from the main ensemble to focus on Arabic art-song and sacred repertoire. Sixteen voices, the same hall, a separate mission.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2022</div>
+        <div class="tl-title">First commission<span class="ar">التكليف الأول</span></div>
+        <p class="tl-body">We commission Layla Saade to write a setting of three Adonis poems for double choir. The piece tours four cities; the recording reaches forty thousand listeners.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2023</div>
+        <div class="tl-title">Schools programme<span class="ar">برنامج المدارس</span></div>
+        <p class="tl-body">Our outreach programme begins with three Beirut schools and forty-two children. Today, six schools and over a hundred children sing with us each season.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">2024</div>
+        <div class="tl-title">The new rehearsal hall<span class="ar">قاعتنا الجديدة</span></div>
+        <p class="tl-body">After two years of fundraising, we move into a permanent rehearsal hall — sprung floors, real acoustics, a piano that holds its tune. The first home we have called our own.</p>
+      </div>
+      <div class="tl-item active">
+        <div class="tl-year">2026</div>
+        <div class="tl-title">Season seven<span class="ar">الموسم السابع</span></div>
+        <p class="tl-body">Forty active singers, two ensembles, a five-concert main season and a new commission from Hany Maalouf premiering at St. Joseph Church this July.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STATS BAND ─── -->
+<section class="stats-band">
+  <div class="row">
+    <div class="cell">
+      <div class="big"><span data-counter="40" data-format="+">0</span></div>
+      <div class="lbl">Active Singers</div>
+    </div>
+    <div class="cell">
+      <div class="big"><span data-counter="128">0</span></div>
+      <div class="lbl">Performances</div>
+    </div>
+    <div class="cell">
+      <div class="big"><span data-counter="7">0</span></div>
+      <div class="lbl">Commissions</div>
+    </div>
+    <div class="cell">
+      <div class="big"><span data-counter="6">0</span></div>
+      <div class="lbl">Partner Schools</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── LEADERSHIP ─── -->
+<section class="leadership reveal">
+  <div class="lead-head">
+    <div class="section-eyebrow" style="margin: 0 auto;">People</div>
+    <h2 class="section-title">Leadership<span class="ar">القيادة</span></h2>
+    <p style="margin-top: 18px; color: var(--gray);">Three full-time staff, four volunteer board members, and forty singers who turn up on Tuesdays and Thursdays.</p>
+  </div>
+
+  <div class="lead-grid reveal-stagger">
+    <div class="lead-card">
+      <div class="lead-portrait">
+        <div class="ph-mark">MK</div>
+        <div class="ph-tag">Portrait · Coming Soon</div>
+      </div>
+      <div class="lead-meta">
+        <div class="role">Artistic Director</div>
+        <h3>Maya Khoury<span class="ar">مايا خوري</span></h3>
+        <p>Founding conductor. Trained at the Lebanese Conservatoire and the Hochschule für Musik in Stuttgart. Conducts both ensembles.</p>
+      </div>
+    </div>
+    <div class="lead-card">
+      <div class="lead-portrait">
+        <div class="ph-mark">RS</div>
+        <div class="ph-tag">Portrait · Coming Soon</div>
+      </div>
+      <div class="lead-meta">
+        <div class="role">Choirmaster · Tanaghom</div>
+        <h3>Rami Salameh<span class="ar">رامي سلامة</span></h3>
+        <p>Specialist in Arabic sacred repertoire and Levantine art-song. Joined the society in 2021 to lead the founding of Tanaghom.</p>
+      </div>
+    </div>
+    <div class="lead-card">
+      <div class="lead-portrait">
+        <div class="ph-mark">NH</div>
+        <div class="ph-tag">Portrait · Coming Soon</div>
+      </div>
+      <div class="lead-meta">
+        <div class="role">Executive Director</div>
+        <h3>Nour Hadad<span class="ar">نور حداد</span></h3>
+        <p>Runs everything that isn't singing — programming, finance, our schools partnership, and the long list of people who lend us their time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-band reveal">
+  <div class="section-eyebrow" style="margin: 0 auto;">Get Involved</div>
+  <h2 class="section-title" style="margin-top: 22px;">Support our work<span class="ar">ادعموا عملنا</span></h2>
+  <p style="max-width: 540px; margin: 22px auto 0; color: var(--gray);">We are a registered non-profit. Every season is funded by ticket sales, a handful of long-time patrons, and small individual donations.</p>
+  <div style="display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 38px;">
+    <a href="#" class="cta magnetic">Become a Patron <span class="arrow">→</span></a>
+    <a href="/Tanaghom-Gardenia-/choirs/" class="text-link" style="color: var(--black); padding: 18px 0;">Audition Information <span>→</span></a>
+  </div>
+</section>
+
+
+<!-- ─── FOOTER ─── -->
+<footer class="site-footer">
+  <div class="footer-marquee" aria-hidden="true">
+    <div class="footer-marquee-track">
+      <span>Tanaghom &amp; Gardenia</span><span>Choral Society</span><span>Beirut</span><span>تناغم وغاردينيا</span><span>جمعية كورالية</span><span>Since 2019</span>
+      <span>Tanaghom &amp; Gardenia</span><span>Choral Society</span><span>Beirut</span><span>تناغم وغاردينيا</span><span>جمعية كورالية</span><span>Since 2019</span>
+    </div>
+  </div>
+
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-circle"><img src="/Tanaghom-Gardenia-/static/img/logo.png" alt="" /></div>
+      <h3>Tanaghom <span style="color: var(--gold)">·</span> Gardenia</h3>
+      <div class="ar" style="font-size: 18px;">تناغم وغاردينيا</div>
+      <p>A non-profit choral society of two ensembles, founded in Beirut in 2019.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="/Tanaghom-Gardenia-/about/">About</a></li>
+        <li><a href="/Tanaghom-Gardenia-/choirs/">Our Choirs</a></li>
+        <li><a href="/Tanaghom-Gardenia-/gallery/">Gallery</a></li>
+        <li><a href="/Tanaghom-Gardenia-/#events">Events</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>
+        Rehearsal Hall · Achrafieh<br/>
+        Beirut, Lebanon<br/><br/>
+        hello@tanaghom-gardenia.org<br/>
+        +961 1 234 567
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>Follow</h4>
+      <p>Concerts, rehearsals, and behind-the-scenes — every week.</p>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.3-1.5 1.6-1.5H17V4.3C16.7 4.2 15.7 4 14.6 4 12.4 4 11 5.3 11 7.7v2.8H8.5v3H11V21h2.5z"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2c-.2-.9-.9-1.6-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4c-.9.2-1.6.9-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8c.2.9.9 1.6 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5 3-5 3z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="copyright">
+    <span>© 2026 Tanaghom Gardenia Choral Society · All rights reserved</span>
+    <span class="ar">© ٢٠٢٦ جمعية تناغم وغاردينيا الكورالية</span>
+  </div>
+</footer>
+
+<script src="/Tanaghom-Gardenia-/static/js/app.js"></script>
+
+<script src="/Tanaghom-Gardenia-/static/js/about.page.js"></script>
+
+</body>
+</html>
