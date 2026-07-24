@@ -698,9 +698,12 @@
   <div class="choir-panel tanaghom">
     <svg class="choir-decor" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
       <g fill="currentColor" opacity="0.8">
-        <ellipse cx="72" cy="158" rx="27" ry="19" transform="rotate(-22 72 158)"/>
-        <rect x="95" y="48" width="6" height="114" rx="3"/>
-        <path d="M101 48 C 158 68, 162 112, 114 138" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
+        <!-- note head -->
+        <ellipse cx="74" cy="158" rx="27" ry="19" transform="rotate(-20 74 158)"/>
+        <!-- stem: extends into note head at bottom so they connect -->
+        <rect x="96" y="44" width="7" height="122" rx="3"/>
+        <!-- flag: M starts at exact top-right corner of stem -->
+        <path d="M103 44 C 158 62, 161 108, 115 134" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
       </g>
     </svg>
     <div class="choir-label">
