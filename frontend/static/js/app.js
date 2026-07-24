@@ -59,12 +59,14 @@
     );
   }
 
-  /* ---- language toggle (visual marker only) ---- */
+  /* ---- language toggle ---- */
   document.querySelectorAll('.lang-toggle button').forEach(btn =>
     btn.addEventListener('click', () => {
       btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      document.body.dataset.lang = btn.dataset.lang;
+      const lang = btn.dataset.lang;
+      document.body.dataset.lang = lang;
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     })
   );
 
