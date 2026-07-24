@@ -54,8 +54,7 @@ img { display: block; max-width: 100%; }
 
 /* Language toggle behaviour */
 body[data-lang="en"] .ar { display: none !important; }
-body[data-lang="ar"] { direction: rtl; }
-body[data-lang="ar"] .ar { direction: rtl; }
+body[data-lang="ar"] .en { display: none !important; }
 
 /* Honour reduced motion users */
 @media (prefers-reduced-motion: reduce) {
