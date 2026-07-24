@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 """
-build.py — Render Flask templates to static HTML for GitHub Pages.
-Run from the project root: python backend/build.py
+build.py — Render Flask templates to static HTML.
+
+Usage:
+  python backend/build.py            # GitHub Pages (outputs to docs/)
+  python backend/build.py --domain   # Custom domain (outputs to dist/, no prefix)
 """
 import os
 import sys
@@ -11,12 +14,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from app import create_app
 
 ROOT       = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DOCS_DIR   = os.path.join(ROOT, 'docs')
 STATIC_SRC = os.path.join(ROOT, 'frontend', 'static')
-STATIC_DST = os.path.join(DOCS_DIR, 'static')
-
-# GitHub Pages serves this repo at /Tanaghom-Gardenia-/
-BASE = '/Tanaghom-Gardenia-'
 
 PAGES = [
     ('/',        'index.html'),
@@ -25,52 +23,53 @@ PAGES = [
     ('/gallery', 'gallery/index.html'),
 ]
 
-REPLACEMENTS = [
-    # Static asset paths (from url_for)
-    ('href="/static/',   f'href="{BASE}/static/'),
-    ('src="/static/',    f'src="{BASE}/static/'),
-    # Navigation hrefs
-    ('href="/"',         f'href="{BASE}/"'),
-    ('href="/about"',    f'href="{BASE}/about/"'),
-    ('href="/choirs"',   f'href="{BASE}/choirs/"'),
-    ('href="/choirs#',   f'href="{BASE}/choirs/#'),
-    ('href="/gallery"',  f'href="{BASE}/gallery/"'),
-    ('href="/contact"',  f'href="{BASE}/contact/"'),
-    ('href="/#',         f'href="{BASE}/#'),
-]
+def make_replacements(base):
+    return [
+        ('href="/static/',   f'href="{base}/static/'),
+        ('src="/static/',    f'src="{base}/static/'),
+        ('href="/"',         f'href="{base}/"'),
+        ('href="/about"',    f'href="{base}/about/"'),
+        ('href="/choirs"',   f'href="{base}/choirs/"'),
+        ('href="/choirs#',   f'href="{base}/choirs/#'),
+        ('href="/gallery"',  f'href="{base}/gallery/"'),
+        ('href="/contact"',  f'href="{base}/contact/"'),
+        ('href="/#',         f'href="{base}/#'),
+    ]
 
-def fix_paths(html):
-    for old, new in REPLACEMENTS:
+def fix_paths(html, replacements):
+    for old, new in replacements:
         html = html.replace(old, new)
     return html
 
-def build():
-    # Recreate docs/ from scratch
-    if os.path.exists(DOCS_DIR):
-        shutil.rmtree(DOCS_DIR)
-    os.makedirs(DOCS_DIR)
+def build(out_dir, base):
+    replacements = make_replacements(base)
 
-    # Skip Jekyll processing
-    open(os.path.join(DOCS_DIR, '.nojekyll'), 'w').close()
+    if os.path.exists(out_dir):
+        shutil.rmtree(out_dir)
+    os.makedirs(out_dir)
 
-    # Copy static assets
-    shutil.copytree(STATIC_SRC, STATIC_DST)
-    print('Copied frontend/static/ -> docs/static/')
+    open(os.path.join(out_dir, '.nojekyll'), 'w').close()
 
-    # Render each page via Flask test client
+    shutil.copytree(STATIC_SRC, os.path.join(out_dir, 'static'))
+    print(f'Copied frontend/static/ -> {os.path.basename(out_dir)}/static/')
+
     app = create_app()
     with app.test_client() as client:
         for url, out_path in PAGES:
             resp = client.get(url)
-            html = fix_paths(resp.data.decode('utf-8'))
-
-            dest = os.path.join(DOCS_DIR, out_path)
+            html = fix_paths(resp.data.decode('utf-8'), replacements)
+            dest = os.path.join(out_dir, out_path)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             with open(dest, 'w', encoding='utf-8') as f:
                 f.write(html)
-            print(f'Built  {url:12s}  ->  docs/{out_path}')
+            print(f'Built  {url:12s}  ->  {os.path.basename(out_dir)}/{out_path}')
 
     print('\nBuild complete.')
 
 if __name__ == '__main__':
-    build()
+    if '--domain' in sys.argv:
+        # For tanaghomgardenia.org — no path prefix needed
+        build(os.path.join(ROOT, 'dist'), '')
+    else:
+        # For GitHub Pages at /Tanaghom-Gardenia-/
+        build(os.path.join(ROOT, 'docs'), '/Tanaghom-Gardenia-')
