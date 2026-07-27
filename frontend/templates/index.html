@@ -68,12 +68,11 @@
   .hero .ar-name {
     font-family: 'Noto Naskh Arabic', serif;
     color: var(--gold);
-    font-size: clamp(32px, 5vw, 56px);
-    line-height: 1.2;
-    margin-top: 18px;
+    font-size: clamp(56px, 9vw, 132px);
+    line-height: 1.0;
     font-weight: 500;
     opacity: 0;
-    animation: wordIn 0.9s var(--ease) 0.9s forwards;
+    animation: wordIn 0.9s var(--ease) 0.4s forwards;
   }
   .hero .tagline {
     margin-top: 28px;
@@ -574,7 +573,10 @@
 {% block content %}
 <!-- ─── HERO ─── -->
 <section class="hero" id="top">
-  <div class="hero-eyebrow">Cultural &amp; Civic Association · Est. 2016</div>
+  <div class="hero-eyebrow">
+    <span class="en">Cultural &amp; Civic Association · Est. 2016</span>
+    <span class="ar">جمعية ثقافية ومدنية · منذ ٢٠١٦</span>
+  </div>
   <h1 class="en">
     <span class="word">Tanaghom</span>
     <span class="word">Gardenia</span>
@@ -588,8 +590,8 @@
   <div class="waveform" id="waveform" aria-hidden="true"></div>
 
   <div class="hero-cta-row">
-    <a href="/choirs" class="cta magnetic">Meet the Choirs <span class="arrow">→</span></a>
-    <a href="#events" class="cta-ghost magnetic">Upcoming Concerts</a>
+    <a href="/choirs" class="cta magnetic"><span class="en">Meet the Choirs <span class="arrow">→</span></span><span class="ar">تعرف على جوقاتنا <span class="arrow">←</span></span></a>
+    <a href="#events" class="cta-ghost magnetic"><span class="en">Upcoming Concerts</span><span class="ar">الحفلات القادمة</span></a>
   </div>
 
   <div class="scroll-hint"></div>
@@ -686,11 +688,11 @@
       جوقة نسائية احترافية تأسست عام 2016، تجمع بين الألحان السورية التراثية والتأليف الأصيل — مستخدمةً الموسيقى أداةً للتعافي والتضامن وتمكين المرأة.
     </p>
     <div class="choir-meta-row">
-      <div class="item"><div class="num">SA</div><div class="lbl">Voices</div></div>
-      <div class="item"><div class="num">3</div><div class="lbl">Parts</div></div>
-      <div class="item"><div class="num">2016</div><div class="lbl">Founded</div></div>
+      <div class="item"><div class="num">SA</div><div class="lbl en">Voices</div><div class="lbl ar">أصوات</div></div>
+      <div class="item"><div class="num">3</div><div class="lbl en">Parts</div><div class="lbl ar">أجزاء</div></div>
+      <div class="item"><div class="num">2016</div><div class="lbl en">Founded</div><div class="lbl ar">تأسست</div></div>
     </div>
-    <a href="/choirs#gardenia" class="text-link on-dark choir-cta">Meet Gardenia <span>→</span></a>
+    <a href="/choirs#gardenia" class="text-link on-dark choir-cta"><span class="en">Meet Gardenia <span>→</span></span><span class="ar">تعرف على غاردينيا <span>←</span></span></a>
   </div>
 
   <div class="staff-divider" aria-hidden="true"></div>
@@ -721,11 +723,11 @@
       جوقة شبابية مختلطة من 250 شاباً وشابةً من مناطق سورية — تستخدم الموسيقى والغناء الجماعي أداةً للتواصل الإيجابي والتماسك الاجتماعي وبناء السلام.
     </p>
     <div class="choir-meta-row">
-      <div class="item"><div class="num">250</div><div class="lbl">Members</div></div>
-      <div class="item"><div class="num">SATB</div><div class="lbl">Voices</div></div>
-      <div class="item"><div class="num">2019</div><div class="lbl">Founded</div></div>
+      <div class="item"><div class="num">250</div><div class="lbl en">Members</div><div class="lbl ar">عضو</div></div>
+      <div class="item"><div class="num">SATB</div><div class="lbl en">Voices</div><div class="lbl ar">أصوات</div></div>
+      <div class="item"><div class="num">2019</div><div class="lbl en">Founded</div><div class="lbl ar">تأسست</div></div>
     </div>
-    <a href="/choirs#tanaghom" class="text-link gold choir-cta">Meet Tanaghom <span>→</span></a>
+    <a href="/choirs#tanaghom" class="text-link gold choir-cta"><span class="en">Meet Tanaghom <span>→</span></span><span class="ar">تعرف على تناغم <span>←</span></span></a>
   </div>
 </section>
 
@@ -733,7 +735,8 @@
 <section class="events-teaser reveal" id="events">
   <div style="max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap;">
     <div>
-      <div class="section-eyebrow">Upcoming</div>
+      <div class="section-eyebrow en">Upcoming</div>
+      <div class="section-eyebrow ar">القادم</div>
       <h2 class="section-title"><span class="en">Upcoming <em>Events</em></span><span class="ar">الفعاليات القادمة</span></h2>
     </div>
   </div>
@@ -745,7 +748,7 @@
         <div class="ev-month">Jul 2025</div>
       </div>
       <div class="ev-title">مواقع السحاب — Cloud Locations<span class="ar">دار الأوبرا · مسرح الدراما</span></div>
-      <div class="ev-where">Evening<span class="place">Opera House · Drama Theatre</span></div>
+      <div class="ev-where"><span class="en">Evening<span class="place">Opera House · Drama Theatre</span></span><span class="ar">مساءً<span class="place">دار الأوبرا · مسرح الدراما</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
     <a href="#" class="event-row">
@@ -753,8 +756,8 @@
         <div class="ev-day">TBA</div>
         <div class="ev-month">2025</div>
       </div>
-      <div class="ev-title">Cinema Club · نادي السينما<span class="ar">أفلام قادمة</span></div>
-      <div class="ev-where">Screening<span class="place">To Be Announced</span></div>
+      <div class="ev-title"><span class="en">Cinema Club</span><span class="ar">نادي السينما<span class="place" style="display:block;">أفلام قادمة</span></span></div>
+      <div class="ev-where"><span class="en">Screening<span class="place">To Be Announced</span></span><span class="ar">عرض<span class="place">سيُعلن قريباً</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
     <a href="#" class="event-row">
@@ -762,8 +765,8 @@
         <div class="ev-day">Soon</div>
         <div class="ev-month">2025</div>
       </div>
-      <div class="ev-title">Tanaghom Choir · كورال تناغم<span class="ar">coming soon</span></div>
-      <div class="ev-where">Concert<span class="place">Damascus</span></div>
+      <div class="ev-title"><span class="en">Tanaghom Choir</span><span class="ar">كورال تناغم<span class="place" style="display:block;">قريباً</span></span></div>
+      <div class="ev-where"><span class="en">Concert<span class="place">Damascus</span></span><span class="ar">حفلة<span class="place">دمشق</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
   </div>
@@ -772,7 +775,8 @@
 <!-- ─── HIGHLIGHTS CARDS ─── -->
 <section class="highlights reveal">
   <div style="max-width: 1180px; margin: 0 auto; text-align: center;">
-    <div class="section-eyebrow">Explore</div>
+    <div class="section-eyebrow en">Explore</div>
+    <div class="section-eyebrow ar">استكشف</div>
     <h2 class="section-title"><span class="en">Inside the society</span><span class="ar">داخل الجمعية</span></h2>
   </div>
 
@@ -788,12 +792,15 @@
       </svg>
       <div class="hl-inner">
         <div>
-          <div class="hl-num">01 / About</div>
+          <div class="hl-num en">01 / About</div>
+          <div class="hl-num ar">01 / عن الجمعية</div>
           <h3><span class="en">The organization</span><span class="ar">من نحن</span></h3>
         </div>
         <div>
-          <p>Mission, history, leadership, and the seven seasons that brought us here.</p>
-          <div class="hl-link">Visit About <span>→</span></div>
+          <p class="en">Mission, history, leadership, and the seven seasons that brought us here.</p>
+          <p class="ar">المهمة والتاريخ والمواسم السبع التي أوصلتنا هنا.</p>
+          <div class="hl-link en">Visit About <span>→</span></div>
+          <div class="hl-link ar">اعرف أكثر <span>←</span></div>
         </div>
       </div>
     </a>
@@ -811,12 +818,15 @@
       </svg>
       <div class="hl-inner">
         <div>
-          <div class="hl-num">02 / Choirs</div>
+          <div class="hl-num en">02 / Choirs</div>
+          <div class="hl-num ar">02 / الجوقات</div>
           <h3><span class="en">Two ensembles</span><span class="ar">جوقتانا</span></h3>
         </div>
         <div>
-          <p>One a professional all-female choir, one a youth peacebuilding choir — united by the conviction that music is a tool for healing, solidarity, and civic change.</p>
-          <div class="hl-link">Visit Choirs <span>→</span></div>
+          <p class="en">One a professional all-female choir, one a youth peacebuilding choir — united by the conviction that music is a tool for healing, solidarity, and civic change.</p>
+          <p class="ar">جوقة نسائية احترافية وجوقة شبابية لبناء السلام — تجمعهما القناعة بأن الموسيقى أداة للتعافي والتضامن والتغيير المدني.</p>
+          <div class="hl-link en">Visit Choirs <span>→</span></div>
+          <div class="hl-link ar">اعرف أكثر <span>←</span></div>
         </div>
       </div>
     </a>
@@ -832,12 +842,15 @@
       </svg>
       <div class="hl-inner">
         <div>
-          <div class="hl-num">03 / Gallery</div>
+          <div class="hl-num en">03 / Gallery</div>
+          <div class="hl-num ar">03 / المعرض</div>
           <h3><span class="en">From the stage</span><span class="ar">من على المسرح</span></h3>
         </div>
         <div>
-          <p>Six seasons in photographs — concerts, rehearsals, and quiet moments backstage.</p>
-          <div class="hl-link">Visit Gallery <span>→</span></div>
+          <p class="en">Six seasons in photographs — concerts, rehearsals, and quiet moments backstage.</p>
+          <p class="ar">ستة مواسم في صور — حفلات وبروفات ولحظات هادئة خلف الكواليس.</p>
+          <div class="hl-link en">Visit Gallery <span>→</span></div>
+          <div class="hl-link ar">اعرف أكثر <span>←</span></div>
         </div>
       </div>
     </a>
@@ -847,7 +860,8 @@
 <!-- ─── JOIN ─── -->
 <section class="join reveal" id="contact">
   <div class="join-inner">
-    <div class="section-eyebrow" style="justify-content: center;">Get Involved</div>
+    <div class="section-eyebrow en" style="justify-content: center;">Get Involved</div>
+    <div class="section-eyebrow ar" style="justify-content: center;">شارك معنا</div>
     <h2 style="margin-top: 22px;">
       <span class="en">Join our community.</span>
       <span class="ar">انضم إلى مجتمعنا</span>
