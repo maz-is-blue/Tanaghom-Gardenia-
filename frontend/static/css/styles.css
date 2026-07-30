@@ -339,6 +339,8 @@ body[data-lang="ar"] .en { display: none !important; }
   color: var(--gray);
   font-size: 0.62em;
   font-weight: 400;
+  font-family: 'Amiri', serif;
+  font-style: italic;
 }
 
 /* ============================  BUTTONS  ============================ */
@@ -444,6 +446,8 @@ body[data-lang="ar"] .en { display: none !important; }
   margin-top: 22px;
   font-size: clamp(24px, 3vw, 40px);
   color: var(--sage);
+  font-family: 'Amiri', serif;
+  font-style: italic;
 }
 .page-head .lede {
   margin-top: 38px;
