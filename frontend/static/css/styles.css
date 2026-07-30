@@ -601,8 +601,8 @@ footer.site-footer {
   font-weight: 600;
 }
 
-/* RTL helpers */
-[dir="rtl"] .dropcap::first-letter { float: right; margin: 6px 0 0 12px; }
+/* Arabic paragraphs never use dropcap — Arabic letters connect */
+.dropcap.ar::first-letter { font-size: inherit; float: none; margin: 0; color: inherit; font-weight: inherit; }
 
 /* ============================  EQUALIZER / WAVEFORM small  ============================ */
 .equalizer {
