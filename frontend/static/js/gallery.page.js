@@ -1,19 +1,19 @@
 /* ===== Gallery data ===== */
 const moments = [
-  { id: 1,  title: "Songs of the Levant",        date: "May 2025",  venue: "Al-Madina Hall",    ensemble: "gardenia", type: "concert",   year: "2025", size: "wide",   palette: ["#2a3d28", "#8DA086", "#F5D000"] },
-  { id: 2,  title: "Winter Vespers",             date: "Dec 2024",  venue: "St. Joseph Church", ensemble: "tanaghom", type: "concert",   year: "2024", size: "tall",   palette: ["#1a1a1a", "#3a3414", "#F5D000"] },
-  { id: 3,  title: "Open Rehearsal",             date: "Mar 2025",  venue: "Rehearsal Hall",    ensemble: "gardenia", type: "rehearsal", year: "2025", size: "square", palette: ["#4a4838", "#A8B8A2", "#FFFFFF"] },
-  { id: 4,  title: "Three Adonis Poems",         date: "Oct 2024",  venue: "Sursock Museum",    ensemble: "tanaghom", type: "concert",   year: "2024", size: "normal", palette: ["#1a1a1a", "#F5D000", "#8DA086"] },
-  { id: 5,  title: "Garden Recital",             date: "Jun 2024",  venue: "Beit Mery",         ensemble: "gardenia", type: "concert",   year: "2024", size: "wide",   palette: ["#8DA086", "#2a3d28", "#FFFFFF"] },
-  { id: 6,  title: "Schools Programme",          date: "Apr 2025",  venue: "Rehearsal Hall",    ensemble: "gardenia", type: "rehearsal", year: "2025", size: "normal", palette: ["#F5D000", "#1a1a1a", "#A8B8A2"] },
-  { id: 7,  title: "Maronite Sacred Hymns",      date: "Nov 2023",  venue: "Bkerké",            ensemble: "tanaghom", type: "concert",   year: "2023", size: "normal", palette: ["#1a1a1a", "#4a4838", "#F5D000"] },
-  { id: 8,  title: "Sectional · Sopranos",       date: "Feb 2025",  venue: "Rehearsal Hall",    ensemble: "gardenia", type: "rehearsal", year: "2025", size: "square", palette: ["#A8B8A2", "#F5D000", "#1a1a1a"] },
-  { id: 9,  title: "Layla Saade Premiere",       date: "Sep 2024",  venue: "Al-Madina Hall",    ensemble: "gardenia", type: "concert",   year: "2024", size: "tall",   palette: ["#2a3d28", "#1a1a1a", "#F5D000"] },
-  { id: 10, title: "Tuning the Hall",            date: "Jan 2024",  venue: "Rehearsal Hall",    ensemble: "tanaghom", type: "rehearsal", year: "2024", size: "normal", palette: ["#3a3414", "#1a1a1a", "#A8B8A2"] },
-  { id: 11, title: "Songs for a Difficult Year", date: "Aug 2023",  venue: "Private Garden",    ensemble: "gardenia", type: "concert",   year: "2023", size: "wide",   palette: ["#4a4838", "#A8B8A2", "#FFFFFF"] },
-  { id: 12, title: "Wahdaki · وحدكِ",            date: "Mar 2024",  venue: "Sursock Museum",    ensemble: "tanaghom", type: "concert",   year: "2024", size: "normal", palette: ["#1a1a1a", "#3a3414", "#F5D000"] },
-  { id: 13, title: "Section Read-Through",       date: "Sep 2023",  venue: "Rehearsal Hall",    ensemble: "tanaghom", type: "rehearsal", year: "2023", size: "square", palette: ["#1a1a1a", "#A8B8A2", "#F5D000"] },
-  { id: 14, title: "Bruckner · Os justi",        date: "Apr 2024",  venue: "St. Joseph Church", ensemble: "gardenia", type: "concert",   year: "2024", size: "normal", palette: ["#2a3d28", "#1a1a1a", "#FFFFFF"] },
+  { id: 1,  title: "Songs of the Levant",        titleAr: "أغاني الشام",                  date: "May 2025",  dateAr: "مايو 2025",      venue: "Al-Madina Hall",    venueAr: "قاعة المدينة",      ensemble: "gardenia", type: "concert",   year: "2025", size: "wide",   palette: ["#2a3d28", "#8DA086", "#F5D000"] },
+  { id: 2,  title: "Winter Vespers",             titleAr: "تراتيل الشتاء",                date: "Dec 2024",  dateAr: "ديسمبر 2024",    venue: "St. Joseph Church", venueAr: "كنيسة مار يوسف",    ensemble: "tanaghom", type: "concert",   year: "2024", size: "tall",   palette: ["#1a1a1a", "#3a3414", "#F5D000"] },
+  { id: 3,  title: "Open Rehearsal",             titleAr: "بروفة مفتوحة",                 date: "Mar 2025",  dateAr: "مارس 2025",      venue: "Rehearsal Hall",    venueAr: "قاعة البروفات",     ensemble: "gardenia", type: "rehearsal", year: "2025", size: "square", palette: ["#4a4838", "#A8B8A2", "#FFFFFF"] },
+  { id: 4,  title: "Three Adonis Poems",         titleAr: "ثلاث قصائد لأدونيس",           date: "Oct 2024",  dateAr: "أكتوبر 2024",    venue: "Sursock Museum",    venueAr: "متحف سرسق",         ensemble: "tanaghom", type: "concert",   year: "2024", size: "normal", palette: ["#1a1a1a", "#F5D000", "#8DA086"] },
+  { id: 5,  title: "Garden Recital",             titleAr: "حفلة في الحديقة",              date: "Jun 2024",  dateAr: "يونيو 2024",     venue: "Beit Mery",         venueAr: "بيت مري",           ensemble: "gardenia", type: "concert",   year: "2024", size: "wide",   palette: ["#8DA086", "#2a3d28", "#FFFFFF"] },
+  { id: 6,  title: "Schools Programme",          titleAr: "برنامج المدارس",               date: "Apr 2025",  dateAr: "أبريل 2025",     venue: "Rehearsal Hall",    venueAr: "قاعة البروفات",     ensemble: "gardenia", type: "rehearsal", year: "2025", size: "normal", palette: ["#F5D000", "#1a1a1a", "#A8B8A2"] },
+  { id: 7,  title: "Maronite Sacred Hymns",      titleAr: "الترانيم المارونية المقدسة",   date: "Nov 2023",  dateAr: "نوفمبر 2023",    venue: "Bkerké",            venueAr: "بكركي",             ensemble: "tanaghom", type: "concert",   year: "2023", size: "normal", palette: ["#1a1a1a", "#4a4838", "#F5D000"] },
+  { id: 8,  title: "Sectional · Sopranos",       titleAr: "تقسيم · السوبرانو",            date: "Feb 2025",  dateAr: "فبراير 2025",    venue: "Rehearsal Hall",    venueAr: "قاعة البروفات",     ensemble: "gardenia", type: "rehearsal", year: "2025", size: "square", palette: ["#A8B8A2", "#F5D000", "#1a1a1a"] },
+  { id: 9,  title: "Layla Saade Premiere",       titleAr: "أول عرض لليلى سعادة",          date: "Sep 2024",  dateAr: "سبتمبر 2024",    venue: "Al-Madina Hall",    venueAr: "قاعة المدينة",      ensemble: "gardenia", type: "concert",   year: "2024", size: "tall",   palette: ["#2a3d28", "#1a1a1a", "#F5D000"] },
+  { id: 10, title: "Tuning the Hall",            titleAr: "ضبط القاعة",                   date: "Jan 2024",  dateAr: "يناير 2024",     venue: "Rehearsal Hall",    venueAr: "قاعة البروفات",     ensemble: "tanaghom", type: "rehearsal", year: "2024", size: "normal", palette: ["#3a3414", "#1a1a1a", "#A8B8A2"] },
+  { id: 11, title: "Songs for a Difficult Year", titleAr: "أغانٍ لعام عسير",              date: "Aug 2023",  dateAr: "أغسطس 2023",     venue: "Private Garden",    venueAr: "حديقة خاصة",        ensemble: "gardenia", type: "concert",   year: "2023", size: "wide",   palette: ["#4a4838", "#A8B8A2", "#FFFFFF"] },
+  { id: 12, title: "Wahdaki · وحدكِ",            titleAr: "وحدكِ",                        date: "Mar 2024",  dateAr: "مارس 2024",      venue: "Sursock Museum",    venueAr: "متحف سرسق",         ensemble: "tanaghom", type: "concert",   year: "2024", size: "normal", palette: ["#1a1a1a", "#3a3414", "#F5D000"] },
+  { id: 13, title: "Section Read-Through",       titleAr: "قراءة مقاطع",                  date: "Sep 2023",  dateAr: "سبتمبر 2023",    venue: "Rehearsal Hall",    venueAr: "قاعة البروفات",     ensemble: "tanaghom", type: "rehearsal", year: "2023", size: "square", palette: ["#1a1a1a", "#A8B8A2", "#F5D000"] },
+  { id: 14, title: "Bruckner · Os justi",        titleAr: "بروكنر · Os justi",            date: "Apr 2024",  dateAr: "أبريل 2024",     venue: "St. Joseph Church", venueAr: "كنيسة مار يوسف",    ensemble: "gardenia", type: "concert",   year: "2024", size: "normal", palette: ["#2a3d28", "#1a1a1a", "#FFFFFF"] },
 ];
 
 function bgFor(m) {
@@ -70,8 +70,8 @@ function renderGrid(items) {
       <div class="corner-num">${String(i+1).padStart(2,'0')}</div>
       <div class="caption">
         <div>
-          <div class="cap-title">${m.title}</div>
-          <div class="cap-meta">${m.date} · ${m.venue}</div>
+          <div class="cap-title"><span class="en">${m.title}</span><span class="ar" style="font-family:'Noto Naskh Arabic',serif;">${m.titleAr}</span></div>
+          <div class="cap-meta"><span class="en">${m.date} · ${m.venue}</span><span class="ar">${m.dateAr} · ${m.venueAr}</span></div>
         </div>
         <div class="cap-tag">${m.ensemble === 'gardenia' ? 'Gardenia' : 'Tanaghom'}</div>
       </div>
@@ -113,6 +113,8 @@ function applyFilter() {
     if (match) shown++;
   });
   document.getElementById('filterCount').textContent = shown;
+  const fcAr = document.getElementById('filterCountAr');
+  if (fcAr) fcAr.textContent = shown;
 }
 
 /* ===== Lightbox ===== */
@@ -148,9 +150,9 @@ function showLightbox(i) {
   lbCurrent = (i + list.length) % list.length;
   const m = list[lbCurrent];
   lbImage.innerHTML = bgFor(m);
-  lbTitle.textContent = m.title;
-  lbDate.textContent  = m.date;
-  lbVenue.textContent = m.venue;
+  lbTitle.innerHTML = `<span class="en">${m.title}</span><span class="ar" style="font-family:'Noto Naskh Arabic',serif;">${m.titleAr}</span>`;
+  lbDate.innerHTML  = `<span class="en">${m.date}</span><span class="ar">${m.dateAr}</span>`;
+  lbVenue.innerHTML = `<span class="en">${m.venue}</span><span class="ar">${m.venueAr}</span>`;
   lbIdx.textContent   = lbCurrent + 1;
   lbTotal.textContent = list.length;
 }

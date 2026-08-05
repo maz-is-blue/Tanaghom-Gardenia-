@@ -66,6 +66,7 @@
       btn.classList.add('active');
       const lang = btn.dataset.lang;
       document.body.dataset.lang = lang;
+      document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     })
   );

@@ -59,7 +59,9 @@ document.querySelectorAll('[data-player]').forEach(player => {
   let playing = false;
   let progress = 0;
   let lastT = 0;
-  const total = 4 * 60 + 32;
+  const durEl = player.querySelector('.meta-row span:last-child');
+  const durParts = durEl ? durEl.textContent.split(':') : ['4', '32'];
+  const total = parseInt(durParts[0]) * 60 + parseInt(durParts[1]);
 
   function render() {
     const head = Math.floor(progress * N);
