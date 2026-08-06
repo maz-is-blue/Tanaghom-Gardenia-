@@ -378,5 +378,8 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+const moments = {{ content['gallery']['items'] | tojson }};
+</script>
 <script src="{{ url_for('static', filename='js/gallery.page.js') }}"></script>
 {% endblock %}

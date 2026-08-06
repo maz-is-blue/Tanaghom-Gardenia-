@@ -1,0 +1,26 @@
+{
+  "tracks": [
+    {
+      "id": "gardenia",
+      "choir": "gardenia",
+      "label_en": "Album · Safeguarding Syrian Heritage · 2017",
+      "label_ar": "ألبوم · صون التراث السوري · 2017",
+      "title": "زغاريد سورية — Syrian Wedding Folk Songs",
+      "composer_en": "Traditional Syrian folk songs · Gardenia Choir",
+      "composer_ar": "أغانٍ شعبية سورية تراثية · جوقة غاردينيا",
+      "duration": "4:32",
+      "file": ""
+    },
+    {
+      "id": "tanaghom",
+      "choir": "tanaghom",
+      "label_en": "Album · Human Rights · Youth Production · 2021",
+      "label_ar": "ألبوم · حقوق الإنسان · إنتاج شبابي · 2021",
+      "title": "صوتي وصوتك — My Voice and Your Voice",
+      "composer_en": "7 songs on human rights · composed & performed by 250 young Syrians",
+      "composer_ar": "7 أغنيات عن حقوق الإنسان · من تأليف وأداء 250 شاباً سورياً",
+      "duration": "3:48",
+      "file": ""
+    }
+  ]
+}

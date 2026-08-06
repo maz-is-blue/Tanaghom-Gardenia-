@@ -40,9 +40,10 @@ window.addEventListener('resize', () => {
 
 /* ===== Players ===== */
 document.querySelectorAll('[data-player]').forEach(player => {
-  const wavesEl = player.querySelector('[data-waves]');
-  const btn     = player.querySelector('[data-play]');
-  const time    = player.querySelector('[data-time]');
+  const wavesEl  = player.querySelector('[data-waves]');
+  const btn      = player.querySelector('[data-play]');
+  const time     = player.querySelector('[data-time]');
+  const audioEl  = player.querySelector('[data-audio]');
   const N = 120;
 
   const heights = [];
@@ -56,14 +57,21 @@ document.querySelectorAll('[data-player]').forEach(player => {
   }
   const bars = wavesEl.querySelectorAll('.w');
 
+  const durEl = player.querySelector('.meta-row span:last-child');
+  const durParts = durEl ? durEl.textContent.split(':') : ['4', '32'];
+  const fallbackTotal = parseInt(durParts[0]) * 60 + parseInt(durParts[1]);
+
   let playing = false;
   let progress = 0;
   let lastT = 0;
-  const durEl = player.querySelector('.meta-row span:last-child');
-  const durParts = durEl ? durEl.textContent.split(':') : ['4', '32'];
-  const total = parseInt(durParts[0]) * 60 + parseInt(durParts[1]);
+
+  function getTotal() {
+    if (audioEl && !isNaN(audioEl.duration) && audioEl.duration > 0) return audioEl.duration;
+    return fallbackTotal;
+  }
 
   function render() {
+    const total = getTotal();
     const head = Math.floor(progress * N);
     bars.forEach((b, i) => b.classList.toggle('played', i < head));
     const sec = Math.floor(progress * total);
@@ -71,8 +79,24 @@ document.querySelectorAll('[data-player]').forEach(player => {
     const s = (sec % 60).toString().padStart(2, '0');
     time.textContent = `${m}:${s}`;
   }
+
+  if (audioEl) {
+    audioEl.addEventListener('timeupdate', () => {
+      if (audioEl.duration > 0) {
+        progress = audioEl.currentTime / audioEl.duration;
+        render();
+      }
+    });
+    audioEl.addEventListener('ended', () => {
+      playing = false;
+      btn.classList.remove('playing');
+      player.classList.remove('playing');
+    });
+  }
+
   function tick(t) {
-    if (!playing) return;
+    if (!playing || audioEl) return;
+    const total = getTotal();
     const dt = lastT ? (t - lastT) / 1000 : 0;
     lastT = t;
     progress = Math.min(1, progress + dt / total);
@@ -80,18 +104,34 @@ document.querySelectorAll('[data-player]').forEach(player => {
     if (progress < 1) requestAnimationFrame(tick);
     else { playing = false; btn.classList.remove('playing'); player.classList.remove('playing'); }
   }
+
   btn.addEventListener('click', () => {
-    playing = !playing;
+    if (audioEl) {
+      if (audioEl.paused) {
+        audioEl.play();
+        playing = true;
+      } else {
+        audioEl.pause();
+        playing = false;
+      }
+    } else {
+      playing = !playing;
+      lastT = 0;
+      if (playing) requestAnimationFrame(tick);
+    }
     btn.classList.toggle('playing', playing);
     player.classList.toggle('playing', playing);
-    lastT = 0;
-    if (playing) requestAnimationFrame(tick);
   });
+
   wavesEl.addEventListener('click', (e) => {
     const r = wavesEl.getBoundingClientRect();
     progress = (e.clientX - r.left) / r.width;
+    if (audioEl && !isNaN(audioEl.duration)) {
+      audioEl.currentTime = progress * audioEl.duration;
+    }
     render();
   });
+
   render();
 });
 

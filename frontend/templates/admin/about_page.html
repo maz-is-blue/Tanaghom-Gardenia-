@@ -1,0 +1,79 @@
+{% extends 'admin/base.html' %}
+{% block title %}About Page{% endblock %}
+{% block page_title %}About Page{% endblock %}
+
+{% block content %}
+{% set stats = data.get('stats', []) %}
+
+<div class="card">
+  <div class="card-title">About Stats <span class="tag">{{ stats|length }} items</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">These numbers appear in the stats bar on the About page.</p>
+  <form method="POST" action="/admin/about/save-stats">
+    {% for s in stats %}
+    <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:14px;margin-bottom:12px">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Stat {{ loop.index }}</div>
+      <div class="frow">
+        <div class="fg">
+          <label>Number</label>
+          <input type="text" name="num" value="{{ s.get('num','') }}" placeholder="250">
+        </div>
+        <div class="fg">
+          <label>Format suffix (+ , %, or leave empty)</label>
+          <input type="text" name="format" value="{{ s.get('format','') }}" placeholder="+">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Label — English</label>
+          <input type="text" name="label_en" value="{{ s.get('label_en','') }}" placeholder="Youth Members">
+        </div>
+        <div class="fg">
+          <label>Label — Arabic</label>
+          <input type="text" name="label_ar" value="{{ s.get('label_ar','') }}" class="ar" placeholder="عضو شاب">
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p style="color:var(--gray);font-size:13px;margin-bottom:16px">No stats defined yet. Add them below.</p>
+    {% endfor %}
+    <button type="submit" class="btn btn-gold">Save Stats</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Add a New Stat <span class="tag">Append</span></div>
+  <p style="font-size:12px;color:var(--gray);margin-bottom:18px">Saving the form above replaces all stats. To add one, include the existing rows plus a new blank one in the list, then save. Or manually add values and save.</p>
+  <form method="POST" action="/admin/about/save-stats">
+    {% for s in stats %}
+    <input type="hidden" name="num"      value="{{ s.get('num','') }}">
+    <input type="hidden" name="format"   value="{{ s.get('format','') }}">
+    <input type="hidden" name="label_en" value="{{ s.get('label_en','') }}">
+    <input type="hidden" name="label_ar" value="{{ s.get('label_ar','') }}">
+    {% endfor %}
+    <div style="background:var(--surf2);border:1px solid rgba(245,208,0,.25);border-radius:3px;padding:14px;margin-bottom:16px">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">New Stat</div>
+      <div class="frow">
+        <div class="fg">
+          <label>Number</label>
+          <input type="text" name="num" placeholder="12">
+        </div>
+        <div class="fg">
+          <label>Format suffix</label>
+          <input type="text" name="format" placeholder="+">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Label — English</label>
+          <input type="text" name="label_en" placeholder="Concerts">
+        </div>
+        <div class="fg">
+          <label>Label — Arabic</label>
+          <input type="text" name="label_ar" class="ar" placeholder="حفل">
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Add &amp; Save All Stats</button>
+  </form>
+</div>
+{% endblock %}

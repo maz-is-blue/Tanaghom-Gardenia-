@@ -538,14 +538,18 @@
     <div class="section-eyebrow en">Our Works</div>
     <div class="section-eyebrow ar">أعمالنا</div>
     <h3 class="section-title"><span class="en">Productions &amp; Albums</span><span class="ar">الأعمال والألبومات</span></h3>
+    {% set g = content.audio_by_id.get('gardenia', {}) %}
     <div class="player" data-player>
+      {% if g.get('file') %}
+      <audio data-audio src="{{ g.file }}" preload="metadata"></audio>
+      {% endif %}
       <div class="row1">
         <div class="track-info">
-          <div class="label en">Album · Safeguarding Syrian Heritage · 2017</div>
-          <div class="label ar" style="font-family: 'Noto Naskh Arabic', serif;">ألبوم · صون التراث السوري · 2017</div>
-          <h4>زغاريد سورية — Syrian Wedding Folk Songs</h4>
-          <div class="composer en">Traditional Syrian folk songs · Gardenia Choir</div>
-          <div class="composer ar" style="font-family: 'Noto Naskh Arabic', serif;">أغانٍ شعبية سورية تراثية · جوقة غاردينيا</div>
+          <div class="label en">{{ g.get('label_en', 'Album · Safeguarding Syrian Heritage · 2017') }}</div>
+          <div class="label ar" style="font-family: 'Noto Naskh Arabic', serif;">{{ g.get('label_ar', 'ألبوم · صون التراث السوري · 2017') }}</div>
+          <h4>{{ g.get('title', 'زغاريد سورية — Syrian Wedding Folk Songs') }}</h4>
+          <div class="composer en">{{ g.get('composer_en', 'Traditional Syrian folk songs · Gardenia Choir') }}</div>
+          <div class="composer ar" style="font-family: 'Noto Naskh Arabic', serif;">{{ g.get('composer_ar', 'أغانٍ شعبية سورية تراثية · جوقة غاردينيا') }}</div>
         </div>
         <button class="play-btn" data-play>
           <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -555,7 +559,7 @@
       <div class="waves" data-waves></div>
       <div class="meta-row">
         <span data-time>0:00</span>
-        <span>4:32</span>
+        <span>{{ g.get('duration', '4:32') }}</span>
       </div>
     </div>
   </div>
@@ -687,14 +691,18 @@
     <div class="section-eyebrow en">Our Album</div>
     <div class="section-eyebrow ar">ألبومنا</div>
     <h3 class="section-title"><span class="en">صوتي وصوتك — My Voice and Your Voice</span><span class="ar">ألبومنا الخاص</span></h3>
+    {% set t = content.audio_by_id.get('tanaghom', {}) %}
     <div class="player" data-player>
+      {% if t.get('file') %}
+      <audio data-audio src="{{ t.file }}" preload="metadata"></audio>
+      {% endif %}
       <div class="row1">
         <div class="track-info">
-          <div class="label en">Album · Human Rights · Youth Production · 2021</div>
-          <div class="label ar" style="font-family:'Noto Naskh Arabic',serif;">ألبوم · حقوق الإنسان · إنتاج شبابي · 2021</div>
-          <h4>صوتي وصوتك — My Voice and Your Voice</h4>
-          <div class="composer en">7 songs on human rights · composed &amp; performed by 250 young Syrians</div>
-          <div class="composer ar" style="font-family:'Noto Naskh Arabic',serif;">7 أغنيات عن حقوق الإنسان · من تأليف وأداء 250 شاباً سورياً</div>
+          <div class="label en">{{ t.get('label_en', 'Album · Human Rights · Youth Production · 2021') }}</div>
+          <div class="label ar" style="font-family:'Noto Naskh Arabic',serif;">{{ t.get('label_ar', 'ألبوم · حقوق الإنسان · إنتاج شبابي · 2021') }}</div>
+          <h4>{{ t.get('title', 'صوتي وصوتك — My Voice and Your Voice') }}</h4>
+          <div class="composer en">{{ t.get('composer_en', '7 songs on human rights · composed & performed by 250 young Syrians') }}</div>
+          <div class="composer ar" style="font-family:'Noto Naskh Arabic',serif;">{{ t.get('composer_ar', '7 أغنيات عن حقوق الإنسان · من تأليف وأداء 250 شاباً سورياً') }}</div>
         </div>
         <button class="play-btn" data-play>
           <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
@@ -704,7 +712,7 @@
       <div class="waves" data-waves></div>
       <div class="meta-row">
         <span data-time>0:00</span>
-        <span>3:48</span>
+        <span>{{ t.get('duration', '3:48') }}</span>
       </div>
     </div>
   </div>

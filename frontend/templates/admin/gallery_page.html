@@ -1,0 +1,226 @@
+{% extends 'admin/base.html' %}
+{% block title %}Gallery{% endblock %}
+{% block page_title %}Gallery Photos{% endblock %}
+
+{% block content %}
+{% set items = data.get('items', []) %}
+
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:12px">
+  <div style="font-size:13px;color:var(--gray)">{{ items|length }} items in gallery</div>
+  <button type="button" class="btn btn-gold" onclick="document.getElementById('add-modal').style.display='flex'">+ Add Photo</button>
+</div>
+
+<!-- Gallery Grid -->
+<div class="gal-grid">
+  {% for item in items %}
+  <div class="gc">
+    <div class="thumb">
+      {% if item.image %}
+      <img src="{{ item.image }}" alt="{{ item.title }}">
+      {% else %}
+      🌸
+      {% endif %}
+    </div>
+    <div class="gi">
+      <div class="gt">{{ item.title }}</div>
+      <div class="gm">{{ item.date }} · {{ item.ensemble }}</div>
+    </div>
+    <div class="ga">
+      <button type="button" class="btn btn-ghost btn-sm" style="flex:1" onclick="openEdit({{ item | tojson | forceescape }})">Edit</button>
+      <form method="POST" action="/admin/gallery/delete/{{ item.id }}" onsubmit="return confirm('Delete this item?')">
+        <button type="submit" class="btn btn-danger btn-sm">Del</button>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--gray);font-size:13px">
+    No gallery items yet. Click "Add Photo" to get started.
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Add Modal -->
+<div id="add-modal" class="modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-bg"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('add-modal').style.display='none'">✕</button>
+    <div class="modal-title">Add Gallery Item</div>
+    <form method="POST" action="/admin/gallery/add" enctype="multipart/form-data">
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="title" required placeholder="Summer Concert 2024">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="titleAr" class="ar" placeholder="حفل الصيف ٢٠٢٤">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Date — English</label>
+          <input type="text" name="date" placeholder="June 2024">
+        </div>
+        <div class="fg">
+          <label>Date — Arabic</label>
+          <input type="text" name="dateAr" class="ar" placeholder="يونيو ٢٠٢٤">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Venue — English</label>
+          <input type="text" name="venue" placeholder="Beirut Hippodrome">
+        </div>
+        <div class="fg">
+          <label>Venue — Arabic</label>
+          <input type="text" name="venueAr" class="ar" placeholder="حلبة بيروت">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Ensemble</label>
+          <select name="ensemble">
+            <option value="gardenia">Gardenia</option>
+            <option value="tanaghom">Tanaghom</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Type</label>
+          <select name="type">
+            <option value="concert">Concert</option>
+            <option value="workshop">Workshop</option>
+            <option value="rehearsal">Rehearsal</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Year</label>
+          <input type="text" name="year" placeholder="2024">
+        </div>
+        <div class="fg">
+          <label>Size</label>
+          <select name="size">
+            <option value="normal">Normal</option>
+            <option value="wide">Wide</option>
+            <option value="tall">Tall</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow single" style="margin-bottom:20px">
+        <div class="fg">
+          <label>Photo (JPG, PNG, WEBP)</label>
+          <input type="file" name="image" accept="image/*" style="padding:10px">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">Add to Gallery</button>
+    </form>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="edit-modal" class="modal" style="display:none" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-bg"></div>
+  <div class="modal-box">
+    <button class="modal-close" onclick="document.getElementById('edit-modal').style.display='none'">✕</button>
+    <div class="modal-title">Edit Gallery Item</div>
+    <form id="edit-form" method="POST" action="" enctype="multipart/form-data">
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" id="ef-title" name="title">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" id="ef-titleAr" name="titleAr" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Date — English</label>
+          <input type="text" id="ef-date" name="date">
+        </div>
+        <div class="fg">
+          <label>Date — Arabic</label>
+          <input type="text" id="ef-dateAr" name="dateAr" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Venue — English</label>
+          <input type="text" id="ef-venue" name="venue">
+        </div>
+        <div class="fg">
+          <label>Venue — Arabic</label>
+          <input type="text" id="ef-venueAr" name="venueAr" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Ensemble</label>
+          <select id="ef-ensemble" name="ensemble">
+            <option value="gardenia">Gardenia</option>
+            <option value="tanaghom">Tanaghom</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Type</label>
+          <select id="ef-type" name="type">
+            <option value="concert">Concert</option>
+            <option value="workshop">Workshop</option>
+            <option value="rehearsal">Rehearsal</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Year</label>
+          <input type="text" id="ef-year" name="year">
+        </div>
+        <div class="fg">
+          <label>Size</label>
+          <select id="ef-size" name="size">
+            <option value="normal">Normal</option>
+            <option value="wide">Wide</option>
+            <option value="tall">Tall</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow single" style="margin-bottom:20px">
+        <div class="fg">
+          <label>Replace Photo (optional)</label>
+          <input type="file" name="image" accept="image/*" style="padding:10px">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">Save Changes</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openEdit(item) {
+  var f = document.getElementById('edit-form');
+  f.action = '/admin/gallery/edit/' + item.id;
+  document.getElementById('ef-title').value    = item.title    || '';
+  document.getElementById('ef-titleAr').value  = item.titleAr  || '';
+  document.getElementById('ef-date').value     = item.date     || '';
+  document.getElementById('ef-dateAr').value   = item.dateAr   || '';
+  document.getElementById('ef-venue').value    = item.venue    || '';
+  document.getElementById('ef-venueAr').value  = item.venueAr  || '';
+  document.getElementById('ef-year').value     = item.year     || '';
+  var s = document.getElementById('ef-ensemble');
+  for(var i=0;i<s.options.length;i++) s.options[i].selected = s.options[i].value===item.ensemble;
+  var t = document.getElementById('ef-type');
+  for(var i=0;i<t.options.length;i++) t.options[i].selected = t.options[i].value===item.type;
+  var z = document.getElementById('ef-size');
+  for(var i=0;i<z.options.length;i++) z.options[i].selected = z.options[i].value===item.size;
+  document.getElementById('edit-modal').style.display = 'flex';
+}
+</script>
+{% endblock %}

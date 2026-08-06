@@ -1,0 +1,8 @@
+{
+  "stats": [
+    {"num": "250", "format": "+", "label_en": "Youth Trained",      "label_ar": "شاب متدرب"},
+    {"num": "12",  "format": "+", "label_en": "Concerts in 2025",   "label_ar": "حفلة في 2025"},
+    {"num": "17",  "format": "",  "label_en": "Workshops & Forums",  "label_ar": "ورشة ومنتدى"},
+    {"num": "2016","format": "",  "label_en": "Year Founded",        "label_ar": "سنة التأسيس"}
+  ]
+}

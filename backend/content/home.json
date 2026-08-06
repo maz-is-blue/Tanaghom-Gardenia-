@@ -1,0 +1,61 @@
+{
+  "hero": {
+    "eyebrow_en": "Cultural & Civic Association · Est. 2016",
+    "eyebrow_ar": "جمعية ثقافية ومدنية · منذ ٢٠١٦",
+    "tagline_en": "Art is everyone's right.",
+    "tagline_ar": "الفن حق الجميع"
+  },
+  "intro": {
+    "lead_en": "A women-led association connecting <em>art with citizenship</em> — using music and choral performance to promote peace, dialogue, and social healing.",
+    "lead_ar": "جمعية تقودها نساء تربط <em>الفن بالمواطنة</em> — تستخدم الموسيقى والغناء الكورالي لتعزيز السلام والحوار والتعافي الاجتماعي."
+  },
+  "stats": [
+    {"num": "250", "format": "+", "label_en": "Youth Trained", "label_ar": "شاب متدرب"},
+    {"num": "12", "format": "+", "label_en": "Concerts in 2025", "label_ar": "حفلة في 2025"},
+    {"num": "17", "format": "",  "label_en": "Workshops & Forums", "label_ar": "ورشة ومنتدى"}
+  ],
+  "events": [
+    {
+      "id": 1,
+      "day_en": "23",
+      "day_ar": "23",
+      "month_en": "Jul 2025",
+      "month_ar": "يوليو 2025",
+      "title_en": "مواقع السحاب — Cloud Locations",
+      "title_ar": "مواقع السحاب",
+      "type_en": "Evening",
+      "type_ar": "مساءً",
+      "place_en": "Opera House · Drama Theatre",
+      "place_ar": "دار الأوبرا · مسرح الدراما",
+      "url": "#"
+    },
+    {
+      "id": 2,
+      "day_en": "TBA",
+      "day_ar": "يُعلن",
+      "month_en": "2025",
+      "month_ar": "2025",
+      "title_en": "Cinema Club",
+      "title_ar": "نادي السينما",
+      "type_en": "Screening",
+      "type_ar": "عرض",
+      "place_en": "To Be Announced",
+      "place_ar": "سيُعلن قريباً",
+      "url": "#"
+    },
+    {
+      "id": 3,
+      "day_en": "Soon",
+      "day_ar": "قريباً",
+      "month_en": "2025",
+      "month_ar": "2025",
+      "title_en": "Tanaghom Choir",
+      "title_ar": "كورال تناغم",
+      "type_en": "Concert",
+      "type_ar": "حفلة",
+      "place_en": "Damascus",
+      "place_ar": "دمشق",
+      "url": "#"
+    }
+  ]
+}

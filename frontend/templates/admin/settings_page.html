@@ -1,0 +1,67 @@
+{% extends 'admin/base.html' %}
+{% block title %}Settings{% endblock %}
+{% block page_title %}Site Settings{% endblock %}
+
+{% block content %}
+<form method="POST" action="/admin/settings/save">
+  <div class="card">
+    <div class="card-title">Contact Information <span class="tag">Footer</span></div>
+    <div class="frow">
+      <div class="fg">
+        <label>Contact Email</label>
+        <input type="email" name="contact_email" value="{{ data.get('contact_email','') }}" placeholder="info@tanaghomgardenia.org">
+      </div>
+      <div class="fg">
+        <label>Press / Media Email</label>
+        <input type="email" name="press_email" value="{{ data.get('press_email','') }}" placeholder="press@tanaghomgardenia.org">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Address — English</label>
+        <input type="text" name="address_en" value="{{ data.get('address_en','') }}" placeholder="Beirut, Lebanon">
+      </div>
+      <div class="fg">
+        <label>Address — Arabic</label>
+        <input type="text" name="address_ar" value="{{ data.get('address_ar','') }}" class="ar" placeholder="بيروت، لبنان">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Social Media <span class="tag">Links</span></div>
+    <div class="frow">
+      <div class="fg">
+        <label>Instagram URL</label>
+        <input type="text" name="social_instagram" value="{{ data.get('social_instagram','') }}" placeholder="https://instagram.com/…">
+      </div>
+      <div class="fg">
+        <label>Facebook URL</label>
+        <input type="text" name="social_facebook" value="{{ data.get('social_facebook','') }}" placeholder="https://facebook.com/…">
+      </div>
+    </div>
+    <div class="frow single">
+      <div class="fg">
+        <label>YouTube URL</label>
+        <input type="text" name="social_youtube" value="{{ data.get('social_youtube','') }}" placeholder="https://youtube.com/…">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Footer Tagline <span class="tag">Bilingual</span></div>
+    <div class="frow">
+      <div class="fg">
+        <label>Tagline — English</label>
+        <input type="text" name="footer_tagline_en" value="{{ data.get('footer_tagline_en','') }}" placeholder="Singing youth into harmony">
+      </div>
+      <div class="fg">
+        <label>Tagline — Arabic</label>
+        <input type="text" name="footer_tagline_ar" value="{{ data.get('footer_tagline_ar','') }}" class="ar" placeholder="نُغنّي الشباب نحو الانسجام">
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-gold">Save Settings</button>
+</form>
+{% endblock %}

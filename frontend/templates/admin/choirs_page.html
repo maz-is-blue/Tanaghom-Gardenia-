@@ -1,0 +1,89 @@
+{% extends 'admin/base.html' %}
+{% block title %}Choirs &amp; Audio{% endblock %}
+{% block page_title %}Choirs &amp; Audio{% endblock %}
+
+{% block content %}
+{% set tracks = data.get('tracks', []) %}
+
+<div class="card">
+  <div class="card-title">Audio Tracks <span class="tag">{{ tracks|length }} tracks</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:22px">
+    Upload MP3 files for each choir's featured track. Accepted formats: mp3, wav, ogg, m4a, aac.
+  </p>
+
+  {% for track in tracks %}
+  <div style="background:var(--surf2);border:1px solid var(--line);border-radius:4px;padding:20px;margin-bottom:18px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px">{{ track.label_en }}</div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-top:4px">{{ track.choir }}</div>
+      </div>
+      {% if track.file %}
+      <div class="badge b-sage">Audio Uploaded</div>
+      {% else %}
+      <div class="badge b-gray">No Audio</div>
+      {% endif %}
+    </div>
+
+    {% if track.file %}
+    <div style="background:var(--surf);border:1px solid var(--line);border-radius:3px;padding:12px;margin-bottom:16px;display:flex;align-items:center;gap:12px">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8DA086" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+      <span style="font-size:12px;color:var(--gray-lt);word-break:break-all">{{ track.file }}</span>
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/admin/choirs/save-track/{{ track.id }}" enctype="multipart/form-data">
+      <div class="frow">
+        <div class="fg">
+          <label>Label — English</label>
+          <input type="text" name="label_en" value="{{ track.label_en }}">
+        </div>
+        <div class="fg">
+          <label>Label — Arabic</label>
+          <input type="text" name="label_ar" value="{{ track.label_ar }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Track Title</label>
+          <input type="text" name="title" value="{{ track.title }}">
+        </div>
+        <div class="fg">
+          <label>Duration (MM:SS)</label>
+          <input type="text" name="duration" value="{{ track.duration }}" placeholder="4:32">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Composer — English</label>
+          <input type="text" name="composer_en" value="{{ track.composer_en }}">
+        </div>
+        <div class="fg">
+          <label>Composer — Arabic</label>
+          <input type="text" name="composer_ar" value="{{ track.composer_ar }}" class="ar">
+        </div>
+      </div>
+      <div class="frow single" style="margin-bottom:16px">
+        <div class="fg">
+          <label>Upload MP3 / Audio File</label>
+          <input type="file" name="audio_file" accept="audio/*" style="padding:10px">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">Save Track</button>
+    </form>
+  </div>
+  {% else %}
+  <p style="color:var(--gray);font-size:13px">No tracks configured. Check backend/content/audio.json.</p>
+  {% endfor %}
+</div>
+
+<div class="card">
+  <div class="card-title">Audio Playback Notes <span class="tag">Info</span></div>
+  <div style="font-size:13px;color:var(--gray);line-height:1.9">
+    <p>• When a file is uploaded, the choir players on the public site will use it for real audio playback.</p>
+    <p style="margin-top:8px">• If no file is uploaded, the player simulates playback with a progress animation only.</p>
+    <p style="margin-top:8px">• Supported formats: MP3 (recommended), WAV, OGG, M4A, AAC.</p>
+    <p style="margin-top:8px">• Files are stored in <code style="background:var(--surf2);padding:2px 6px;border-radius:2px">static/uploads/audio/</code> and copied to the live site on publish.</p>
+  </div>
+</div>
+{% endblock %}

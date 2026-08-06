@@ -1,0 +1,228 @@
+{% extends 'admin/base.html' %}
+{% block title %}Home Page{% endblock %}
+{% block page_title %}Home Page{% endblock %}
+
+{% block content %}
+{% set hero   = data.get('hero', {}) %}
+{% set stats  = data.get('stats', []) %}
+{% set events = data.get('events', []) %}
+
+<!-- Hero Section -->
+<div class="card">
+  <div class="card-title">Hero Section <span class="tag">Bilingual</span></div>
+  <form method="POST" action="/admin/home/save-hero">
+    <div class="frow">
+      <div class="fg">
+        <label>Eyebrow — English</label>
+        <input type="text" name="eyebrow_en" value="{{ hero.get('eyebrow_en','') }}">
+      </div>
+      <div class="fg">
+        <label>Eyebrow — Arabic</label>
+        <input type="text" name="eyebrow_ar" value="{{ hero.get('eyebrow_ar','') }}" class="ar">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Tagline — English</label>
+        <textarea name="tagline_en">{{ hero.get('tagline_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Tagline — Arabic</label>
+        <textarea name="tagline_ar" class="ar">{{ hero.get('tagline_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Hero</button>
+  </form>
+</div>
+
+<!-- Stats -->
+<div class="card">
+  <div class="card-title">Stats Bar <span class="tag">Numbers</span></div>
+  <form method="POST" action="/admin/home/save-stats">
+    {% for s in stats %}
+    <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:14px;margin-bottom:12px">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Stat {{ loop.index }}</div>
+      <div class="frow">
+        <div class="fg">
+          <label>Number</label>
+          <input type="text" name="num" value="{{ s.get('num','') }}">
+        </div>
+        <div class="fg">
+          <label>Format (e.g. +, %, empty)</label>
+          <input type="text" name="format" value="{{ s.get('format','') }}">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Label — English</label>
+          <input type="text" name="label_en" value="{{ s.get('label_en','') }}">
+        </div>
+        <div class="fg">
+          <label>Label — Arabic</label>
+          <input type="text" name="label_ar" value="{{ s.get('label_ar','') }}" class="ar">
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-gold">Save Stats</button>
+  </form>
+</div>
+
+<!-- Events -->
+<div class="card">
+  <div class="card-title">Upcoming Events <span class="tag">{{ events|length }} events</span></div>
+
+  {% for ev in events %}
+  <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:16px;margin-bottom:12px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <div style="font-size:13px;font-weight:600">{{ ev.title_en or '(no title)' }}</div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('ev-edit-{{ ev.id }}').style.display='block';this.closest('.evwrap').style.display='none'" style="font-size:9px">Edit</button>
+        <form method="POST" action="/admin/home/event/delete/{{ ev.id }}" style="display:inline" onsubmit="return confirm('Delete this event?')">
+          <button type="submit" class="btn btn-danger btn-sm" style="font-size:9px">Delete</button>
+        </form>
+      </div>
+    </div>
+    <div class="evwrap">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:12px;color:var(--gray)">
+        <div><span style="color:var(--gold)">Day: </span>{{ ev.day_en }} / {{ ev.day_ar }}</div>
+        <div><span style="color:var(--gold)">Month: </span>{{ ev.month_en }} / {{ ev.month_ar }}</div>
+        <div><span style="color:var(--gold)">Type: </span>{{ ev.type_en }}</div>
+        <div><span style="color:var(--gold)">Place: </span>{{ ev.place_en }}</div>
+        <div><span style="color:var(--gold)">URL: </span>{{ ev.url or '—' }}</div>
+      </div>
+    </div>
+    <div id="ev-edit-{{ ev.id }}" style="display:none">
+      <form method="POST" action="/admin/home/event/edit/{{ ev.id }}">
+        <div class="frow">
+          <div class="fg">
+            <label>Title — English</label>
+            <input type="text" name="title_en" value="{{ ev.title_en }}">
+          </div>
+          <div class="fg">
+            <label>Title — Arabic</label>
+            <input type="text" name="title_ar" value="{{ ev.title_ar }}" class="ar">
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Day — English</label>
+            <input type="text" name="day_en" value="{{ ev.day_en }}">
+          </div>
+          <div class="fg">
+            <label>Day — Arabic</label>
+            <input type="text" name="day_ar" value="{{ ev.day_ar }}" class="ar">
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Month — English</label>
+            <input type="text" name="month_en" value="{{ ev.month_en }}">
+          </div>
+          <div class="fg">
+            <label>Month — Arabic</label>
+            <input type="text" name="month_ar" value="{{ ev.month_ar }}" class="ar">
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Type (Concert / Workshop…) — EN</label>
+            <input type="text" name="type_en" value="{{ ev.type_en }}">
+          </div>
+          <div class="fg">
+            <label>Type — Arabic</label>
+            <input type="text" name="type_ar" value="{{ ev.type_ar }}" class="ar">
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Place — English</label>
+            <input type="text" name="place_en" value="{{ ev.place_en }}">
+          </div>
+          <div class="fg">
+            <label>Place — Arabic</label>
+            <input type="text" name="place_ar" value="{{ ev.place_ar }}" class="ar">
+          </div>
+        </div>
+        <div class="frow single">
+          <div class="fg">
+            <label>Ticket / Info URL</label>
+            <input type="text" name="url" value="{{ ev.url }}">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <button type="submit" class="btn btn-gold btn-sm">Save</button>
+          <button type="button" class="btn btn-ghost btn-sm" onclick="this.closest('#ev-edit-{{ ev.id }}').style.display='none';this.closest('.evwrap-parent').querySelector('.evwrap').style.display='block'">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  {% else %}
+  <p style="color:var(--gray);font-size:13px">No events yet.</p>
+  {% endfor %}
+
+  <!-- Add new event -->
+  <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line)">
+    <div style="font-family:'Playfair Display',serif;font-size:15px;margin-bottom:16px">Add New Event</div>
+    <form method="POST" action="/admin/home/event/add">
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="title_en" placeholder="Concert Night">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="title_ar" class="ar" placeholder="ليلة غنائية">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Day — English</label>
+          <input type="text" name="day_en" placeholder="15">
+        </div>
+        <div class="fg">
+          <label>Day — Arabic</label>
+          <input type="text" name="day_ar" class="ar" placeholder="١٥">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Month — English</label>
+          <input type="text" name="month_en" placeholder="Sep 2025">
+        </div>
+        <div class="fg">
+          <label>Month — Arabic</label>
+          <input type="text" name="month_ar" class="ar" placeholder="سبتمبر ٢٠٢٥">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Type — English</label>
+          <input type="text" name="type_en" placeholder="Concert">
+        </div>
+        <div class="fg">
+          <label>Type — Arabic</label>
+          <input type="text" name="type_ar" class="ar" placeholder="حفل موسيقي">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Place — English</label>
+          <input type="text" name="place_en" placeholder="Beirut Hippodrome">
+        </div>
+        <div class="fg">
+          <label>Place — Arabic</label>
+          <input type="text" name="place_ar" class="ar" placeholder="حلبة بيروت">
+        </div>
+      </div>
+      <div class="frow single">
+        <div class="fg">
+          <label>Ticket / Info URL</label>
+          <input type="text" name="url" placeholder="https://…">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">Add Event</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
