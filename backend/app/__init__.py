@@ -11,6 +11,7 @@ def create_app(config_object=Config):
         template_folder=os.path.join(_root, 'frontend', 'templates'),
         static_folder=os.path.join(_root, 'frontend', 'static'),
     )
+    app.url_map.strict_slashes = False
     app.config.from_object(config_object)
 
     from .content import load_all

@@ -17,9 +17,24 @@ def _upload_dir():
 
 ALLOWED_IMG   = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 ALLOWED_AUDIO = {'mp3', 'wav', 'ogg', 'm4a', 'aac'}
+ALLOWED_VIDEO = {'mp4', 'webm', 'mov', 'avi'}
 
 def _allowed(filename, exts):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in exts
+
+def _format_date(raw):
+    months_en = ['January','February','March','April','May','June',
+                 'July','August','September','October','November','December']
+    months_ar = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                 'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر']
+    if not raw or '-' not in raw:
+        return raw, raw
+    try:
+        y, m = raw.split('-')[:2]
+        idx = int(m) - 1
+        return '{} {}'.format(months_en[idx], y), '{} {}'.format(months_ar[idx], y)
+    except Exception:
+        return raw, raw
 
 def login_required(f):
     @wraps(f)
@@ -200,31 +215,50 @@ def gallery_page():
 @admin_bp.route('/gallery/add', methods=['POST'])
 @login_required
 def gallery_add():
-    data  = load('gallery', {'items': []})
-    items = data.get('items', [])
+    data   = load('gallery', {'items': []})
+    items  = data.get('items', [])
     new_id = max((i['id'] for i in items), default=0) + 1
-    image = ''
-    f = request.files.get('image')
-    if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
-        ext   = f.filename.rsplit('.', 1)[1].lower()
-        fname = 'gallery_{}.{}'.format(new_id, ext)
+
+    images = []
+    for idx, f in enumerate(request.files.getlist('images')):
+        if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
+            ext   = f.filename.rsplit('.', 1)[1].lower()
+            fname = 'gallery_{}_{}.{}'.format(new_id, idx, ext)
+            dest  = os.path.join(_upload_dir(), 'gallery', fname)
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
+            f.save(dest)
+            images.append('/static/uploads/gallery/' + fname)
+
+    video = ''
+    vf = request.files.get('video')
+    if vf and vf.filename and _allowed(vf.filename, ALLOWED_VIDEO):
+        ext   = vf.filename.rsplit('.', 1)[1].lower()
+        fname = 'gallery_video_{}.{}'.format(new_id, ext)
         dest  = os.path.join(_upload_dir(), 'gallery', fname)
         os.makedirs(os.path.dirname(dest), exist_ok=True)
-        f.save(dest)
-        image = '/static/uploads/gallery/' + fname
+        vf.save(dest)
+        video = '/static/uploads/gallery/' + fname
+
+    date_raw = request.form.get('date_raw', '')
+    date_en, date_ar_auto = _format_date(date_raw)
+    date_ar = request.form.get('dateAr', '') or date_ar_auto
+    year    = date_raw[:4] if date_raw else request.form.get('year', '')
+
     items.append({
         'id':       new_id,
         'title':    request.form.get('title', ''),
         'titleAr':  request.form.get('titleAr', ''),
-        'date':     request.form.get('date', ''),
-        'dateAr':   request.form.get('dateAr', ''),
+        'date':     date_en,
+        'dateAr':   date_ar,
         'venue':    request.form.get('venue', ''),
         'venueAr':  request.form.get('venueAr', ''),
         'ensemble': request.form.get('ensemble', 'gardenia'),
         'type':     request.form.get('type', 'concert'),
-        'year':     request.form.get('year', ''),
+        'year':     year,
         'size':     request.form.get('size', 'normal'),
-        'image':    image,
+        'image':    images[0] if images else '',
+        'images':   images,
+        'video':    video,
         'palette':  ['#2a3d28', '#8DA086', '#F5D000'],
     })
     data['items'] = items
@@ -238,17 +272,43 @@ def gallery_edit(item_id):
     data = load('gallery', {'items': []})
     for item in data.get('items', []):
         if item['id'] == item_id:
-            for k in ('title','titleAr','date','dateAr','venue','venueAr',
-                      'ensemble','type','year','size'):
+            for k in ('title','titleAr','dateAr','venue','venueAr','ensemble','type','size'):
                 item[k] = request.form.get(k, item.get(k, ''))
-            f = request.files.get('image')
-            if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
-                ext   = f.filename.rsplit('.', 1)[1].lower()
-                fname = 'gallery_{}.{}'.format(item_id, ext)
+
+            date_raw = request.form.get('date_raw', '')
+            if date_raw:
+                date_en, date_ar_auto = _format_date(date_raw)
+                item['date'] = date_en
+                item['year'] = date_raw[:4]
+                if not request.form.get('dateAr'):
+                    item['dateAr'] = date_ar_auto
+
+            # Images: keep checked existing + add new uploads
+            kept   = set(request.form.getlist('keep_image'))
+            old    = item.get('images', [item['image']] if item.get('image') else [])
+            images = [img for img in old if img in kept] if kept else list(old)
+            base_idx = len(images)
+            for idx, f in enumerate(request.files.getlist('images')):
+                if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
+                    ext   = f.filename.rsplit('.', 1)[1].lower()
+                    fname = 'gallery_{}_{}.{}'.format(item_id, base_idx + idx, ext)
+                    dest  = os.path.join(_upload_dir(), 'gallery', fname)
+                    os.makedirs(os.path.dirname(dest), exist_ok=True)
+                    f.save(dest)
+                    images.append('/static/uploads/gallery/' + fname)
+            item['images'] = images
+            item['image']  = images[0] if images else ''
+
+            vf = request.files.get('video')
+            if vf and vf.filename and _allowed(vf.filename, ALLOWED_VIDEO):
+                ext   = vf.filename.rsplit('.', 1)[1].lower()
+                fname = 'gallery_video_{}.{}'.format(item_id, ext)
                 dest  = os.path.join(_upload_dir(), 'gallery', fname)
                 os.makedirs(os.path.dirname(dest), exist_ok=True)
-                f.save(dest)
-                item['image'] = '/static/uploads/gallery/' + fname
+                vf.save(dest)
+                item['video'] = '/static/uploads/gallery/' + fname
+            elif request.form.get('remove_video'):
+                item['video'] = ''
             break
     save_content('gallery', data)
     flash('Gallery item updated.', 'success')
@@ -261,6 +321,17 @@ def gallery_delete(item_id):
     data['items'] = [i for i in data.get('items', []) if i['id'] != item_id]
     save_content('gallery', data)
     flash('Gallery item deleted.', 'success')
+    return redirect(url_for('admin.gallery_page'))
+
+@admin_bp.route('/gallery/bulk-delete', methods=['POST'])
+@login_required
+def gallery_bulk_delete():
+    ids  = set(int(i) for i in request.form.getlist('ids') if i.isdigit())
+    data = load('gallery', {'items': []})
+    removed = len([i for i in data.get('items', []) if i['id'] in ids])
+    data['items'] = [i for i in data.get('items', []) if i['id'] not in ids]
+    save_content('gallery', data)
+    flash('Deleted {} item(s).'.format(removed), 'success')
     return redirect(url_for('admin.gallery_page'))
 
 # ── settings ─────────────────────────────────────────────────────────────────

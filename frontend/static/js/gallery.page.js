@@ -3,9 +3,14 @@ if (typeof moments === 'undefined') {
   window.moments = [];
 }
 
-function bgFor(m) {
-  if (m.image) {
-    return `<div style="position:absolute;inset:0;background:url('${m.image}') center/cover no-repeat"></div>`;
+function bgFor(m, imgIndex) {
+  const imgs  = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
+  const thumb = typeof imgIndex === 'number' ? (imgs[imgIndex] || imgs[0]) : imgs[0];
+  if (thumb) {
+    return `<div style="position:absolute;inset:0;background:url('${thumb}') center/cover no-repeat"></div>`;
+  }
+  if (m.video) {
+    return `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;background:#1a1a1a">▶</div>`;
   }
   const palette = m.palette || ['#2a3d28', '#8DA086', '#F5D000'];
   const [a, b, c] = palette;
@@ -119,7 +124,8 @@ const lbDate  = document.getElementById('lbDate');
 const lbVenue = document.getElementById('lbVenue');
 const lbIdx   = document.getElementById('lbIdx');
 const lbTotal = document.getElementById('lbTotal');
-let lbCurrent = 0;
+let lbCurrent  = 0;
+let lbPhotoIdx = 0;  // index within current item's images array
 
 function visibleMoments() {
   return moments.filter(m => {
@@ -127,10 +133,66 @@ function visibleMoments() {
     return m.ensemble === currentFilter || m.type === currentFilter || m.year === currentFilter;
   });
 }
+
+function _mediaFor(m, idx) {
+  const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
+  // If the requested index is beyond images, show the video (if any)
+  if (idx >= imgs.length && m.video) {
+    return { type: 'video', src: m.video };
+  }
+  if (imgs[idx]) return { type: 'image', src: imgs[idx] };
+  if (m.video)   return { type: 'video', src: m.video };
+  return null;
+}
+
+function _mediaCount(m) {
+  const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
+  return imgs.length + (m.video ? 1 : 0);
+}
+
+function renderLbMedia(m, idx) {
+  const media = _mediaFor(m, idx);
+  if (!media) {
+    lbImage.innerHTML = bgFor(m);
+    return;
+  }
+  if (media.type === 'video') {
+    lbImage.innerHTML = `<video src="${media.src}" controls autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000"></video>`;
+  } else {
+    lbImage.innerHTML = `<img src="${media.src}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">`;
+  }
+
+  // Dots navigation for multi-media items
+  const total = _mediaCount(m);
+  let dots = document.getElementById('lbDots');
+  if (!dots) {
+    dots = document.createElement('div');
+    dots.id = 'lbDots';
+    dots.style.cssText = 'position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10';
+    lbImage.parentElement.appendChild(dots);
+  }
+  if (total > 1) {
+    dots.style.display = 'flex';
+    dots.innerHTML = Array.from({length: total}).map((_, di) =>
+      `<span style="width:8px;height:8px;border-radius:50%;background:${di === idx ? '#F5D000' : 'rgba(255,255,255,.4)'};cursor:pointer;transition:.2s" data-di="${di}"></span>`
+    ).join('');
+    dots.querySelectorAll('span').forEach(dot => {
+      dot.addEventListener('click', (e) => {
+        e.stopPropagation();
+        lbPhotoIdx = parseInt(dot.dataset.di, 10);
+        renderLbMedia(visibleMoments()[lbCurrent], lbPhotoIdx);
+      });
+    });
+  } else {
+    dots.style.display = 'none';
+  }
+}
+
 function openLightbox(id) {
   const list = visibleMoments();
   const i = list.findIndex(m => m.id === id);
   if (i < 0) return;
+  lbPhotoIdx = 0;
   showLightbox(i);
   lb.classList.add('open');
   document.documentElement.classList.add('no-scroll');
@@ -139,8 +201,9 @@ function showLightbox(i) {
   const list = visibleMoments();
   if (!list.length) return;
   lbCurrent = (i + list.length) % list.length;
+  lbPhotoIdx = 0;
   const m = list[lbCurrent];
-  lbImage.innerHTML = bgFor(m);
+  renderLbMedia(m, lbPhotoIdx);
   lbTitle.innerHTML = `<span class="en">${m.title}</span><span class="ar" style="font-family:'Noto Naskh Arabic',serif;">${m.titleAr}</span>`;
   lbDate.innerHTML  = `<span class="en">${m.date}</span><span class="ar">${m.dateAr}</span>`;
   lbVenue.innerHTML = `<span class="en">${m.venue}</span><span class="ar">${m.venueAr}</span>`;
@@ -150,6 +213,9 @@ function showLightbox(i) {
 function closeLightbox() {
   lb.classList.remove('open');
   document.documentElement.classList.remove('no-scroll');
+  // pause any video
+  const vid = lb.querySelector('video');
+  if (vid) vid.pause();
 }
 lbClose.addEventListener('click', closeLightbox);
 lbPrev.addEventListener('click', () => showLightbox(lbCurrent - 1));
@@ -158,6 +224,22 @@ lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
 document.addEventListener('keydown', (e) => {
   if (!lb.classList.contains('open')) return;
   if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowRight') showLightbox(lbCurrent + 1);
-  if (e.key === 'ArrowLeft')  showLightbox(lbCurrent - 1);
+  if (e.key === 'ArrowRight') {
+    const m = visibleMoments()[lbCurrent];
+    if (m && lbPhotoIdx < _mediaCount(m) - 1) {
+      lbPhotoIdx++;
+      renderLbMedia(m, lbPhotoIdx);
+    } else {
+      showLightbox(lbCurrent + 1);
+    }
+  }
+  if (e.key === 'ArrowLeft') {
+    const m = visibleMoments()[lbCurrent];
+    if (m && lbPhotoIdx > 0) {
+      lbPhotoIdx--;
+      renderLbMedia(m, lbPhotoIdx);
+    } else {
+      showLightbox(lbCurrent - 1);
+    }
+  }
 });
