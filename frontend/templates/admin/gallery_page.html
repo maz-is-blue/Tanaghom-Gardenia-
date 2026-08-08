@@ -21,11 +21,23 @@
 .img-preview-item { position:relative;width:80px;height:80px; }
 .img-preview-item img,.img-preview-item video { width:100%;height:100%;object-fit:cover;border-radius:6px;border:1px solid rgba(255,255,255,.1); }
 .img-preview-item .rm-btn { position:absolute;top:-6px;right:-6px;width:18px;height:18px;background:var(--danger,#c0392b);color:#fff;border:none;border-radius:50%;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1; }
+.upload-overlay { display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;flex-direction:column;align-items:center;justify-content:center;gap:16px; }
+.upload-overlay.show { display:flex; }
+.upload-overlay .up-msg { color:#fff;font-size:15px;font-weight:600; }
+.progress-track { width:280px;height:8px;background:rgba(255,255,255,.2);border-radius:4px;overflow:hidden; }
+.progress-fill { height:100%;background:var(--gold,#F5D000);border-radius:4px;width:0%;transition:width .2s; }
 </style>
 {% endblock %}
 
 {% block content %}
 {% set items = data.get('items', []) %}
+
+<!-- Upload progress overlay -->
+<div class="upload-overlay" id="upload-overlay">
+  <div class="up-msg" id="up-msg">Uploading… please wait</div>
+  <div class="progress-track"><div class="progress-fill" id="up-fill"></div></div>
+  <div style="color:rgba(255,255,255,.6);font-size:12px" id="up-pct">0%</div>
+</div>
 
 <!-- Bulk bar -->
 <div class="bulk-bar" id="bulk-bar">
@@ -443,5 +455,56 @@ function openEdit(item) {
 
   document.getElementById('edit-modal').style.display = 'flex';
 }
+
+/* ── XHR upload with progress ─────────────────────── */
+function xhrSubmit(form) {
+  var overlay = document.getElementById('upload-overlay');
+  var fill    = document.getElementById('up-fill');
+  var pct     = document.getElementById('up-pct');
+  var msg     = document.getElementById('up-msg');
+
+  var fd = new FormData(form);
+  var xhr = new XMLHttpRequest();
+
+  xhr.upload.onprogress = function(e) {
+    if (e.lengthComputable) {
+      var p = Math.round(e.loaded / e.total * 100);
+      fill.style.width = p + '%';
+      pct.textContent  = p + '%';
+      msg.textContent  = p < 100 ? 'Uploading… ' + p + '%' : 'Processing…';
+    }
+  };
+  xhr.onload = function() {
+    // Server redirects on success — follow it
+    if (xhr.status >= 200 && xhr.status < 400) {
+      var redir = xhr.responseURL || form.action;
+      window.location.href = redir;
+    } else {
+      overlay.classList.remove('show');
+      alert('Upload failed (HTTP ' + xhr.status + '). Try fewer or smaller files.');
+    }
+  };
+  xhr.onerror = function() {
+    overlay.classList.remove('show');
+    alert('Network error during upload. Check your connection and try again.');
+  };
+
+  overlay.classList.add('show');
+  fill.style.width = '0%';
+  pct.textContent  = '0%';
+  msg.textContent  = 'Uploading…';
+  xhr.open('POST', form.action);
+  xhr.send(fd);
+}
+
+/* Wire up both forms */
+document.getElementById('add-modal').querySelector('form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  xhrSubmit(this);
+});
+document.getElementById('edit-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  xhrSubmit(this);
+});
 </script>
 {% endblock %}
