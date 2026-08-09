@@ -206,6 +206,22 @@ def save_track(track_id):
 
 # ── gallery ──────────────────────────────────────────────────────────────────
 
+@admin_bp.route('/gallery/upload-temp', methods=['POST'])
+@login_required
+def gallery_upload_temp():
+    """Upload a single image and return its path as JSON (used by JS sequential uploader)."""
+    import time
+    from flask import jsonify
+    f = request.files.get('file')
+    if not f or not f.filename or not _allowed(f.filename, ALLOWED_IMG):
+        return jsonify({'error': 'invalid file'}), 400
+    ext   = f.filename.rsplit('.', 1)[1].lower()
+    fname = 'tmp_{}_{}.{}'.format(int(time.time() * 1000), secure_filename(f.filename)[:20], ext)
+    dest  = os.path.join(_upload_dir(), 'gallery', fname)
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    f.save(dest)
+    return jsonify({'path': '/static/uploads/gallery/' + fname})
+
 @admin_bp.route('/gallery')
 @login_required
 def gallery_page():
@@ -219,11 +235,14 @@ def gallery_add():
     items  = data.get('items', [])
     new_id = max((i['id'] for i in items), default=0) + 1
 
-    images = []
+    # Accept pre-uploaded temp paths (from sequential JS uploader)
+    images = [p for p in request.form.getlist('pre_images') if p.startswith('/static/uploads/gallery/')]
+
+    # Also accept direct file uploads (fallback)
     for idx, f in enumerate(request.files.getlist('images')):
         if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
             ext   = f.filename.rsplit('.', 1)[1].lower()
-            fname = 'gallery_{}_{}.{}'.format(new_id, idx, ext)
+            fname = 'gallery_{}_{}.{}'.format(new_id, len(images) + idx, ext)
             dest  = os.path.join(_upload_dir(), 'gallery', fname)
             os.makedirs(os.path.dirname(dest), exist_ok=True)
             f.save(dest)
@@ -287,6 +306,11 @@ def gallery_edit(item_id):
             kept   = set(request.form.getlist('keep_image'))
             old    = item.get('images', [item['image']] if item.get('image') else [])
             images = [img for img in old if img in kept] if kept else list(old)
+
+            # Accept pre-uploaded temp paths from sequential JS uploader
+            pre = [p for p in request.form.getlist('pre_images') if p.startswith('/static/uploads/gallery/')]
+            images.extend(pre)
+
             base_idx = len(images)
             for idx, f in enumerate(request.files.getlist('images')):
                 if f and f.filename and _allowed(f.filename, ALLOWED_IMG):

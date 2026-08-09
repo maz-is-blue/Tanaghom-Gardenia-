@@ -456,45 +456,97 @@ function openEdit(item) {
   document.getElementById('edit-modal').style.display = 'flex';
 }
 
-/* ── XHR upload with progress ─────────────────────── */
-function xhrSubmit(form) {
+/* ── Sequential per-file uploader ────────────────────
+   1. Upload each image one-by-one to /admin/gallery/upload-temp
+   2. Inject returned paths as hidden pre_images inputs
+   3. Submit the form (no files — just metadata + paths)
+   This avoids hitting LiteSpeed request-body limits.
+─────────────────────────────────────────────────── */
+function setProgress(pct, label) {
+  document.getElementById('up-fill').style.width = pct + '%';
+  document.getElementById('up-pct').textContent  = pct + '%';
+  document.getElementById('up-msg').textContent  = label;
+}
+
+function uploadFileSeq(file, index, total) {
+  return new Promise(function(resolve, reject) {
+    var fd  = new FormData();
+    fd.append('file', file);
+    var xhr = new XMLHttpRequest();
+    xhr.upload.onprogress = function(e) {
+      if (e.lengthComputable) {
+        /* overall progress = files done + fraction of current file */
+        var overall = Math.round(((index + e.loaded / e.total) / total) * 100);
+        setProgress(overall, 'Uploading photo ' + (index + 1) + ' of ' + total + '…');
+      }
+    };
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        try { resolve(JSON.parse(xhr.responseText).path); }
+        catch(err) { reject(new Error('Bad response from server')); }
+      } else {
+        reject(new Error('Photo ' + (index+1) + ' failed (HTTP ' + xhr.status + ')'));
+      }
+    };
+    xhr.onerror = function() { reject(new Error('Network error on photo ' + (index+1))); };
+    xhr.open('POST', '/admin/gallery/upload-temp');
+    xhr.send(fd);
+  });
+}
+
+async function xhrSubmit(form) {
   var overlay = document.getElementById('upload-overlay');
-  var fill    = document.getElementById('up-fill');
-  var pct     = document.getElementById('up-pct');
-  var msg     = document.getElementById('up-msg');
-
-  var fd = new FormData(form);
-  var xhr = new XMLHttpRequest();
-
-  xhr.upload.onprogress = function(e) {
-    if (e.lengthComputable) {
-      var p = Math.round(e.loaded / e.total * 100);
-      fill.style.width = p + '%';
-      pct.textContent  = p + '%';
-      msg.textContent  = p < 100 ? 'Uploading… ' + p + '%' : 'Processing…';
-    }
-  };
-  xhr.onload = function() {
-    // Server redirects on success — follow it
-    if (xhr.status >= 200 && xhr.status < 400) {
-      var redir = xhr.responseURL || form.action;
-      window.location.href = redir;
-    } else {
-      overlay.classList.remove('show');
-      alert('Upload failed (HTTP ' + xhr.status + '). Try fewer or smaller files.');
-    }
-  };
-  xhr.onerror = function() {
-    overlay.classList.remove('show');
-    alert('Network error during upload. Check your connection and try again.');
-  };
-
   overlay.classList.add('show');
-  fill.style.width = '0%';
-  pct.textContent  = '0%';
-  msg.textContent  = 'Uploading…';
-  xhr.open('POST', form.action);
-  xhr.send(fd);
+  setProgress(0, 'Preparing…');
+
+  try {
+    /* Collect image files from ALL file inputs named "images" */
+    var fileInputs = form.querySelectorAll('input[type=file][name=images]');
+    var allFiles = [];
+    fileInputs.forEach(function(inp) {
+      Array.from(inp.files).forEach(function(f) { allFiles.push(f); });
+    });
+
+    /* Remove old pre_images hidden inputs */
+    form.querySelectorAll('input[name=pre_images]').forEach(function(el) { el.remove(); });
+
+    /* Upload images one by one */
+    for (var i = 0; i < allFiles.length; i++) {
+      var path = await uploadFileSeq(allFiles[i], i, allFiles.length);
+      var hidden = document.createElement('input');
+      hidden.type = 'hidden';
+      hidden.name = 'pre_images';
+      hidden.value = path;
+      form.appendChild(hidden);
+    }
+
+    /* Clear file inputs so they don't re-send */
+    fileInputs.forEach(function(inp) { inp.value = ''; });
+
+    setProgress(100, 'Saving…');
+
+    /* Submit the metadata form (small — no files) */
+    var fd  = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      if (xhr.status >= 200 && xhr.status < 400) {
+        window.location.href = xhr.responseURL || '/admin/gallery';
+      } else {
+        overlay.classList.remove('show');
+        alert('Save failed (HTTP ' + xhr.status + '). Photos were uploaded — try submitting again.');
+      }
+    };
+    xhr.onerror = function() {
+      overlay.classList.remove('show');
+      alert('Network error while saving. Try again.');
+    };
+    xhr.open('POST', form.action);
+    xhr.send(fd);
+
+  } catch(err) {
+    overlay.classList.remove('show');
+    alert(err.message);
+  }
 }
 
 /* Wire up both forms */
