@@ -3,9 +3,9 @@ if (typeof moments === 'undefined') {
   window.moments = [];
 }
 
-function bgFor(m, imgIndex) {
+function bgFor(m) {
   const imgs  = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
-  const thumb = typeof imgIndex === 'number' ? (imgs[imgIndex] || imgs[0]) : imgs[0];
+  const thumb = imgs[0];
   if (thumb) {
     return `<div style="position:absolute;inset:0;background:url('${thumb}') center/cover no-repeat"></div>`;
   }
@@ -98,6 +98,7 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
     chip.classList.add('active');
     currentFilter = chip.dataset.filter;
     applyFilter();
+    rebuildFlat();
   });
 });
 function applyFilter() {
@@ -113,7 +114,11 @@ function applyFilter() {
   if (fcAr) fcAr.textContent = shown;
 }
 
-/* ===== Lightbox ===== */
+/* ===== Lightbox — flat media list ===================================
+   Every photo and video from every visible event is one entry.
+   Prev/next and arrow keys navigate through all of them in order.
+   Counter shows "3 / 10" = photo 3 out of 10 total.
+================================================================== */
 const lb      = document.getElementById('lightbox');
 const lbClose = document.getElementById('lbClose');
 const lbPrev  = document.getElementById('lbPrev');
@@ -124,115 +129,82 @@ const lbDate  = document.getElementById('lbDate');
 const lbVenue = document.getElementById('lbVenue');
 const lbIdx   = document.getElementById('lbIdx');
 const lbTotal = document.getElementById('lbTotal');
-let lbCurrent  = 0;
-let lbPhotoIdx = 0;  // index within current item's images array
 
-function visibleMoments() {
-  return moments.filter(m => {
+let flatList = [];   // [{moment, type:'image'|'video'|'placeholder', src}]
+let lbCurrent = 0;
+
+function buildFlatList() {
+  const visible = moments.filter(m => {
     if (currentFilter === 'all') return true;
     return m.ensemble === currentFilter || m.type === currentFilter || m.year === currentFilter;
   });
+  flatList = [];
+  visible.forEach(m => {
+    const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
+    if (imgs.length) {
+      imgs.forEach(src => flatList.push({ moment: m, type: 'image', src }));
+    }
+    if (m.video) {
+      flatList.push({ moment: m, type: 'video', src: m.video });
+    }
+    if (!imgs.length && !m.video) {
+      flatList.push({ moment: m, type: 'placeholder', src: null });
+    }
+  });
 }
 
-function _mediaFor(m, idx) {
-  const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
-  // If the requested index is beyond images, show the video (if any)
-  if (idx >= imgs.length && m.video) {
-    return { type: 'video', src: m.video };
-  }
-  if (imgs[idx]) return { type: 'image', src: imgs[idx] };
-  if (m.video)   return { type: 'video', src: m.video };
-  return null;
+function rebuildFlat() {
+  buildFlatList();
 }
 
-function _mediaCount(m) {
-  const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
-  return imgs.length + (m.video ? 1 : 0);
-}
+function showAt(i) {
+  if (!flatList.length) return;
+  lbCurrent = (i + flatList.length) % flatList.length;
+  const item = flatList[lbCurrent];
+  const m    = item.moment;
 
-const lbDots = document.getElementById('lbDots');
-
-function renderLbMedia(m, idx) {
-  const media = _mediaFor(m, idx);
-  if (!media) {
+  if (item.type === 'video') {
+    lbImage.innerHTML = `<video src="${item.src}" controls autoplay
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000"></video>`;
+  } else if (item.type === 'image') {
+    lbImage.innerHTML = `<img src="${item.src}" alt="${m.title}"
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">`;
+  } else {
     lbImage.innerHTML = bgFor(m);
-  } else if (media.type === 'video') {
-    lbImage.innerHTML = `<video src="${media.src}" controls autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000"></video>`;
-  } else {
-    lbImage.innerHTML = `<img src="${media.src}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">`;
   }
 
-  const total = _mediaCount(m);
-  if (total > 1) {
-    lbDots.classList.add('show');
-    lbDots.innerHTML = Array.from({length: total}).map((_, di) =>
-      `<button class="lb-dot${di === idx ? ' active' : ''}" data-di="${di}" aria-label="Photo ${di+1}"></button>`
-    ).join('');
-    lbDots.querySelectorAll('.lb-dot').forEach(dot => {
-      dot.addEventListener('click', (e) => {
-        e.stopPropagation();
-        lbPhotoIdx = parseInt(dot.dataset.di, 10);
-        renderLbMedia(visibleMoments()[lbCurrent], lbPhotoIdx);
-      });
-    });
-  } else {
-    lbDots.classList.remove('show');
-    lbDots.innerHTML = '';
-  }
-}
-
-function openLightbox(id) {
-  const list = visibleMoments();
-  const i = list.findIndex(m => m.id === id);
-  if (i < 0) return;
-  lbPhotoIdx = 0;
-  showLightbox(i);
-  lb.classList.add('open');
-  document.documentElement.classList.add('no-scroll');
-}
-function showLightbox(i) {
-  const list = visibleMoments();
-  if (!list.length) return;
-  lbCurrent = (i + list.length) % list.length;
-  lbPhotoIdx = 0;
-  const m = list[lbCurrent];
-  renderLbMedia(m, lbPhotoIdx);
   lbTitle.innerHTML = `<span class="en">${m.title}</span><span class="ar" style="font-family:'Noto Naskh Arabic',serif;">${m.titleAr}</span>`;
   lbDate.innerHTML  = `<span class="en">${m.date}</span><span class="ar">${m.dateAr}</span>`;
   lbVenue.innerHTML = `<span class="en">${m.venue}</span><span class="ar">${m.venueAr}</span>`;
   lbIdx.textContent   = lbCurrent + 1;
-  lbTotal.textContent = list.length;
+  lbTotal.textContent = flatList.length;
 }
+
+function openLightbox(id) {
+  buildFlatList();
+  const i = flatList.findIndex(item => item.moment.id === id);
+  if (i < 0) return;
+  showAt(i);
+  lb.classList.add('open');
+  document.documentElement.classList.add('no-scroll');
+}
+
 function closeLightbox() {
   lb.classList.remove('open');
   document.documentElement.classList.remove('no-scroll');
-  // pause any video
   const vid = lb.querySelector('video');
   if (vid) vid.pause();
 }
+
 lbClose.addEventListener('click', closeLightbox);
-lbPrev.addEventListener('click', () => showLightbox(lbCurrent - 1));
-lbNext.addEventListener('click', () => showLightbox(lbCurrent + 1));
-lb.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
-document.addEventListener('keydown', (e) => {
+lbPrev.addEventListener('click',  () => showAt(lbCurrent - 1));
+lbNext.addEventListener('click',  () => showAt(lbCurrent + 1));
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+document.addEventListener('keydown', e => {
   if (!lb.classList.contains('open')) return;
-  if (e.key === 'Escape') closeLightbox();
-  if (e.key === 'ArrowRight') {
-    const m = visibleMoments()[lbCurrent];
-    if (m && lbPhotoIdx < _mediaCount(m) - 1) {
-      lbPhotoIdx++;
-      renderLbMedia(m, lbPhotoIdx);
-    } else {
-      showLightbox(lbCurrent + 1);
-    }
-  }
-  if (e.key === 'ArrowLeft') {
-    const m = visibleMoments()[lbCurrent];
-    if (m && lbPhotoIdx > 0) {
-      lbPhotoIdx--;
-      renderLbMedia(m, lbPhotoIdx);
-    } else {
-      showLightbox(lbCurrent - 1);
-    }
-  }
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowRight')  showAt(lbCurrent + 1);
+  if (e.key === 'ArrowLeft')   showAt(lbCurrent - 1);
 });
+
+buildFlatList();
