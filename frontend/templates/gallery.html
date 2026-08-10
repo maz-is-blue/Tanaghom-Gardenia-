@@ -419,9 +419,9 @@ const moments = {{ content['gallery']['items'] | tojson }};
 
 function bgFor(m) {
   const imgs  = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
-  const thumb = imgs[0];
+  const thumb = m.cover || imgs[0];
   if (thumb) return `<div style="position:absolute;inset:0;background:url('${thumb}') center/cover no-repeat"></div>`;
-  if (m.video) return `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:48px;background:#1a1a1a">▶</div>`;
+  if (m.video) return `<div style="position:absolute;inset:0;background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%)"></div>`;
   const palette = m.palette || ['#2a3d28', '#8DA086', '#F5D000'];
   const [a, b, c] = palette;
   const isRehearsal = m.type === 'rehearsal';
@@ -505,7 +505,7 @@ function buildFlatList() {
     const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
     imgs.forEach(src => flatList.push({moment:m, type:'image', src}));
     if (m.video) flatList.push({moment:m, type:'video', src:m.video});
-    if (!imgs.length && !m.video) flatList.push({moment:m, type:'placeholder', src:null});
+    if (!imgs.length && !m.video) flatList.push({moment:m, type: m.cover ? 'image' : 'placeholder', src: m.cover || null});
   });
 }
 

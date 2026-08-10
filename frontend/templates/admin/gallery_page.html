@@ -180,12 +180,21 @@
         </div>
       </div>
 
-      <div class="frow single" style="margin-bottom:20px">
+      <div class="frow single" style="margin-bottom:8px">
         <div class="fg">
           <label>Video (MP4, WebM, MOV — optional)</label>
           <input type="file" name="video" accept="video/mp4,video/webm,video/quicktime,video/avi"
                  style="padding:10px" onchange="previewVideo(this,'add-vid-preview')">
           <div id="add-vid-preview"></div>
+        </div>
+      </div>
+
+      <div class="frow single" style="margin-bottom:20px">
+        <div class="fg">
+          <label>Video Cover Photo <span style="font-size:11px;color:var(--gray)">(thumbnail shown on the card)</span></label>
+          <input type="file" name="cover" accept="image/*" style="padding:10px"
+                 onchange="previewFiles(this,'add-cover-preview')">
+          <div id="add-cover-preview" class="img-preview-grid"></div>
         </div>
       </div>
 
@@ -291,12 +300,28 @@
           <div id="ef-existing-vid"></div>
         </div>
       </div>
-      <div class="frow single" style="margin-bottom:20px">
+      <div class="frow single" style="margin-bottom:8px">
         <div class="fg">
           <label>Replace / Add Video</label>
           <input type="file" name="video" accept="video/mp4,video/webm,video/quicktime"
                  style="padding:10px" onchange="previewVideo(this,'ef-new-vid-preview')">
           <div id="ef-new-vid-preview"></div>
+        </div>
+      </div>
+
+      <!-- Cover photo -->
+      <div class="frow single" style="margin-bottom:8px">
+        <div class="fg">
+          <label>Current Cover Photo</label>
+          <div id="ef-existing-cover"></div>
+        </div>
+      </div>
+      <div class="frow single" style="margin-bottom:20px">
+        <div class="fg">
+          <label>Replace Cover Photo <span style="font-size:11px;color:var(--gray)">(thumbnail shown on the card)</span></label>
+          <input type="file" name="cover" accept="image/*" style="padding:10px"
+                 onchange="previewFiles(this,'ef-new-cover-preview')">
+          <div id="ef-new-cover-preview" class="img-preview-grid"></div>
         </div>
       </div>
 
@@ -447,11 +472,24 @@ function openEdit(item) {
     vidCont.innerHTML = '<span style="font-size:12px;color:var(--gray)">No video uploaded.</span>';
   }
 
+  // Existing cover
+  var coverCont = document.getElementById('ef-existing-cover');
+  coverCont.innerHTML = '';
+  if (item.cover) {
+    coverCont.innerHTML = '<img src="' + item.cover + '" style="max-width:200px;max-height:120px;border-radius:6px;object-fit:cover">' +
+      '<label style="display:flex;align-items:center;gap:6px;margin-top:6px;font-size:12px;cursor:pointer;">' +
+      '<input type="checkbox" name="remove_cover" value="1"> Remove cover photo</label>';
+  } else {
+    coverCont.innerHTML = '<span style="font-size:12px;color:var(--gray)">No cover photo set.</span>';
+  }
+
   // Clear new file previews
   document.getElementById('ef-new-img-preview').innerHTML = '';
   document.getElementById('ef-new-vid-preview').innerHTML = '';
+  document.getElementById('ef-new-cover-preview').innerHTML = '';
   document.querySelector('#edit-form input[type=file][name=images]').value = '';
   document.querySelector('#edit-form input[type=file][name=video]').value = '';
+  document.querySelector('#edit-form input[type=file][name=cover]').value = '';
 
   document.getElementById('edit-modal').style.display = 'flex';
 }
@@ -506,11 +544,14 @@ async function xhrSubmit(form) {
     });
     var videoInput = form.querySelector('input[type=file][name=video]');
     var videoFile  = videoInput && videoInput.files[0] ? videoInput.files[0] : null;
-    var totalSteps = allImgs.length + (videoFile ? 1 : 0);
+    var coverInput = form.querySelector('input[type=file][name=cover]');
+    var coverFile  = coverInput && coverInput.files[0] ? coverInput.files[0] : null;
+    var totalSteps = allImgs.length + (videoFile ? 1 : 0) + (coverFile ? 1 : 0);
 
     /* Remove stale hidden inputs */
     form.querySelectorAll('input[name=pre_images]').forEach(function(el) { el.remove(); });
     form.querySelectorAll('input[name=pre_video]').forEach(function(el) { el.remove(); });
+    form.querySelectorAll('input[name=pre_cover]').forEach(function(el) { el.remove(); });
 
     /* Upload photos */
     for (var i = 0; i < allImgs.length; i++) {
@@ -530,6 +571,16 @@ async function xhrSubmit(form) {
       hidden.type = 'hidden'; hidden.name = 'pre_video'; hidden.value = vpath;
       form.appendChild(hidden);
       videoInput.value = '';
+    }
+
+    /* Upload cover photo */
+    if (coverFile) {
+      var cpath = await uploadToTemp(coverFile, '/admin/gallery/upload-temp',
+                                     allImgs.length + (videoFile ? 1 : 0), totalSteps, 'Uploading cover photo…');
+      var hidden = document.createElement('input');
+      hidden.type = 'hidden'; hidden.name = 'pre_cover'; hidden.value = cpath;
+      form.appendChild(hidden);
+      coverInput.value = '';
     }
 
     setProgress(100, 'Saving…');

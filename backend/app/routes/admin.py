@@ -299,6 +299,11 @@ def gallery_add():
         if pv.startswith('/static/uploads/gallery/'):
             video = pv
 
+    cover = ''
+    pc = request.form.get('pre_cover', '')
+    if pc.startswith('/static/uploads/gallery/'):
+        cover = pc
+
     date_raw = request.form.get('date_raw', '')
     date_en, date_ar_auto = _format_date(date_raw)
     date_ar = request.form.get('dateAr', '') or date_ar_auto
@@ -319,6 +324,7 @@ def gallery_add():
         'image':    images[0] if images else '',
         'images':   images,
         'video':    video,
+        'cover':    cover,
         'palette':  ['#2a3d28', '#8DA086', '#F5D000'],
     })
     data['items'] = items
@@ -378,6 +384,12 @@ def gallery_edit(item_id):
                 pv = request.form.get('pre_video', '')
                 if pv.startswith('/static/uploads/gallery/'):
                     item['video'] = pv
+
+            pc = request.form.get('pre_cover', '')
+            if pc.startswith('/static/uploads/gallery/'):
+                item['cover'] = pc
+            elif request.form.get('remove_cover'):
+                item['cover'] = ''
             break
     save_content('gallery', data)
     flash('Gallery item updated.', 'success')
