@@ -208,3 +208,4 @@ document.addEventListener('keydown', e => {
 });
 
 buildFlatList();
+console.log('[Gallery v5] moments:', moments.length, '| flatList:', flatList.length, '| sample:', JSON.stringify(flatList[0]));
