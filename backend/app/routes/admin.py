@@ -249,6 +249,22 @@ def gallery_page():
     return render_template('admin/gallery_page.html', active='gallery',
                            data=load('gallery', {'items': []}))
 
+@admin_bp.route('/gallery/upload-video-temp', methods=['POST'])
+@login_required
+def gallery_upload_video_temp():
+    """Upload a single video and return its path as JSON."""
+    import time
+    from flask import jsonify
+    f = request.files.get('file')
+    if not f or not f.filename or not _allowed(f.filename, ALLOWED_VIDEO):
+        return jsonify({'error': 'invalid file'}), 400
+    ext   = f.filename.rsplit('.', 1)[1].lower()
+    fname = 'tmp_vid_{}_{}.{}'.format(int(time.time() * 1000), secure_filename(f.filename)[:20], ext)
+    dest  = os.path.join(_upload_dir(), 'gallery', fname)
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    f.save(dest)
+    return jsonify({'path': '/static/uploads/gallery/' + fname})
+
 @admin_bp.route('/gallery/add', methods=['POST'])
 @login_required
 def gallery_add():
@@ -278,6 +294,10 @@ def gallery_add():
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         vf.save(dest)
         video = '/static/uploads/gallery/' + fname
+    if not video:
+        pv = request.form.get('pre_video', '')
+        if pv.startswith('/static/uploads/gallery/'):
+            video = pv
 
     date_raw = request.form.get('date_raw', '')
     date_en, date_ar_auto = _format_date(date_raw)
@@ -354,6 +374,10 @@ def gallery_edit(item_id):
                 item['video'] = '/static/uploads/gallery/' + fname
             elif request.form.get('remove_video'):
                 item['video'] = ''
+            else:
+                pv = request.form.get('pre_video', '')
+                if pv.startswith('/static/uploads/gallery/'):
+                    item['video'] = pv
             break
     save_content('gallery', data)
     flash('Gallery item updated.', 'success')

@@ -456,11 +456,10 @@ function openEdit(item) {
   document.getElementById('edit-modal').style.display = 'flex';
 }
 
-/* ── Sequential per-file uploader ────────────────────
-   1. Upload each image one-by-one to /admin/gallery/upload-temp
-   2. Inject returned paths as hidden pre_images inputs
-   3. Submit the form (no files — just metadata + paths)
-   This avoids hitting LiteSpeed request-body limits.
+/* ── Sequential uploader ──────────────────────────────
+   Photos and videos are each uploaded to a temp endpoint
+   first, then the metadata form is submitted with no files.
+   This bypasses LiteSpeed's request-body size limit.
 ─────────────────────────────────────────────────── */
 function setProgress(pct, label) {
   document.getElementById('up-fill').style.width = pct + '%';
@@ -468,16 +467,15 @@ function setProgress(pct, label) {
   document.getElementById('up-msg').textContent  = label;
 }
 
-function uploadFileSeq(file, index, total) {
+function uploadToTemp(file, endpoint, doneSteps, totalSteps, label) {
   return new Promise(function(resolve, reject) {
-    var fd  = new FormData();
+    var fd = new FormData();
     fd.append('file', file);
     var xhr = new XMLHttpRequest();
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
-        /* overall progress = files done + fraction of current file */
-        var overall = Math.round(((index + e.loaded / e.total) / total) * 100);
-        setProgress(overall, 'Uploading photo ' + (index + 1) + ' of ' + total + '…');
+        var overall = Math.round(((doneSteps + e.loaded / e.total) / totalSteps) * 100);
+        setProgress(overall, label);
       }
     };
     xhr.onload = function() {
@@ -485,11 +483,11 @@ function uploadFileSeq(file, index, total) {
         try { resolve(JSON.parse(xhr.responseText).path); }
         catch(err) { reject(new Error('Bad response from server')); }
       } else {
-        reject(new Error('Photo ' + (index+1) + ' failed (HTTP ' + xhr.status + ')'));
+        reject(new Error(label + ' failed (HTTP ' + xhr.status + ')'));
       }
     };
-    xhr.onerror = function() { reject(new Error('Network error on photo ' + (index+1))); };
-    xhr.open('POST', '/admin/gallery/upload-temp');
+    xhr.onerror = function() { reject(new Error('Network error: ' + label)); };
+    xhr.open('POST', endpoint);
     xhr.send(fd);
   });
 }
@@ -500,32 +498,43 @@ async function xhrSubmit(form) {
   setProgress(0, 'Preparing…');
 
   try {
-    /* Collect image files from ALL file inputs named "images" */
-    var fileInputs = form.querySelectorAll('input[type=file][name=images]');
-    var allFiles = [];
-    fileInputs.forEach(function(inp) {
-      Array.from(inp.files).forEach(function(f) { allFiles.push(f); });
+    /* Gather files */
+    var imgInputs = form.querySelectorAll('input[type=file][name=images]');
+    var allImgs = [];
+    imgInputs.forEach(function(inp) {
+      Array.from(inp.files).forEach(function(f) { allImgs.push(f); });
     });
+    var videoInput = form.querySelector('input[type=file][name=video]');
+    var videoFile  = videoInput && videoInput.files[0] ? videoInput.files[0] : null;
+    var totalSteps = allImgs.length + (videoFile ? 1 : 0);
 
-    /* Remove old pre_images hidden inputs */
+    /* Remove stale hidden inputs */
     form.querySelectorAll('input[name=pre_images]').forEach(function(el) { el.remove(); });
+    form.querySelectorAll('input[name=pre_video]').forEach(function(el) { el.remove(); });
 
-    /* Upload images one by one */
-    for (var i = 0; i < allFiles.length; i++) {
-      var path = await uploadFileSeq(allFiles[i], i, allFiles.length);
+    /* Upload photos */
+    for (var i = 0; i < allImgs.length; i++) {
+      var label = 'Uploading photo ' + (i + 1) + ' of ' + allImgs.length + '…';
+      var path = await uploadToTemp(allImgs[i], '/admin/gallery/upload-temp', i, totalSteps, label);
       var hidden = document.createElement('input');
-      hidden.type = 'hidden';
-      hidden.name = 'pre_images';
-      hidden.value = path;
+      hidden.type = 'hidden'; hidden.name = 'pre_images'; hidden.value = path;
       form.appendChild(hidden);
     }
+    imgInputs.forEach(function(inp) { inp.value = ''; });
 
-    /* Clear file inputs so they don't re-send */
-    fileInputs.forEach(function(inp) { inp.value = ''; });
+    /* Upload video */
+    if (videoFile) {
+      var vpath = await uploadToTemp(videoFile, '/admin/gallery/upload-video-temp',
+                                     allImgs.length, totalSteps, 'Uploading video…');
+      var hidden = document.createElement('input');
+      hidden.type = 'hidden'; hidden.name = 'pre_video'; hidden.value = vpath;
+      form.appendChild(hidden);
+      videoInput.value = '';
+    }
 
     setProgress(100, 'Saving…');
 
-    /* Submit the metadata form (small — no files) */
+    /* Submit metadata only (no file binaries) */
     var fd  = new FormData(form);
     var xhr = new XMLHttpRequest();
     xhr.onload = function() {
@@ -533,7 +542,7 @@ async function xhrSubmit(form) {
         window.location.href = xhr.responseURL || '/admin/gallery';
       } else {
         overlay.classList.remove('show');
-        alert('Save failed (HTTP ' + xhr.status + '). Photos were uploaded — try submitting again.');
+        alert('Save failed (HTTP ' + xhr.status + '). Files were uploaded — try submitting again.');
       }
     };
     xhr.onerror = function() {
