@@ -209,17 +209,38 @@ def save_track(track_id):
 @admin_bp.route('/gallery/upload-temp', methods=['POST'])
 @login_required
 def gallery_upload_temp():
-    """Upload a single image and return its path as JSON (used by JS sequential uploader)."""
+    """Upload a single image, compress + resize, return its path as JSON."""
     import time
     from flask import jsonify
     f = request.files.get('file')
     if not f or not f.filename or not _allowed(f.filename, ALLOWED_IMG):
         return jsonify({'error': 'invalid file'}), 400
-    ext   = f.filename.rsplit('.', 1)[1].lower()
-    fname = 'tmp_{}_{}.{}'.format(int(time.time() * 1000), secure_filename(f.filename)[:20], ext)
+    fname = 'tmp_{}_{}.jpg'.format(int(time.time() * 1000), secure_filename(f.filename)[:20])
     dest  = os.path.join(_upload_dir(), 'gallery', fname)
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    f.save(dest)
+    try:
+        from PIL import Image as PILImage, ExifTags
+        img = PILImage.open(f)
+        # Auto-rotate based on EXIF orientation
+        try:
+            for tag, val in img._getexif().items():
+                if ExifTags.TAGS.get(tag) == 'Orientation':
+                    if val == 3:   img = img.rotate(180, expand=True)
+                    elif val == 6: img = img.rotate(270, expand=True)
+                    elif val == 8: img = img.rotate(90, expand=True)
+                    break
+        except Exception:
+            pass
+        img = img.convert('RGB')
+        w, h = img.size
+        max_dim = 1920
+        if w > max_dim or h > max_dim:
+            ratio = min(max_dim / w, max_dim / h)
+            img = img.resize((int(w * ratio), int(h * ratio)), PILImage.LANCZOS)
+        img.save(dest, 'JPEG', quality=82, optimize=True)
+    except Exception:
+        f.seek(0)
+        f.save(dest)
     return jsonify({'path': '/static/uploads/gallery/' + fname})
 
 @admin_bp.route('/gallery')
