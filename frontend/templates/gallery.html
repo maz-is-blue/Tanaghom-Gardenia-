@@ -188,10 +188,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 60px 80px;
+    padding: 40px 72px;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s var(--ease);
+  }
+  @media (max-width: 640px) {
+    .lightbox { padding: 0; }
+    .lb-stage { border-radius: 0; max-height: 100vh; }
+    .lb-prev { left: 8px; }
+    .lb-next { right: 8px; }
   }
   .lightbox.open {
     opacity: 1;
@@ -262,6 +268,7 @@
     font-family: 'Playfair Display', serif;
     font-size: 32px;
     line-height: 1.15;
+    text-align: left;
   }
   .lb-caption .lc-meta {
     margin-top: 8px;

@@ -168,7 +168,7 @@ function showAt(i) {
       style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000"></video>`;
   } else if (item.type === 'image') {
     lbImage.innerHTML = `<img src="${item.src}" alt="${m.title}"
-      style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain">`;
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`;
   } else {
     lbImage.innerHTML = bgFor(m);
   }
