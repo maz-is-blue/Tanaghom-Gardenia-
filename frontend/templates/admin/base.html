@@ -169,6 +169,7 @@ button,input,textarea,select{font-family:'Inter',sans-serif}
   <div class="topbar">
     <h1>{% block page_title %}Dashboard{% endblock %}</h1>
     <form action="/admin/publish" method="post" style="display:inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <button type="submit" class="pub-btn">↑ Publish Site</button>
     </form>
   </div>

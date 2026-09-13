@@ -6,7 +6,7 @@
 <title>Tanaghom Gardenia · Choral Society</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Scheherazade+New:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/Tanaghom-Gardenia-/static/css/styles.css" />
 
 <style>
@@ -72,14 +72,13 @@
   .hero h1 .word:nth-child(2) { animation-delay: 0.6s; }
   @keyframes wordIn { to { opacity: 1; transform: translateY(0); } }
   .hero .ar-name {
-    font-family: 'Noto Naskh Arabic', serif;
+    font-family: 'Scheherazade New', serif;
     color: var(--gold);
-    font-size: clamp(32px, 5vw, 56px);
-    line-height: 1.2;
-    margin-top: 18px;
+    font-size: clamp(64px, 10vw, 148px);
+    line-height: 1.0;
     font-weight: 500;
     opacity: 0;
-    animation: wordIn 0.9s var(--ease) 0.9s forwards;
+    animation: wordIn 0.9s var(--ease) 0.4s forwards;
   }
   .hero .tagline {
     margin-top: 28px;
@@ -290,8 +289,7 @@
     position: relative;
     overflow: hidden;
   }
-  .intro::before {
-    content: "𝄞";
+  .intro-clef {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -573,7 +571,7 @@
 </style>
 
 </head>
-<body data-page="home">
+<body data-page="home" data-lang="en">
 
 
 <div class="scroll-progress" id="scrollProgress"></div>
@@ -583,16 +581,19 @@
 <header class="navbar" id="navbar">
   <div class="nav-inner">
     <a href="/Tanaghom-Gardenia-/" class="logo-mark">
-      <span class="logo-circle"><img src="/Tanaghom-Gardenia-/static/img/logo.png" alt="Tanaghom Gardenia" /></span>
-      <span class="logo-wordmark">Tanaghom <span class="accent">·</span> Gardenia</span>
+      <span class="logo-circle"><img src="/Tanaghom-Gardenia-/static/img/logo.png" alt="Tanaghom · Gardenia" /></span>
+      <span class="logo-wordmark">
+        <span class="en">Tanaghom · Gardenia</span>
+        <span class="ar">تناغم · غاردينيا</span>
+      </span>
     </a>
     <nav>
       <ul class="nav-links" id="navLinks">
-        <li><a href="/Tanaghom-Gardenia-/" class="current">Home</a></li>
-        <li><a href="/Tanaghom-Gardenia-/about/" >About</a></li>
-        <li><a href="/Tanaghom-Gardenia-/choirs/" >Choirs</a></li>
-        <li><a href="/Tanaghom-Gardenia-/gallery/" >Gallery</a></li>
-        <li><a href="/Tanaghom-Gardenia-/#contact">Contact</a></li>
+        <li><a href="/Tanaghom-Gardenia-/" class="current"><span class="en">Home</span><span class="ar">الرئيسية</span></a></li>
+        <li><a href="/Tanaghom-Gardenia-/about/" ><span class="en">About</span><span class="ar">عن الجمعية</span></a></li>
+        <li><a href="/Tanaghom-Gardenia-/choirs/" ><span class="en">Choirs</span><span class="ar">الجوقات</span></a></li>
+        <li><a href="/Tanaghom-Gardenia-/gallery/" ><span class="en">Gallery</span><span class="ar">المعرض</span></a></li>
+        <li><a href="/Tanaghom-Gardenia-/#contact"><span class="en">Contact</span><span class="ar">تواصل</span></a></li>
       </ul>
     </nav>
     <div class="nav-right">
@@ -610,68 +611,98 @@
 
 <!-- ─── HERO ─── -->
 <section class="hero" id="top">
-  <div class="hero-eyebrow">Cultural &amp; Civic Association · Est. 2016</div>
-  <h1>
+  
+  <div class="hero-eyebrow">
+    <span class="en">Cultural &amp; Civic Association · Est. 2016</span>
+    <span class="ar">جمعية ثقافية ومدنية · منذ ٢٠١٦</span>
+  </div>
+  <h1 class="en">
     <span class="word">Tanaghom</span>
     <span class="word">Gardenia</span>
   </h1>
   <div class="ar-name ar">تناغم غاردينيا</div>
   <p class="tagline">
-    Art is everyone's right.
+    <span class="en">Art is everyone&#39;s right.</span>
     <span class="ar">الفن حق الجميع</span>
   </p>
 
   <div class="waveform" id="waveform" aria-hidden="true"></div>
 
   <div class="hero-cta-row">
-    <a href="/Tanaghom-Gardenia-/choirs/" class="cta magnetic">Meet the Choirs <span class="arrow">→</span></a>
-    <a href="#events" class="cta-ghost magnetic">Upcoming Concerts</a>
+    <a href="/Tanaghom-Gardenia-/choirs/" class="cta magnetic"><span class="en">Meet the Choirs <span class="arrow">→</span></span><span class="ar">تعرف على جوقاتنا <span class="arrow">←</span></span></a>
+    <a href="#events" class="cta-ghost magnetic"><span class="en">Upcoming Concerts</span><span class="ar">الحفلات القادمة</span></a>
   </div>
 
-  <div class="scroll-hint">Scroll</div>
+  <div class="scroll-hint"></div>
 </section>
 
 <!-- ─── MARQUEE ─── -->
-<div class="marquee-band" aria-hidden="true">
+<div class="marquee-band en" aria-hidden="true">
   <div class="marquee-track">
-    <span>Artistic Creation <span class="dot"></span> الإبداع الفني <span class="dot"></span> Women's Empowerment <span class="dot"></span> تمكين المرأة <span class="dot"></span> Cultural Participation <span class="dot"></span> المشاركة الثقافية <span class="dot"></span> Civic Engagement <span class="dot"></span> المشاركة المدنية <span class="dot"></span> Peacebuilding <span class="dot"></span> بناء السلام <span class="dot"></span> Social Cohesion <span class="dot"></span> التماسك الاجتماعي <span class="dot"></span> Human Rights <span class="dot"></span> حقوق الإنسان <span class="dot"></span> Dialogue <span class="dot"></span> الحوار <span class="dot"></span></span>
-    <span>Artistic Creation <span class="dot"></span> الإبداع الفني <span class="dot"></span> Women's Empowerment <span class="dot"></span> تمكين المرأة <span class="dot"></span> Cultural Participation <span class="dot"></span> المشاركة الثقافية <span class="dot"></span> Civic Engagement <span class="dot"></span> المشاركة المدنية <span class="dot"></span> Peacebuilding <span class="dot"></span> بناء السلام <span class="dot"></span> Social Cohesion <span class="dot"></span> التماسك الاجتماعي <span class="dot"></span> Human Rights <span class="dot"></span> حقوق الإنسان <span class="dot"></span> Dialogue <span class="dot"></span> الحوار <span class="dot"></span></span>
+    <span>Artistic Creation <span class="dot"></span> Women's Empowerment <span class="dot"></span> Cultural Participation <span class="dot"></span> Civic Engagement <span class="dot"></span> Peacebuilding <span class="dot"></span> Social Cohesion <span class="dot"></span> Human Rights <span class="dot"></span> Dialogue <span class="dot"></span></span>
+    <span>Artistic Creation <span class="dot"></span> Women's Empowerment <span class="dot"></span> Cultural Participation <span class="dot"></span> Civic Engagement <span class="dot"></span> Peacebuilding <span class="dot"></span> Social Cohesion <span class="dot"></span> Human Rights <span class="dot"></span> Dialogue <span class="dot"></span></span>
+  </div>
+</div>
+<div class="marquee-band ar" aria-hidden="true" style="direction: rtl;">
+  <div class="marquee-track" style="animation-direction: reverse;">
+    <span>الإبداع الفني <span class="dot"></span> تمكين المرأة <span class="dot"></span> المشاركة الثقافية <span class="dot"></span> المشاركة المدنية <span class="dot"></span> بناء السلام <span class="dot"></span> التماسك الاجتماعي <span class="dot"></span> حقوق الإنسان <span class="dot"></span> الحوار <span class="dot"></span></span>
+    <span>الإبداع الفني <span class="dot"></span> تمكين المرأة <span class="dot"></span> المشاركة الثقافية <span class="dot"></span> المشاركة المدنية <span class="dot"></span> بناء السلام <span class="dot"></span> التماسك الاجتماعي <span class="dot"></span> حقوق الإنسان <span class="dot"></span> الحوار <span class="dot"></span></span>
   </div>
 </div>
 
 <!-- ─── INTRO ─── -->
 <section class="intro reveal" id="intro">
+  <div class="intro-clef" aria-hidden="true">𝄞</div>
+  
   <div class="intro-inner">
     <div>
-      <div class="section-eyebrow">Our Story</div>
-      <p class="intro-lead" style="margin-top: 26px;">
+      <div class="section-eyebrow en">Our Story</div>
+      <div class="section-eyebrow ar">قصتنا</div>
+      <p class="intro-lead en" style="margin-top: 26px;">
         A women-led association connecting <em>art with citizenship</em> — using music and choral performance to promote peace, dialogue, and social healing.
+      </p>
+      <p class="intro-lead ar" style="margin-top: 26px; font-family: 'Noto Naskh Arabic', serif;">
+        جمعية تقودها نساء تربط <em>الفن بالمواطنة</em> — تستخدم الموسيقى والغناء الكورالي لتعزيز السلام والحوار والتعافي الاجتماعي.
       </p>
     </div>
     <div class="intro-body">
-      <p class="dropcap">
+      <p class="dropcap en">
         Tanaghom Gardenia was founded in Damascus in 2016 as a response to the growing silencing of women's voices and the shrinking space for collective expression. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.
       </p>
-      <p>
+      <p class="dropcap ar" style="font-family: 'Noto Naskh Arabic', serif; direction: rtl; text-align: right;">
+        تأسست تناغم غاردينيا في دمشق عام 2016 استجابةً للتهميش المتزايد لأصوات المرأة وتراجع مساحات التعبير الجماعي. آمن المؤسسون — فنانون وموسيقيون ومدافعون عن حقوق الإنسان — بأن الغناء الكورالي يمكن أن يكون شكلاً سلمياً وشاملاً من أشكال المقاومة والتعافي.
+      </p>
+      <p class="en">
         Today, the association bridges art and civic engagement through two ensembles: <strong>Gardenia</strong>, a professional all-female choir, and <strong>Tanaghom</strong>, a youth choir devoted to peacebuilding and social cohesion across Syria.
       </p>
-      <a href="/Tanaghom-Gardenia-/about/" class="text-link" style="margin-top: 22px;">Read Our Full Story <span>→</span></a>
+      <p class="ar" style="font-family: 'Noto Naskh Arabic', serif; direction: rtl; text-align: right;">
+        اليوم، تجمع الجمعية بين الفن والمشاركة المدنية من خلال جوقتين: <strong>غاردينيا</strong>، جوقة نسائية احترافية، و<strong>تناغم</strong>، جوقة شبابية مكرسة لبناء السلام والتماسك الاجتماعي في سوريا.
+      </p>
+      <a href="/Tanaghom-Gardenia-/about/" class="text-link en" style="margin-top: 22px;">Read Our Full Story <span>→</span></a>
+      <a href="/Tanaghom-Gardenia-/about/" class="text-link ar" style="margin-top: 22px; font-family: 'Noto Naskh Arabic', serif;">اقرأ قصتنا كاملة <span>←</span></a>
     </div>
   </div>
 
   <div class="intro-stats">
+    
     <div>
       <div class="stat-num"><span data-counter="250" data-format="+">0</span></div>
-      <div class="stat-label">Youth Trained</div>
+      <div class="stat-label en">Youth Trained</div>
+      <div class="stat-label ar">شاب متدرب</div>
     </div>
+    
     <div>
       <div class="stat-num"><span data-counter="12" data-format="+">0</span></div>
-      <div class="stat-label">Concerts in 2025</div>
+      <div class="stat-label en">Concerts in 2025</div>
+      <div class="stat-label ar">حفلة في 2025</div>
     </div>
+    
     <div>
-      <div class="stat-num"><span data-counter="17">0</span></div>
-      <div class="stat-label">Workshops &amp; Forums</div>
+      <div class="stat-num"><span data-counter="17" data-format="">0</span></div>
+      <div class="stat-label en">Workshops &amp; Forums</div>
+      <div class="stat-label ar">ورشة ومنتدى</div>
     </div>
+    
   </div>
 </section>
 
@@ -689,50 +720,59 @@
     </svg>
     <div class="choir-label">
       <span class="equalizer" style="color: white;"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
-      Women's Choir · كورال نسائي
+      <span class="en">Women's Choir</span><span class="ar">كورال نسائي</span>
     </div>
     <h3 class="choir-name">
-      Gardenia
+      <span class="en">Gardenia</span>
       <span class="ar">غاردينيا</span>
     </h3>
-    <p class="choir-desc">
+    <p class="choir-desc en">
       A professional all-female choir founded in 2016, combining traditional Syrian melodies with original compositions — using music as a tool for healing, solidarity, and women's empowerment.
     </p>
+    <p class="choir-desc ar" style="font-family: 'Noto Naskh Arabic', serif; direction: rtl; text-align: right;">
+      جوقة نسائية احترافية تأسست عام 2016، تجمع بين الألحان السورية التراثية والتأليف الأصيل — مستخدمةً الموسيقى أداةً للتعافي والتضامن وتمكين المرأة.
+    </p>
     <div class="choir-meta-row">
-      <div class="item"><div class="num">SA</div><div class="lbl">Voices</div></div>
-      <div class="item"><div class="num">3</div><div class="lbl">Parts</div></div>
-      <div class="item"><div class="num">2016</div><div class="lbl">Founded</div></div>
+      <div class="item"><div class="num">SA</div><div class="lbl en">Voices</div><div class="lbl ar">أصوات</div></div>
+      <div class="item"><div class="num">3</div><div class="lbl en">Parts</div><div class="lbl ar">أجزاء</div></div>
+      <div class="item"><div class="num">2016</div><div class="lbl en">Founded</div><div class="lbl ar">تأسست</div></div>
     </div>
-    <a href="/Tanaghom-Gardenia-/choirs/#gardenia" class="text-link on-dark choir-cta">Meet Gardenia <span>→</span></a>
+    <a href="/Tanaghom-Gardenia-/choirs/#gardenia" class="text-link on-dark choir-cta"><span class="en">Meet Gardenia <span>→</span></span><span class="ar">تعرف على غاردينيا <span>←</span></span></a>
   </div>
 
   <div class="staff-divider" aria-hidden="true"></div>
 
   <div class="choir-panel tanaghom">
-    <svg class="choir-decor" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g stroke="currentColor" stroke-width="2" fill="none" opacity="0.9">
-        <path d="M70 150 L70 50 C 90 40, 120 45, 130 60" stroke-linecap="round"/>
-        <ellipse cx="58" cy="148" rx="18" ry="13" transform="rotate(-18 58 148)" fill="currentColor"/>
-        <ellipse cx="120" cy="62" rx="14" ry="10" transform="rotate(-18 120 62)" fill="currentColor"/>
+    <svg class="choir-decor" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <g fill="currentColor" opacity="0.8">
+        <!-- note head -->
+        <ellipse cx="74" cy="158" rx="27" ry="19" transform="rotate(-20 74 158)"/>
+        <!-- stem: extends into note head at bottom so they connect -->
+        <rect x="96" y="44" width="7" height="122" rx="3"/>
+        <!-- flag: M starts at exact top-right corner of stem -->
+        <path d="M103 44 C 158 62, 161 108, 115 134" stroke="currentColor" stroke-width="8" fill="none" stroke-linecap="round"/>
       </g>
     </svg>
     <div class="choir-label">
       <span class="equalizer" style="color: var(--gold);"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
-      Youth Choir · كورال الشباب
+      <span class="en">Youth Choir</span><span class="ar">كورال الشباب</span>
     </div>
     <h3 class="choir-name">
-      Tanaghom
+      <span class="en">Tanaghom</span>
       <span class="ar">تناغم</span>
     </h3>
-    <p class="choir-desc">
+    <p class="choir-desc en">
       A mixed youth choir of 250 young Syrians from all regions — using music and group singing as a tool for positive communication, social cohesion, and peacebuilding.
     </p>
+    <p class="choir-desc ar" style="font-family: 'Noto Naskh Arabic', serif; direction: rtl; text-align: right;">
+      جوقة شبابية مختلطة من 250 شاباً وشابةً من مناطق سورية — تستخدم الموسيقى والغناء الجماعي أداةً للتواصل الإيجابي والتماسك الاجتماعي وبناء السلام.
+    </p>
     <div class="choir-meta-row">
-      <div class="item"><div class="num">250</div><div class="lbl">Members</div></div>
-      <div class="item"><div class="num">SATB</div><div class="lbl">Voices</div></div>
-      <div class="item"><div class="num">2019</div><div class="lbl">Founded</div></div>
+      <div class="item"><div class="num">250</div><div class="lbl en">Members</div><div class="lbl ar">عضو</div></div>
+      <div class="item"><div class="num">SATB</div><div class="lbl en">Voices</div><div class="lbl ar">أصوات</div></div>
+      <div class="item"><div class="num">2019</div><div class="lbl en">Founded</div><div class="lbl ar">تأسست</div></div>
     </div>
-    <a href="/Tanaghom-Gardenia-/choirs/#tanaghom" class="text-link gold choir-cta">Meet Tanaghom <span>→</span></a>
+    <a href="/Tanaghom-Gardenia-/choirs/#tanaghom" class="text-link gold choir-cta"><span class="en">Meet Tanaghom <span>→</span></span><span class="ar">تعرف على تناغم <span>←</span></span></a>
   </div>
 </section>
 
@@ -740,47 +780,53 @@
 <section class="events-teaser reveal" id="events">
   <div style="max-width: 1180px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; flex-wrap: wrap;">
     <div>
-      <div class="section-eyebrow">Upcoming</div>
-      <h2 class="section-title">Upcoming <em>Events</em><span class="ar">الفعاليات القادمة</span></h2>
+      <div class="section-eyebrow en">Upcoming</div>
+      <div class="section-eyebrow ar">القادم</div>
+      <h2 class="section-title"><span class="en">Upcoming <em>Events</em></span><span class="ar">الفعاليات القادمة</span></h2>
     </div>
   </div>
 
   <div class="events-list">
+    
     <a href="#" class="event-row">
       <div>
-        <div class="ev-day">23</div>
-        <div class="ev-month">Jul 2025</div>
+        <div class="ev-day"><span class="en">23</span><span class="ar">23</span></div>
+        <div class="ev-month"><span class="en">Jul 2025</span><span class="ar">يوليو 2025</span></div>
       </div>
-      <div class="ev-title">مواقع السحاب — Cloud Locations<span class="ar">دار الأوبرا · مسرح الدراما</span></div>
-      <div class="ev-where">Evening<span class="place">Opera House · Drama Theatre</span></div>
+      <div class="ev-title"><span class="en">مواقع السحاب — Cloud Locations</span><span class="ar">مواقع السحاب</span></div>
+      <div class="ev-where"><span class="en">Evening<span class="place">Opera House · Drama Theatre</span></span><span class="ar">مساءً<span class="place">دار الأوبرا · مسرح الدراما</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
+    
     <a href="#" class="event-row">
       <div>
-        <div class="ev-day">TBA</div>
-        <div class="ev-month">2025</div>
+        <div class="ev-day"><span class="en">TBA</span><span class="ar">يُعلن</span></div>
+        <div class="ev-month"><span class="en">2025</span><span class="ar">2025</span></div>
       </div>
-      <div class="ev-title">Cinema Club · نادي السينما<span class="ar">أفلام قادمة</span></div>
-      <div class="ev-where">Screening<span class="place">To Be Announced</span></div>
+      <div class="ev-title"><span class="en">Cinema Club</span><span class="ar">نادي السينما</span></div>
+      <div class="ev-where"><span class="en">Screening<span class="place">To Be Announced</span></span><span class="ar">عرض<span class="place">سيُعلن قريباً</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
+    
     <a href="#" class="event-row">
       <div>
-        <div class="ev-day">Soon</div>
-        <div class="ev-month">2025</div>
+        <div class="ev-day"><span class="en">Soon</span><span class="ar">قريباً</span></div>
+        <div class="ev-month"><span class="en">2025</span><span class="ar">2025</span></div>
       </div>
-      <div class="ev-title">Tanaghom Choir · كورال تناغم<span class="ar">coming soon</span></div>
-      <div class="ev-where">Concert<span class="place">Damascus</span></div>
+      <div class="ev-title"><span class="en">Tanaghom Choir</span><span class="ar">كورال تناغم</span></div>
+      <div class="ev-where"><span class="en">Concert<span class="place">Damascus</span></span><span class="ar">حفلة<span class="place">دمشق</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
+    
   </div>
 </section>
 
 <!-- ─── HIGHLIGHTS CARDS ─── -->
 <section class="highlights reveal">
   <div style="max-width: 1180px; margin: 0 auto; text-align: center;">
-    <div class="section-eyebrow">Explore</div>
-    <h2 class="section-title">Inside the society<span class="ar">داخل الجمعية</span></h2>
+    <div class="section-eyebrow en">Explore</div>
+    <div class="section-eyebrow ar">استكشف</div>
+    <h2 class="section-title"><span class="en">Inside the society</span><span class="ar">داخل الجمعية</span></h2>
   </div>
 
   <div class="hl-grid reveal-stagger">
@@ -795,12 +841,15 @@
       </svg>
       <div class="hl-inner">
         <div>
-          <div class="hl-num">01 / About</div>
-          <h3>The organization<span class="ar">من نحن</span></h3>
+          <div class="hl-num en">01 / About</div>
+          <div class="hl-num ar">01 / عن الجمعية</div>
+          <h3><span class="en">The organization</span><span class="ar">من نحن</span></h3>
         </div>
         <div>
-          <p>Mission, history, leadership, and the seven seasons that brought us here.</p>
-          <div class="hl-link">Visit About <span>→</span></div>
+          <p class="en">Mission, history, leadership, and the seven seasons that brought us here.</p>
+          <p class="ar">المهمة والتاريخ والمواسم السبع التي أوصلتنا هنا.</p>
+          <div class="hl-link en">Visit About <span>→</span></div>
+          <div class="hl-link ar">اعرف أكثر <span>←</span></div>
         </div>
       </div>
     </a>
@@ -818,12 +867,15 @@
       </svg>
       <div class="hl-inner">
         <div>
-          <div class="hl-num">02 / Choirs</div>
-          <h3>Two ensembles<span class="ar">جوقتانا</span></h3>
+          <div class="hl-num en">02 / Choirs</div>
+          <div class="hl-num ar">02 / الجوقات</div>
+          <h3><span class="en">Two ensembles</span><span class="ar">جوقتانا</span></h3>
         </div>
         <div>
-          <p>One a professional all-female choir, one a youth peacebuilding choir — united by the conviction that music is a tool for healing, solidarity, and civic change.</p>
-          <div class="hl-link">Visit Choirs <span>→</span></div>
+          <p class="en">One a professional all-female choir, one a youth peacebuilding choir — united by the conviction that music is a tool for healing, solidarity, and civic change.</p>
+          <p class="ar">جوقة نسائية احترافية وجوقة شبابية لبناء السلام — تجمعهما القناعة بأن الموسيقى أداة للتعافي والتضامن والتغيير المدني.</p>
+          <div class="hl-link en">Visit Choirs <span>→</span></div>
+          <div class="hl-link ar">اعرف أكثر <span>←</span></div>
         </div>
       </div>
     </a>
@@ -839,12 +891,15 @@
       </svg>
       <div class="hl-inner">
         <div>
-          <div class="hl-num">03 / Gallery</div>
-          <h3>From the stage<span class="ar">من على المسرح</span></h3>
+          <div class="hl-num en">03 / Gallery</div>
+          <div class="hl-num ar">03 / المعرض</div>
+          <h3><span class="en">From the stage</span><span class="ar">من على المسرح</span></h3>
         </div>
         <div>
-          <p>Six seasons in photographs — concerts, rehearsals, and quiet moments backstage.</p>
-          <div class="hl-link">Visit Gallery <span>→</span></div>
+          <p class="en">Six seasons in photographs — concerts, rehearsals, and quiet moments backstage.</p>
+          <p class="ar">ستة مواسم في صور — حفلات وبروفات ولحظات هادئة خلف الكواليس.</p>
+          <div class="hl-link en">Visit Gallery <span>→</span></div>
+          <div class="hl-link ar">اعرف أكثر <span>←</span></div>
         </div>
       </div>
     </a>
@@ -854,13 +909,16 @@
 <!-- ─── JOIN ─── -->
 <section class="join reveal" id="contact">
   <div class="join-inner">
-    <div class="section-eyebrow" style="justify-content: center;">Get Involved</div>
+    <div class="section-eyebrow en" style="justify-content: center;">Get Involved</div>
+    <div class="section-eyebrow ar" style="justify-content: center;">شارك معنا</div>
     <h2 style="margin-top: 22px;">
-      Join our community.
+      <span class="en">Join our community.</span>
       <span class="ar">انضم إلى مجتمعنا</span>
     </h2>
-    <p>We believe art is a human right. Whether you sing, create, or support — there is a place for you in our work across Syria.</p>
-    <a href="mailto:info@tanaghom-gardenia.org" class="cta magnetic" style="margin-top: 36px;">Get in Touch <span class="arrow">→</span></a>
+    <p class="en">We believe art is a human right. Whether you sing, create, or support — there is a place for you in our work across Syria.</p>
+    <p class="ar" style="font-family: 'Noto Naskh Arabic', serif;">نؤمن بأن الفن حق للجميع. سواء أكنت تغني أم تبدع أم تدعم — هناك مكان لك في عملنا عبر سوريا.</p>
+    <a href="mailto:info@tanaghom-gardenia.org" class="cta magnetic en" style="margin-top: 36px;">Get in Touch <span class="arrow">→</span></a>
+    <a href="mailto:info@tanaghom-gardenia.org" class="cta magnetic ar" style="margin-top: 36px; font-family: 'Noto Naskh Arabic', serif;">تواصل معنا <span class="arrow">←</span></a>
   </div>
 </section>
 
@@ -877,31 +935,46 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <div class="logo-circle"><img src="/Tanaghom-Gardenia-/static/img/logo.png" alt="" /></div>
-      <h3>Tanaghom <span style="color: var(--gold)">·</span> Gardenia</h3>
-      <div class="ar" style="font-size: 18px;">تناغم وغاردينيا</div>
-      <p>A non-profit choral society of two ensembles, founded in Beirut in 2019.</p>
+      <h3 class="en">Tanaghom · Gardenia</h3>
+      <h3 class="ar" style="font-family: 'Noto Naskh Arabic', serif; font-size: 22px;">تناغم · غاردينيا</h3>
+      <p class="en">A non-profit cultural and civic association, founded in Damascus in 2016.</p>
+      <p class="ar">جمعية ثقافية ومدنية غير ربحية، تأسست في دمشق عام 2016.</p>
     </div>
     <div class="footer-col">
-      <h4>Explore</h4>
-      <ul>
+      <h4 class="en">Explore</h4>
+      <h4 class="ar">استكشف</h4>
+      <ul class="en">
         <li><a href="/Tanaghom-Gardenia-/about/">About</a></li>
         <li><a href="/Tanaghom-Gardenia-/choirs/">Our Choirs</a></li>
         <li><a href="/Tanaghom-Gardenia-/gallery/">Gallery</a></li>
         <li><a href="/Tanaghom-Gardenia-/#events">Events</a></li>
       </ul>
+      <ul class="ar">
+        <li><a href="/Tanaghom-Gardenia-/about/">عن الجمعية</a></li>
+        <li><a href="/Tanaghom-Gardenia-/choirs/">جوقاتنا</a></li>
+        <li><a href="/Tanaghom-Gardenia-/gallery/">المعرض</a></li>
+        <li><a href="/Tanaghom-Gardenia-/#events">الفعاليات</a></li>
+      </ul>
     </div>
     <div class="footer-col">
-      <h4>Contact</h4>
-      <p>
-        Rehearsal Hall · Achrafieh<br/>
-        Beirut, Lebanon<br/><br/>
-        hello@tanaghom-gardenia.org<br/>
-        +961 1 234 567
+      <h4 class="en">Contact</h4>
+      <h4 class="ar">تواصل معنا</h4>
+      <p class="en">
+        Rehearsal Hall · Achrafieh, Beirut, Lebanon<br/>
+        <br/>
+        info@tanaghomgardenia.org
+      </p>
+      <p class="ar">
+        قاعة البروفات · الأشرفية، بيروت، لبنان<br/>
+        <br/>
+        info@tanaghomgardenia.org
       </p>
     </div>
     <div class="footer-col">
-      <h4>Follow</h4>
-      <p>Concerts, rehearsals, and behind-the-scenes — every week.</p>
+      <h4 class="en">Follow</h4>
+      <h4 class="ar">تابعونا</h4>
+      <p class="en">Concerts, rehearsals, and behind-the-scenes — every week.</p>
+      <p class="ar">حفلات وبروفات وكواليس — كل أسبوع.</p>
       <div class="socials">
         <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.8" fill="currentColor"/></svg></a>
         <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.5-3h-3V8.5c0-.9.3-1.5 1.6-1.5H17V4.3C16.7 4.2 15.7 4 14.6 4 12.4 4 11 5.3 11 7.7v2.8H8.5v3H11V21h2.5z"/></svg></a>
@@ -911,8 +984,8 @@
   </div>
 
   <div class="copyright">
-    <span>© 2026 Tanaghom Gardenia Choral Society · All rights reserved</span>
-    <span class="ar">© ٢٠٢٦ جمعية تناغم وغاردينيا الكورالية</span>
+    <span class="en">© 2026 Tanaghom Gardenia · All rights reserved</span>
+    <span class="ar">© ٢٠٢٦ جمعية تناغم غاردينيا · جميع الحقوق محفوظة</span>
   </div>
 </footer>
 

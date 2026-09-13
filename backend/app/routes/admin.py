@@ -1,6 +1,8 @@
 import os
 import shutil
 import subprocess
+import time
+from collections import defaultdict
 from functools import wraps
 from flask import (Blueprint, render_template, request, session,
                    redirect, url_for, flash, current_app)
@@ -12,8 +14,25 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 # ── helpers ──────────────────────────────────────────────────────────────────
 
 def _upload_dir():
-    here = os.path.dirname(os.path.abspath(__file__))
-    return os.path.normpath(os.path.join(here, '..', '..', '..', 'frontend', 'static', 'uploads'))
+    return os.path.join(current_app.static_folder, 'uploads')
+
+def _project_root():
+    return os.path.dirname(os.path.dirname(current_app.root_path))
+
+# In-memory per-process login throttle (fine for the single-worker deployment
+# this app runs under; resets on restart).
+_LOGIN_MAX_ATTEMPTS  = 5
+_LOGIN_WINDOW_SECONDS = 15 * 60
+_login_attempts = defaultdict(list)
+
+def _login_rate_limited(key):
+    now = time.time()
+    attempts = [t for t in _login_attempts[key] if now - t < _LOGIN_WINDOW_SECONDS]
+    _login_attempts[key] = attempts
+    return len(attempts) >= _LOGIN_MAX_ATTEMPTS
+
+def _record_login_failure(key):
+    _login_attempts[key].append(time.time())
 
 ALLOWED_IMG   = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
 ALLOWED_AUDIO = {'mp3', 'wav', 'ogg', 'm4a', 'aac'}
@@ -49,10 +68,16 @@ def login_required(f):
 @admin_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        key = request.remote_addr or 'unknown'
+        if _login_rate_limited(key):
+            flash('Too many failed attempts. Try again in a few minutes.', 'error')
+            return render_template('admin/login.html')
         pw = request.form.get('password', '')
         if pw == current_app.config.get('ADMIN_PASSWORD', 'tanaghom2024'):
+            session.clear()
             session['admin_logged_in'] = True
             return redirect(url_for('admin.dashboard'))
+        _record_login_failure(key)
         flash('Wrong password.', 'error')
     return render_template('admin/login.html')
 
@@ -90,6 +115,18 @@ def save_hero():
                     ('eyebrow_en', 'eyebrow_ar', 'tagline_en', 'tagline_ar')}
     save_content('home', data)
     flash('Hero section saved.', 'success')
+    return redirect(url_for('admin.home_page'))
+
+@admin_bp.route('/home/save-intro', methods=['POST'])
+@login_required
+def save_intro():
+    data = load('home', {})
+    data['intro'] = {k: request.form.get(k, '') for k in
+                     ('lead_en', 'lead_ar',
+                      'story_founding_en', 'story_founding_ar',
+                      'story_today_en', 'story_today_ar')}
+    save_content('home', data)
+    flash('Story saved.', 'success')
     return redirect(url_for('admin.home_page'))
 
 @admin_bp.route('/home/save-stats', methods=['POST'])
@@ -426,12 +463,24 @@ def settings_page():
 @admin_bp.route('/settings/save', methods=['POST'])
 @login_required
 def settings_save():
-    save_content('settings', {
-        k: request.form.get(k, '') for k in
-        ('contact_email','press_email','address_en','address_ar',
-         'social_instagram','social_facebook','social_youtube',
-         'footer_tagline_en','footer_tagline_ar')
-    })
+    import time
+    data = load('settings', {})
+    for k in ('site_name_en', 'site_name_ar', 'watermark_glyph',
+              'contact_email', 'press_email', 'address_en', 'address_ar',
+              'social_instagram', 'social_facebook', 'social_youtube',
+              'footer_tagline_en', 'footer_tagline_ar'):
+        data[k] = request.form.get(k, data.get(k, ''))
+
+    f = request.files.get('logo')
+    if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
+        ext   = f.filename.rsplit('.', 1)[1].lower()
+        fname = 'logo_{}.{}'.format(int(time.time()), ext)
+        dest  = os.path.join(_upload_dir(), 'branding', fname)
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        f.save(dest)
+        data['logo'] = '/static/uploads/branding/' + fname
+
+    save_content('settings', data)
     flash('Settings saved.', 'success')
     return redirect(url_for('admin.settings_page'))
 
@@ -441,8 +490,7 @@ def settings_save():
 @login_required
 def publish():
     try:
-        here   = os.path.dirname(os.path.abspath(__file__))
-        root   = os.path.normpath(os.path.join(here, '..', '..', '..'))
+        root   = _project_root()
         build  = os.path.join(root, 'backend', 'build.py')
         dist   = os.path.join(root, 'dist')
         deploy = os.path.expanduser('~/tanaghomgardenia.org')

@@ -3,7 +3,35 @@
 {% block page_title %}Site Settings{% endblock %}
 
 {% block content %}
-<form method="POST" action="/admin/settings/save">
+<form method="POST" action="/admin/settings/save" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="card">
+    <div class="card-title">Branding <span class="tag">Logo &amp; Name</span></div>
+    <div class="frow">
+      <div class="fg">
+        <label>Logo</label>
+        <img src="{{ data.get('logo') or url_for('static', filename='img/logo.png') }}" alt="Current logo" style="height:64px;width:64px;object-fit:contain;border:1px solid var(--line);border-radius:50%;background:#fff;margin-bottom:8px">
+        <input type="file" name="logo" accept="image/png,image/jpeg,image/webp">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Site Name — English</label>
+        <input type="text" name="site_name_en" value="{{ data.get('site_name_en','') }}" placeholder="Tanaghom · Gardenia">
+      </div>
+      <div class="fg">
+        <label>Site Name — Arabic</label>
+        <input type="text" name="site_name_ar" value="{{ data.get('site_name_ar','') }}" class="ar" placeholder="تناغم · غاردينيا">
+      </div>
+    </div>
+    <div class="frow single">
+      <div class="fg">
+        <label>Watermark Symbol <span style="color:var(--gray);font-weight:400">(large faint background glyph on page headers)</span></label>
+        <input type="text" name="watermark_glyph" value="{{ data.get('watermark_glyph','𝄞') }}" maxlength="4" style="width:100px">
+      </div>
+    </div>
+  </div>
+
   <div class="card">
     <div class="card-title">Contact Information <span class="tag">Footer</span></div>
     <div class="frow">

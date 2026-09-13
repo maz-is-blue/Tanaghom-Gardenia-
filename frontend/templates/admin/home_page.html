@@ -4,6 +4,7 @@
 
 {% block content %}
 {% set hero   = data.get('hero', {}) %}
+{% set intro  = data.get('intro', {}) %}
 {% set stats  = data.get('stats', []) %}
 {% set events = data.get('events', []) %}
 
@@ -11,6 +12,7 @@
 <div class="card">
   <div class="card-title">Hero Section <span class="tag">Bilingual</span></div>
   <form method="POST" action="/admin/home/save-hero">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <div class="frow">
       <div class="fg">
         <label>Eyebrow — English</label>
@@ -35,10 +37,50 @@
   </form>
 </div>
 
+<!-- Our Story (intro section) -->
+<div class="card">
+  <div class="card-title">Our Story <span class="tag">Bilingual · supports &lt;em&gt;/&lt;strong&gt;</span></div>
+  <form method="POST" action="/admin/home/save-intro">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Lead paragraph — English</label>
+        <textarea name="lead_en">{{ intro.get('lead_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Lead paragraph — Arabic</label>
+        <textarea name="lead_ar" class="ar">{{ intro.get('lead_ar','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Founding story — English</label>
+        <textarea name="story_founding_en">{{ intro.get('story_founding_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Founding story — Arabic</label>
+        <textarea name="story_founding_ar" class="ar">{{ intro.get('story_founding_ar','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Today paragraph — English</label>
+        <textarea name="story_today_en">{{ intro.get('story_today_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Today paragraph — Arabic</label>
+        <textarea name="story_today_ar" class="ar">{{ intro.get('story_today_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Story</button>
+  </form>
+</div>
+
 <!-- Stats -->
 <div class="card">
   <div class="card-title">Stats Bar <span class="tag">Numbers</span></div>
   <form method="POST" action="/admin/home/save-stats">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     {% for s in stats %}
     <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:14px;margin-bottom:12px">
       <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Stat {{ loop.index }}</div>
@@ -79,6 +121,7 @@
       <div style="display:flex;gap:8px">
         <button type="button" class="btn btn-ghost btn-sm" onclick="document.getElementById('ev-edit-{{ ev.id }}').style.display='block';this.closest('.evwrap').style.display='none'" style="font-size:9px">Edit</button>
         <form method="POST" action="/admin/home/event/delete/{{ ev.id }}" style="display:inline" onsubmit="return confirm('Delete this event?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <button type="submit" class="btn btn-danger btn-sm" style="font-size:9px">Delete</button>
         </form>
       </div>
@@ -94,6 +137,7 @@
     </div>
     <div id="ev-edit-{{ ev.id }}" style="display:none">
       <form method="POST" action="/admin/home/event/edit/{{ ev.id }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <div class="frow">
           <div class="fg">
             <label>Title — English</label>
@@ -165,6 +209,7 @@
   <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line)">
     <div style="font-family:'Playfair Display',serif;font-size:15px;margin-bottom:16px">Add New Event</div>
     <form method="POST" action="/admin/home/event/add">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="frow">
         <div class="fg">
           <label>Title — English</label>

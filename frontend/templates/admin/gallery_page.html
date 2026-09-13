@@ -45,7 +45,9 @@
   <button type="button" class="btn btn-danger btn-sm" onclick="confirmBulkDelete()">Delete Selected</button>
   <button type="button" class="btn btn-ghost btn-sm" onclick="clearSel()">Cancel</button>
 </div>
-<form id="bulk-form" method="POST" action="/admin/gallery/bulk-delete" style="display:none"></form>
+<form id="bulk-form" method="POST" action="/admin/gallery/bulk-delete" style="display:none">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
 
 <!-- Top bar -->
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:12px">
@@ -89,6 +91,7 @@
               onclick="openEdit({{ item | tojson | forceescape }})">Edit</button>
       <form method="POST" action="/admin/gallery/delete/{{ item.id }}"
             onsubmit="return confirm('Delete this item?')">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         <button type="submit" class="btn btn-danger btn-sm">Del</button>
       </form>
     </div>
@@ -107,6 +110,7 @@
     <button class="modal-close" onclick="document.getElementById('add-modal').style.display='none'">✕</button>
     <div class="modal-title">Add Gallery Item</div>
     <form method="POST" action="/admin/gallery/add" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="frow">
         <div class="fg">
           <label>Title — English</label>
@@ -210,6 +214,7 @@
     <button class="modal-close" onclick="document.getElementById('edit-modal').style.display='none'">✕</button>
     <div class="modal-title">Edit Gallery Item</div>
     <form id="edit-form" method="POST" action="" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="frow">
         <div class="fg">
           <label>Title — English</label>
@@ -509,6 +514,7 @@ function uploadToTemp(file, endpoint, doneSteps, totalSteps, label) {
   return new Promise(function(resolve, reject) {
     var fd = new FormData();
     fd.append('file', file);
+    fd.append('csrf_token', document.querySelector('input[name=csrf_token]').value);
     var xhr = new XMLHttpRequest();
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {

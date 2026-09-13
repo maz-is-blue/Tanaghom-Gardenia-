@@ -39,6 +39,7 @@ body{font-family:'Inter',sans-serif;background:#0a0a0a;color:#fff;min-height:100
   {% endwith %}
   <div class="card">
     <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <div class="fg">
         <label>Password</label>
         <input type="password" name="password" autofocus placeholder="Enter admin password">

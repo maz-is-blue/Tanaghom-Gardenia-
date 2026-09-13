@@ -283,8 +283,7 @@
     position: relative;
     overflow: hidden;
   }
-  .intro::before {
-    content: "𝄞";
+  .intro-clef {
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
@@ -573,9 +572,10 @@
 {% block content %}
 <!-- ─── HERO ─── -->
 <section class="hero" id="top">
+  {% set hero = content.home.get('hero', {}) %}
   <div class="hero-eyebrow">
-    <span class="en">Cultural &amp; Civic Association · Est. 2016</span>
-    <span class="ar">جمعية ثقافية ومدنية · منذ ٢٠١٦</span>
+    <span class="en">{{ hero.get('eyebrow_en', "Cultural & Civic Association · Est. 2016") }}</span>
+    <span class="ar">{{ hero.get('eyebrow_ar', "جمعية ثقافية ومدنية · منذ ٢٠١٦") }}</span>
   </div>
   <h1 class="en">
     <span class="word">Tanaghom</span>
@@ -583,8 +583,8 @@
   </h1>
   <div class="ar-name ar">تناغم غاردينيا</div>
   <p class="tagline">
-    <span class="en">Art is everyone's right.</span>
-    <span class="ar">الفن حق الجميع</span>
+    <span class="en">{{ hero.get('tagline_en', "Art is everyone's right.") }}</span>
+    <span class="ar">{{ hero.get('tagline_ar', "الفن حق الجميع") }}</span>
   </p>
 
   <div class="waveform" id="waveform" aria-hidden="true"></div>
@@ -613,29 +613,31 @@
 
 <!-- ─── INTRO ─── -->
 <section class="intro reveal" id="intro">
+  <div class="intro-clef" aria-hidden="true">{{ content.settings.get('watermark_glyph','𝄞') }}</div>
+  {% set intro = content.home.get('intro', {}) %}
   <div class="intro-inner">
     <div>
       <div class="section-eyebrow en">Our Story</div>
       <div class="section-eyebrow ar">قصتنا</div>
       <p class="intro-lead en" style="margin-top: 26px;">
-        A women-led association connecting <em>art with citizenship</em> — using music and choral performance to promote peace, dialogue, and social healing.
+        {{ intro.get('lead_en', 'A women-led association connecting <em>art with citizenship</em> — using music and choral performance to promote peace, dialogue, and social healing.') | safe }}
       </p>
       <p class="intro-lead ar" style="margin-top: 26px; font-family: 'Noto Naskh Arabic', serif;">
-        جمعية تقودها نساء تربط <em>الفن بالمواطنة</em> — تستخدم الموسيقى والغناء الكورالي لتعزيز السلام والحوار والتعافي الاجتماعي.
+        {{ intro.get('lead_ar', 'جمعية تقودها نساء تربط <em>الفن بالمواطنة</em> — تستخدم الموسيقى والغناء الكورالي لتعزيز السلام والحوار والتعافي الاجتماعي.') | safe }}
       </p>
     </div>
     <div class="intro-body">
       <p class="dropcap en">
-        Tanaghom Gardenia was founded in Damascus in 2016 as a response to the growing silencing of women's voices and the shrinking space for collective expression. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.
+        {{ intro.get('story_founding_en', "Tanaghom Gardenia was founded in Damascus in 2016 as a response to the growing silencing of women's voices and the shrinking space for collective expression. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.") | safe }}
       </p>
       <p class="dropcap ar" style="font-family: 'Noto Naskh Arabic', serif; direction: rtl; text-align: right;">
-        تأسست تناغم غاردينيا في دمشق عام 2016 استجابةً للتهميش المتزايد لأصوات المرأة وتراجع مساحات التعبير الجماعي. آمن المؤسسون — فنانون وموسيقيون ومدافعون عن حقوق الإنسان — بأن الغناء الكورالي يمكن أن يكون شكلاً سلمياً وشاملاً من أشكال المقاومة والتعافي.
+        {{ intro.get('story_founding_ar', 'تأسست تناغم غاردينيا في دمشق عام 2016 استجابةً للتهميش المتزايد لأصوات المرأة وتراجع مساحات التعبير الجماعي. آمن المؤسسون — فنانون وموسيقيون ومدافعون عن حقوق الإنسان — بأن الغناء الكورالي يمكن أن يكون شكلاً سلمياً وشاملاً من أشكال المقاومة والتعافي.') | safe }}
       </p>
       <p class="en">
-        Today, the association bridges art and civic engagement through two ensembles: <strong>Gardenia</strong>, a professional all-female choir, and <strong>Tanaghom</strong>, a youth choir devoted to peacebuilding and social cohesion across Syria.
+        {{ intro.get('story_today_en', 'Today, the association bridges art and civic engagement through two ensembles: <strong>Gardenia</strong>, a professional all-female choir, and <strong>Tanaghom</strong>, a youth choir devoted to peacebuilding and social cohesion across Syria.') | safe }}
       </p>
       <p class="ar" style="font-family: 'Noto Naskh Arabic', serif; direction: rtl; text-align: right;">
-        اليوم، تجمع الجمعية بين الفن والمشاركة المدنية من خلال جوقتين: <strong>غاردينيا</strong>، جوقة نسائية احترافية، و<strong>تناغم</strong>، جوقة شبابية مكرسة لبناء السلام والتماسك الاجتماعي في سوريا.
+        {{ intro.get('story_today_ar', 'اليوم، تجمع الجمعية بين الفن والمشاركة المدنية من خلال جوقتين: <strong>غاردينيا</strong>، جوقة نسائية احترافية، و<strong>تناغم</strong>، جوقة شبابية مكرسة لبناء السلام والتماسك الاجتماعي في سوريا.') | safe }}
       </p>
       <a href="/about" class="text-link en" style="margin-top: 22px;">Read Our Full Story <span>→</span></a>
       <a href="/about" class="text-link ar" style="margin-top: 22px; font-family: 'Noto Naskh Arabic', serif;">اقرأ قصتنا كاملة <span>←</span></a>
@@ -643,21 +645,13 @@
   </div>
 
   <div class="intro-stats">
+    {% for s in content.home.get('stats', []) %}
     <div>
-      <div class="stat-num"><span data-counter="250" data-format="+">0</span></div>
-      <div class="stat-label en">Youth Trained</div>
-      <div class="stat-label ar">شاب متدرب</div>
+      <div class="stat-num"><span data-counter="{{ s.num }}" data-format="{{ s.format }}">0</span></div>
+      <div class="stat-label en">{{ s.label_en }}</div>
+      <div class="stat-label ar">{{ s.label_ar }}</div>
     </div>
-    <div>
-      <div class="stat-num"><span data-counter="12" data-format="+">0</span></div>
-      <div class="stat-label en">Concerts in 2025</div>
-      <div class="stat-label ar">حفلة في 2025</div>
-    </div>
-    <div>
-      <div class="stat-num"><span data-counter="17">0</span></div>
-      <div class="stat-label en">Workshops &amp; Forums</div>
-      <div class="stat-label ar">ورشة ومنتدى</div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 
@@ -742,33 +736,20 @@
   </div>
 
   <div class="events-list">
-    <a href="#" class="event-row">
+    {% for ev in content.home.get('events', []) %}
+    <a href="{{ ev.url or '#' }}" class="event-row">
       <div>
-        <div class="ev-day">23</div>
-        <div class="ev-month"><span class="en">Jul 2025</span><span class="ar">يوليو 2025</span></div>
+        <div class="ev-day"><span class="en">{{ ev.day_en }}</span><span class="ar">{{ ev.day_ar }}</span></div>
+        <div class="ev-month"><span class="en">{{ ev.month_en }}</span><span class="ar">{{ ev.month_ar }}</span></div>
       </div>
-      <div class="ev-title">مواقع السحاب — Cloud Locations<span class="ar">دار الأوبرا · مسرح الدراما</span></div>
-      <div class="ev-where"><span class="en">Evening<span class="place">Opera House · Drama Theatre</span></span><span class="ar">مساءً<span class="place">دار الأوبرا · مسرح الدراما</span></span></div>
+      <div class="ev-title"><span class="en">{{ ev.title_en }}</span><span class="ar">{{ ev.title_ar }}</span></div>
+      <div class="ev-where"><span class="en">{{ ev.type_en }}<span class="place">{{ ev.place_en }}</span></span><span class="ar">{{ ev.type_ar }}<span class="place">{{ ev.place_ar }}</span></span></div>
       <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
     </a>
-    <a href="#" class="event-row">
-      <div>
-        <div class="ev-day"><span class="en">TBA</span><span class="ar">يُعلن</span></div>
-        <div class="ev-month">2025</div>
-      </div>
-      <div class="ev-title"><span class="en">Cinema Club</span><span class="ar">نادي السينما<span class="place" style="display:block;">أفلام قادمة</span></span></div>
-      <div class="ev-where"><span class="en">Screening<span class="place">To Be Announced</span></span><span class="ar">عرض<span class="place">سيُعلن قريباً</span></span></div>
-      <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-    </a>
-    <a href="#" class="event-row">
-      <div>
-        <div class="ev-day"><span class="en">Soon</span><span class="ar">قريباً</span></div>
-        <div class="ev-month">2025</div>
-      </div>
-      <div class="ev-title"><span class="en">Tanaghom Choir</span><span class="ar">كورال تناغم<span class="place" style="display:block;">قريباً</span></span></div>
-      <div class="ev-where"><span class="en">Concert<span class="place">Damascus</span></span><span class="ar">حفلة<span class="place">دمشق</span></span></div>
-      <div class="ev-arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
-    </a>
+    {% else %}
+    <p class="en" style="color:var(--gray);padding:20px 0;">No upcoming events.</p>
+    <p class="ar" style="color:var(--gray);padding:20px 0;">لا توجد فعاليات قادمة.</p>
+    {% endfor %}
   </div>
 </section>
 

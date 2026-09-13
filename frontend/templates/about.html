@@ -383,7 +383,7 @@
 {% block content %}
 <!-- ─── PAGE HEAD ─── -->
 <section class="page-head">
-  <div class="clef">𝄞</div>
+  <div class="clef">{{ content.settings.get('watermark_glyph','𝄞') }}</div>
   <div class="inner">
     <div class="breadcrumb">
       <span class="en"><a href="/">Home</a><span class="sep">/</span><span>About</span></span>
@@ -462,26 +462,13 @@
 <!-- ─── STATS BAND ─── -->
 <section class="stats-band">
   <div class="row">
+    {% for s in content.about.get('stats', []) %}
     <div class="cell">
-      <div class="big"><span data-counter="250" data-format="+">0</span></div>
-      <div class="lbl en">Youth Trained</div>
-      <div class="lbl ar" style="font-family: 'Noto Naskh Arabic', serif;">شاب متدرب</div>
+      <div class="big"><span data-counter="{{ s.num }}" data-format="{{ s.format }}">0</span></div>
+      <div class="lbl en">{{ s.label_en }}</div>
+      <div class="lbl ar" style="font-family: 'Noto Naskh Arabic', serif;">{{ s.label_ar }}</div>
     </div>
-    <div class="cell">
-      <div class="big"><span data-counter="12" data-format="+">0</span></div>
-      <div class="lbl en">Concerts in 2025</div>
-      <div class="lbl ar" style="font-family: 'Noto Naskh Arabic', serif;">حفلة في 2025</div>
-    </div>
-    <div class="cell">
-      <div class="big"><span data-counter="17">0</span></div>
-      <div class="lbl en">Workshops &amp; Forums</div>
-      <div class="lbl ar" style="font-family: 'Noto Naskh Arabic', serif;">ورشة ومنتدى</div>
-    </div>
-    <div class="cell">
-      <div class="big"><span data-counter="2016">0</span></div>
-      <div class="lbl en">Year Founded</div>
-      <div class="lbl ar" style="font-family: 'Noto Naskh Arabic', serif;">سنة التأسيس</div>
-    </div>
+    {% endfor %}
   </div>
 </section>
 

@@ -9,6 +9,7 @@
   <div class="card-title">About Stats <span class="tag">{{ stats|length }} items</span></div>
   <p style="font-size:13px;color:var(--gray);margin-bottom:20px">These numbers appear in the stats bar on the About page.</p>
   <form method="POST" action="/admin/about/save-stats">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     {% for s in stats %}
     <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:14px;margin-bottom:12px">
       <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Stat {{ loop.index }}</div>
@@ -44,6 +45,7 @@
   <div class="card-title">Add a New Stat <span class="tag">Append</span></div>
   <p style="font-size:12px;color:var(--gray);margin-bottom:18px">Saving the form above replaces all stats. To add one, include the existing rows plus a new blank one in the list, then save. Or manually add values and save.</p>
   <form method="POST" action="/admin/about/save-stats">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     {% for s in stats %}
     <input type="hidden" name="num"      value="{{ s.get('num','') }}">
     <input type="hidden" name="format"   value="{{ s.get('format','') }}">

@@ -1,8 +1,11 @@
 import os
 from flask import Flask
+from flask_wtf import CSRFProtect
 from .config import Config
 
 _root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+csrf = CSRFProtect()
 
 
 def create_app(config_object=Config):
@@ -13,6 +16,7 @@ def create_app(config_object=Config):
     )
     app.url_map.strict_slashes = False
     app.config.from_object(config_object)
+    csrf.init_app(app)
 
     from .content import load_all
 

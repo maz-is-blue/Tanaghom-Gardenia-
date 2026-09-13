@@ -7,7 +7,11 @@
   },
   "intro": {
     "lead_en": "A women-led association connecting <em>art with citizenship</em> — using music and choral performance to promote peace, dialogue, and social healing.",
-    "lead_ar": "جمعية تقودها نساء تربط <em>الفن بالمواطنة</em> — تستخدم الموسيقى والغناء الكورالي لتعزيز السلام والحوار والتعافي الاجتماعي."
+    "lead_ar": "جمعية تقودها نساء تربط <em>الفن بالمواطنة</em> — تستخدم الموسيقى والغناء الكورالي لتعزيز السلام والحوار والتعافي الاجتماعي.",
+    "story_founding_en": "Tanaghom Gardenia was founded in Damascus in 2016 as a response to the growing silencing of women's voices and the shrinking space for collective expression. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.",
+    "story_founding_ar": "تأسست تناغم غاردينيا في دمشق عام 2016 استجابةً للتهميش المتزايد لأصوات المرأة وتراجع مساحات التعبير الجماعي. آمن المؤسسون — فنانون وموسيقيون ومدافعون عن حقوق الإنسان — بأن الغناء الكورالي يمكن أن يكون شكلاً سلمياً وشاملاً من أشكال المقاومة والتعافي.",
+    "story_today_en": "Today, the association bridges art and civic engagement through two ensembles: <strong>Gardenia</strong>, a professional all-female choir, and <strong>Tanaghom</strong>, a youth choir devoted to peacebuilding and social cohesion across Syria.",
+    "story_today_ar": "اليوم، تجمع الجمعية بين الفن والمشاركة المدنية من خلال جوقتين: <strong>غاردينيا</strong>، جوقة نسائية احترافية، و<strong>تناغم</strong>، جوقة شبابية مكرسة لبناء السلام والتماسك الاجتماعي في سوريا."
   },
   "stats": [
     {"num": "250", "format": "+", "label_en": "Youth Trained", "label_ar": "شاب متدرب"},
