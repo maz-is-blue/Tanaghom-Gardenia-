@@ -10,7 +10,7 @@
     <div class="frow">
       <div class="fg">
         <label>Logo</label>
-        <img src="{{ data.get('logo') or url_for('static', filename='img/logo-full.svg') }}" alt="Current logo" style="height:64px;max-width:200px;object-fit:contain;border:1px solid var(--line);border-radius:4px;background:#1a1a1a;padding:8px;margin-bottom:8px">
+        <img src="{{ data.get('logo') or asset_url('img/logo-full.svg') }}" alt="Current logo" style="height:64px;max-width:200px;object-fit:contain;border:1px solid var(--line);border-radius:4px;background:#1a1a1a;padding:8px;margin-bottom:8px">
         <input type="file" name="logo" accept="image/png,image/jpeg,image/webp">
       </div>
     </div>
