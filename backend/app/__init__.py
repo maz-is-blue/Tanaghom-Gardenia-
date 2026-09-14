@@ -24,6 +24,16 @@ def create_app(config_object=Config):
     def inject_content():
         return dict(content=load_all())
 
+    @app.template_global('asset_url')
+    def asset_url(filename):
+        path = os.path.join(app.static_folder, filename)
+        try:
+            v = int(os.path.getmtime(path))
+        except OSError:
+            v = 0
+        from flask import url_for
+        return '{}?v={}'.format(url_for('static', filename=filename), v)
+
     from .routes.pages import pages_bp
     app.register_blueprint(pages_bp)
 
