@@ -18,11 +18,7 @@
 <header class="navbar" id="navbar">
   <div class="nav-inner">
     <a href="/" class="logo-mark">
-      <span class="logo-circle"><img src="{{ content.settings.get('logo') or url_for('static', filename='img/logo.png') }}" alt="{{ content.settings.get('site_name_en','Tanaghom Gardenia') }}" /></span>
-      <span class="logo-wordmark">
-        <span class="en">{{ content.settings.get('site_name_en','Tanaghom · Gardenia') }}</span>
-        <span class="ar">{{ content.settings.get('site_name_ar','تناغم · غاردينيا') }}</span>
-      </span>
+      <img class="logo-full" src="{{ content.settings.get('logo') or url_for('static', filename='img/logo-full.svg') }}" alt="{{ content.settings.get('site_name_en','Tanaghom Gardenia') }}" />
     </a>
     <nav>
       <ul class="nav-links" id="navLinks">
@@ -58,9 +54,7 @@
 
   <div class="footer-grid">
     <div class="footer-brand">
-      <div class="logo-circle"><img src="{{ content.settings.get('logo') or url_for('static', filename='img/logo.png') }}" alt="" /></div>
-      <h3 class="en">{{ content.settings.get('site_name_en','Tanaghom · Gardenia') }}</h3>
-      <h3 class="ar" style="font-family: 'Noto Naskh Arabic', serif; font-size: 22px;">{{ content.settings.get('site_name_ar','تناغم · غاردينيا') }}</h3>
+      <img class="logo-full footer-logo" src="{{ content.settings.get('logo') or url_for('static', filename='img/logo-full.svg') }}" alt="{{ content.settings.get('site_name_en','Tanaghom Gardenia') }}" />
       <p class="en">A non-profit cultural and civic association, founded in Damascus in 2016.</p>
       <p class="ar">جمعية ثقافية ومدنية غير ربحية، تأسست في دمشق عام 2016.</p>
     </div>
