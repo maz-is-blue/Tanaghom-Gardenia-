@@ -455,15 +455,15 @@ body[data-lang="ar"] .en { display: none !important; }
 /* large staff watermark on page head */
 .page-head .clef {
   position: absolute;
-  right: -60px;
-  bottom: -120px;
-  font-family: Georgia, serif;
-  font-size: 580px;
-  line-height: 1;
+  right: -20px;
+  bottom: -80px;
+  width: auto;
+  height: 560px;
   color: rgba(245, 208, 0, 0.06);
   pointer-events: none;
   user-select: none;
 }
+.clef-svg path { fill: currentColor; }
 
 /* ============================  FOOTER  ============================ */
 footer.site-footer {

@@ -383,7 +383,7 @@
 {% block content %}
 <!-- ─── PAGE HEAD ─── -->
 <section class="page-head">
-  <div class="clef">{{ content.settings.get('watermark_glyph','𝄞') }}</div>
+  {% include '_clef_svg.html' %}
   <div class="inner">
     <div class="breadcrumb">
       <span class="en"><a href="/">Home</a><span class="sep">/</span><span>About</span></span>

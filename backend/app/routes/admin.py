@@ -465,7 +465,7 @@ def settings_page():
 def settings_save():
     import time
     data = load('settings', {})
-    for k in ('site_name_en', 'site_name_ar', 'watermark_glyph',
+    for k in ('site_name_en', 'site_name_ar',
               'contact_email', 'press_email', 'address_en', 'address_ar',
               'social_instagram', 'social_facebook', 'social_youtube',
               'footer_tagline_en', 'footer_tagline_ar'):

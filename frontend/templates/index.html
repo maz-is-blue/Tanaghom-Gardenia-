@@ -287,9 +287,8 @@
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
-    font-family: Georgia, serif;
-    font-size: 700px;
-    line-height: 1;
+    width: auto;
+    height: 680px;
     color: rgba(26, 26, 26, 0.035);
     pointer-events: none;
     user-select: none;
@@ -613,7 +612,8 @@
 
 <!-- ─── INTRO ─── -->
 <section class="intro reveal" id="intro">
-  <div class="intro-clef" aria-hidden="true">{{ content.settings.get('watermark_glyph','𝄞') }}</div>
+  {% set clef_class = 'intro-clef' %}
+  {% include '_clef_svg.html' %}
   {% set intro = content.home.get('intro', {}) %}
   <div class="intro-inner">
     <div>
