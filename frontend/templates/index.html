@@ -285,11 +285,10 @@
   }
   .intro-clef {
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%; left: 38%;
     transform: translate(-50%, -50%);
     width: auto;
     height: 680px;
-    color: rgba(26, 26, 26, 0.035);
     pointer-events: none;
     user-select: none;
   }
@@ -613,6 +612,7 @@
 <!-- ─── INTRO ─── -->
 <section class="intro reveal" id="intro">
   {% set clef_class = 'intro-clef' %}
+  {% set clef_color = 'rgba(26,26,26,0.035)' %}
   {% include '_clef_svg.html' %}
   {% set intro = content.home.get('intro', {}) %}
   <div class="intro-inner">
