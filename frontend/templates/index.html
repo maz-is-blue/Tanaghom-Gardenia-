@@ -288,7 +288,7 @@
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
     width: auto;
-    height: 1000px;
+    height: 1300px;
     pointer-events: none;
     user-select: none;
   }
@@ -611,11 +611,11 @@
 
 <!-- ─── INTRO ─── -->
 <section class="intro reveal" id="intro">
-  {% set clef_class = 'intro-clef' %}
-  {% set clef_color = 'rgba(107,107,107,0.10)' %}
-  {% include '_clef_svg.html' %}
   {% set intro = content.home.get('intro', {}) %}
   <div class="intro-inner">
+    {% set clef_class = 'intro-clef' %}
+    {% set clef_color = 'rgba(107,107,107,0.10)' %}
+    {% include '_clef_svg.html' %}
     <div>
       <div class="section-eyebrow en">Our Story</div>
       <div class="section-eyebrow ar">قصتنا</div>
