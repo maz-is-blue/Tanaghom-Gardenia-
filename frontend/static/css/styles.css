@@ -459,7 +459,7 @@ body[data-lang="ar"] .en { display: none !important; }
   left: 50%;
   transform: translate(-50%, -50%);
   width: auto;
-  height: 560px;
+  height: 820px;
   pointer-events: none;
   user-select: none;
 }
