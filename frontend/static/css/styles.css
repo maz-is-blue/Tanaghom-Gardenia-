@@ -28,7 +28,7 @@ html.no-scroll { overflow: hidden; }
 
 body {
   margin: 0;
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Zain', system-ui, sans-serif;
   color: var(--black);
   background: var(--white);
   line-height: 1.65;
@@ -50,7 +50,7 @@ a { color: inherit; text-decoration: none; }
 button { font-family: inherit; cursor: none; border: none; background: none; padding: 0; color: inherit; }
 img { display: block; max-width: 100%; }
 
-.ar { font-family: 'Noto Naskh Arabic', serif; }
+.ar { font-family: 'Zain', sans-serif; }
 
 /* Language toggle behaviour */
 body[data-lang="en"] .ar { display: none !important; }
@@ -516,7 +516,7 @@ footer.site-footer {
 }
 
 .footer-col h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Zain', sans-serif;
   font-size: 11px;
   letter-spacing: 0.35em;
   text-transform: uppercase;

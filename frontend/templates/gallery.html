@@ -350,7 +350,7 @@
     <h1 class="en">From the <em>stage</em></h1>
     <span class="ar">من على المسرح</span>
     <p class="lede en">Six seasons in photographs — concerts in halls and churches, rehearsals in our hall, and the quieter moments between. Filter by season, ensemble, or kind.</p>
-    <p class="lede ar" style="font-family: 'Noto Naskh Arabic', serif;">ستة مواسم في صور — حفلات في القاعات والكنائس، بروفات في قاعتنا، ولحظات هادئة بينهما. صفّي حسب الموسم أو الجوقة أو النوع.</p>
+    <p class="lede ar" style="font-family: 'Zain', sans-serif;">ستة مواسم في صور — حفلات في القاعات والكنائس، بروفات في قاعتنا، ولحظات هادئة بينهما. صفّي حسب الموسم أو الجوقة أو النوع.</p>
   </div>
 </section>
 
@@ -369,7 +369,7 @@
     </div>
     <div class="gal-meta">
       <span class="en">Showing <span class="num" id="filterCount">14</span> moments</span>
-      <span class="ar" style="font-family:'Noto Naskh Arabic',serif;">عرض <span class="num" id="filterCountAr">14</span> لحظة</span>
+      <span class="ar" style="font-family:'Zain',sans-serif;">عرض <span class="num" id="filterCountAr">14</span> لحظة</span>
     </div>
   </div>
 </div>
@@ -385,7 +385,7 @@
   <div class="section-eyebrow ar" style="margin: 0 auto;">الصحافة والإعلام</div>
   <h2 style="margin-top: 22px;"><span class="en">For press &amp; <em>media inquiries</em></span><span class="ar" style="display: block; margin-top: 14px; color: var(--gray); font-size: 0.55em;">للصحافة والإعلام</span></h2>
   <p class="en">High-resolution photographs, press releases for each concert, and biographies of our conductors and singers are available on request.</p>
-  <p class="ar" style="font-family:'Noto Naskh Arabic',serif;">صور عالية الدقة وبيانات صحفية لكل حفلة وسير المايسترو والمغنين متاحة عند الطلب.</p>
+  <p class="ar" style="font-family:'Zain',sans-serif;">صور عالية الدقة وبيانات صحفية لكل حفلة وسير المايسترو والمغنين متاحة عند الطلب.</p>
   <a href="mailto:press@tanaghomgardenia.org" class="cta magnetic" style="margin-top: 38px;">press@tanaghomgardenia.org <span class="arrow">→</span></a>
 </section>
 
@@ -445,7 +445,7 @@ function renderGrid(items) {
       <div class="corner-num">${String(i+1).padStart(2,'0')}</div>
       <div class="caption">
         <div>
-          <div class="cap-title"><span class="en">${m.title}</span><span class="ar" style="font-family:'Noto Naskh Arabic',serif;">${m.titleAr}</span></div>
+          <div class="cap-title"><span class="en">${m.title}</span><span class="ar" style="font-family:'Zain',sans-serif;">${m.titleAr}</span></div>
           <div class="cap-meta"><span class="en">${m.date} · ${m.venue}</span><span class="ar">${m.dateAr} · ${m.venueAr}</span></div>
         </div>
         <div class="cap-tag">${m.ensemble==='gardenia'?'Gardenia':'Tanaghom'}</div>
@@ -517,7 +517,7 @@ function showAt(i) {
   lbCurrent = (i + flatList.length) % flatList.length;
   const item = flatList[lbCurrent], m = item.moment;
 
-  lbTitle.innerHTML = `<span class="en">${m.title}</span><span class="ar" style="font-family:'Noto Naskh Arabic',serif;">${m.titleAr}</span>`;
+  lbTitle.innerHTML = `<span class="en">${m.title}</span><span class="ar" style="font-family:'Zain',sans-serif;">${m.titleAr}</span>`;
   lbDate.innerHTML  = `<span class="en">${m.date}</span><span class="ar">${m.dateAr}</span>`;
   lbVenue.innerHTML = `<span class="en">${m.venue}</span><span class="ar">${m.venueAr}</span>`;
   lbIdx.textContent = lbCurrent + 1;
