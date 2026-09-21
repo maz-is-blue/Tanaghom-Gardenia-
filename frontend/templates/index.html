@@ -297,7 +297,7 @@
   .intro-inner {
     max-width: 1180px;
     margin: 0 auto;
-    padding-left: 320px;
+    padding-left: 48px;
     position: relative;
     z-index: 2;
     display: grid;
@@ -318,6 +318,12 @@
     font-size: 16px;
     line-height: 1.85;
     margin: 0 0 18px;
+  }
+  .intro-body .dropcap {
+    margin-left: 60px;
+  }
+  @media (max-width: 960px) {
+    .intro-body .dropcap { margin-left: 0; }
   }
   .intro-stats {
     display: grid;
@@ -347,7 +353,7 @@
     color: var(--gray);
   }
   @media (max-width: 760px) {
-    .intro-inner { grid-template-columns: 1fr; gap: 36px; padding-left: 0; }
+    .intro-inner { grid-template-columns: 1fr; gap: 36px; }
     .intro-stats { grid-template-columns: 1fr; gap: 28px; }
   }
 
