@@ -20,8 +20,8 @@ ssh "$HOST" bash << EOF
   cp -r dist/* "$PUBLIC_HTML/"
 
   echo "--- Restarting the Passenger app ---"
-  mkdir -p "$REMOTE_DIR/tmp"
-  touch "$REMOTE_DIR/tmp/restart.txt"
+  mkdir -p "$REMOTE_DIR/backend/tmp"
+  touch "$REMOTE_DIR/backend/tmp/restart.txt"
 
   echo ""
   echo "Done. Visit https://tanaghomgardenia.org"
