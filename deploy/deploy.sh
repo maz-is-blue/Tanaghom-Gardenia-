@@ -4,7 +4,7 @@
 
 HOST="xbwywwwcvd@tanaghomgardenia.org"
 REMOTE_DIR="/home/xbwywwwcvd/tanaghom"
-PUBLIC_HTML="/home/xbwywwwcvd/public_html"
+PUBLIC_HTML="/home/xbwywwwcvd/tanaghomgardenia.org"
 
 ssh "$HOST" bash << EOF
   set -e
@@ -16,7 +16,7 @@ ssh "$HOST" bash << EOF
   echo "--- Rebuilding static site ---"
   backend/venv/bin/python backend/build.py --domain
 
-  echo "--- Deploying to public_html ---"
+  echo "--- Deploying to $PUBLIC_HTML ---"
   cp -r dist/* "$PUBLIC_HTML/"
 
   echo "--- Restarting the Passenger app ---"

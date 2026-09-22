@@ -5,7 +5,7 @@
 HOST="xbwywwwcvd@tanaghomgardenia.org"
 REPO="https://github.com/maz-is-blue/Tanaghom-Gardenia-"
 REMOTE_DIR="/home/xbwywwwcvd/tanaghom"
-PUBLIC_HTML="/home/xbwywwwcvd/public_html"
+PUBLIC_HTML="/home/xbwywwwcvd/tanaghomgardenia.org"
 
 ssh "$HOST" bash << EOF
   set -e
@@ -24,7 +24,7 @@ ssh "$HOST" bash << EOF
   echo "--- Building static site ---"
   backend/venv/bin/python backend/build.py --domain
 
-  echo "--- Copying to public_html ---"
+  echo "--- Copying to $PUBLIC_HTML ---"
   cp -r dist/* "$PUBLIC_HTML/"
 
   echo "--- Restarting the Passenger app ---"
