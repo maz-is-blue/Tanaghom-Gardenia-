@@ -314,6 +314,7 @@
   }
   .intro-lead em { font-style: italic; color: var(--gold); }
   .intro-body { padding-left: 240px; }
+  html[dir="rtl"] .intro-body { padding-left: 0; padding-right: 240px; }
   .intro-body p {
     color: #2a2a2a;
     font-size: 16px;
@@ -349,7 +350,7 @@
   }
   @media (max-width: 760px) {
     .intro-inner { grid-template-columns: 1fr; gap: 36px; }
-    .intro-body { padding-left: 0; }
+    .intro-body { padding-left: 0; padding-right: 0; }
     .intro-stats { grid-template-columns: 1fr; gap: 28px; }
   }
 
