@@ -19,6 +19,10 @@ ssh "$HOST" bash << EOF
   echo "--- Deploying to public_html ---"
   cp -r dist/* "$PUBLIC_HTML/"
 
+  echo "--- Restarting the Passenger app ---"
+  mkdir -p "$REMOTE_DIR/tmp"
+  touch "$REMOTE_DIR/tmp/restart.txt"
+
   echo ""
   echo "Done. Visit https://tanaghomgardenia.org"
 EOF
