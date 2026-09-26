@@ -198,6 +198,13 @@
   .choir-panel:hover .choir-decor { transform: rotate(20deg) scale(1.1); opacity: 0.3; }
   .choir-panel.gardenia .choir-decor { color: var(--white); }
   .choir-panel.tanaghom .choir-decor { color: var(--gold); opacity: 0.35; }
+  .choir-decor-text {
+    font-family: 'Zain', sans-serif;
+    font-weight: 700;
+    font-size: 52px;
+    line-height: 1.25;
+    text-align: right;
+  }
 
   .choir-label {
     font-size: 11px;
@@ -671,15 +678,7 @@
 <!-- ─── CHOIRS ─── -->
 <section class="choirs reveal">
   <div class="choir-panel gardenia">
-    <svg class="choir-decor" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g stroke="currentColor" stroke-width="1.2" opacity="0.9">
-        <path d="M100 30 C 130 60, 130 100, 100 130 C 70 100, 70 60, 100 30 Z" fill="currentColor" fill-opacity="0.08"/>
-        <path d="M30 100 C 60 70, 100 70, 130 100 C 100 130, 60 130, 30 100 Z" fill="currentColor" fill-opacity="0.08"/>
-        <path d="M170 100 C 140 70, 100 70, 70 100 C 100 130, 140 130, 170 100 Z" fill="currentColor" fill-opacity="0.08"/>
-        <path d="M100 170 C 130 140, 130 100, 100 70 C 70 100, 70 140, 100 170 Z" fill="currentColor" fill-opacity="0.08"/>
-        <circle cx="100" cy="100" r="14" fill="currentColor" fill-opacity="0.4"/>
-      </g>
-    </svg>
+    <div class="choir-decor choir-decor-text">كورال<br>غاردينيا</div>
     <div class="choir-label">
       <span class="equalizer" style="color: white;"><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span><span class="eq-bar"></span></span>
       <span class="en">Women's Choir</span><span class="ar">كورال نسائي</span>
