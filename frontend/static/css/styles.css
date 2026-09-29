@@ -1,18 +1,18 @@
 /* =============================================================
    Tanaghom Gardenia — shared stylesheet
-   Palette · Black #1A1A1A · Gold #F5D000 · Sage #A8B8A2 · White
+   Palette · Black #112115 · Gold #E4BE43 · Sage #D3DB9A · White
    ============================================================= */
 
 :root {
-  --black: #1A1A1A;
-  --soft-black: #242424;
-  --gold: #F5D000;
-  --gold-soft: #E8C400;
-  --sage: #A8B8A2;
-  --sage-deep: #8DA086;
+  --black: #112115;
+  --soft-black: #1C2D20;
+  --gold: #E4BE43;
+  --gold-soft: #CFA93C;
+  --sage: #D3DB9A;
+  --sage-deep: #9DAF41;
   --white: #FFFFFF;
-  --off-white: #F7F7F5;
-  --paper: #F2EFEA;
+  --off-white: #F7F4EB;
+  --paper: #F7F4EB;
   --gray: #6B6B6B;
   --gray-light: #B8B8B8;
   --line: rgba(0, 0, 0, 0.08);
