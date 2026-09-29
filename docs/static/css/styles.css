@@ -76,7 +76,6 @@ body[data-lang="ar"] .en { display: none !important; }
   z-index: 999;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
 }
 .cursor-dot {
   width: 6px; height: 6px;
