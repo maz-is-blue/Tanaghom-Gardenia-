@@ -97,14 +97,22 @@
     justify-content: center;
     gap: 6px;
     opacity: 0;
+    cursor: pointer;
     animation: wordIn 0.9s var(--ease) 1.3s forwards;
+    transition: transform 0.4s var(--ease);
   }
+  .waveform:hover { transform: scale(1.08); }
   .waveform .bar {
     width: 2px;
     background: var(--gold);
     border-radius: 2px;
     transform-origin: center;
     animation: waveBeat 1.8s ease-in-out infinite;
+    transition: background 0.3s;
+  }
+  .waveform:hover .bar {
+    animation-duration: 0.45s !important;
+    background: var(--white);
   }
   @keyframes waveBeat {
     0%, 100% { height: 10%; opacity: 0.45; }
