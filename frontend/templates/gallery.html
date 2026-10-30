@@ -73,11 +73,18 @@
     padding: 60px 36px 130px;
     background: var(--white);
   }
+  /* Row heights are driven by a fixed grid-auto-rows baseline rather than
+     aspect-ratio, so every card's height is an exact multiple of that
+     baseline (no implicit/guessed row sizing) and spanned cards can never
+     overlap or mismatch neighboring rows. Thumbnails are cover-cropped
+     backgrounds (see bgFor()), so changing a card's box ratio just reframes
+     the crop — it never stretches the image. */
   .gallery-grid {
     max-width: 1480px;
     margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 180px;
     gap: 18px;
     grid-auto-flow: dense;
   }
@@ -90,19 +97,17 @@
     transition: transform 0.5s var(--ease), opacity 0.4s var(--ease);
     cursor: none;
     grid-column: span 4;
-    aspect-ratio: 4 / 3;
+    grid-row: span 2;
     text-align: left;
   }
   .gal-card.size-tall {
-    grid-row: span 2;
-    aspect-ratio: 4 / 6;
+    grid-row: span 4;
   }
   .gal-card.size-wide {
     grid-column: span 6;
-    aspect-ratio: 16 / 9;
   }
   .gal-card.size-square {
-    aspect-ratio: 1 / 1;
+    grid-row: span 3;
   }
   .gal-card.hide { display: none; }
   .gal-card:hover { transform: scale(1.015); }
@@ -169,7 +174,7 @@
   @media (max-width: 1100px) {
     .gallery-grid { grid-template-columns: repeat(6, 1fr); }
     .gal-card { grid-column: span 3; }
-    .gal-card.size-wide { grid-column: span 6; }
+    .gal-card.size-wide { grid-column: span 6; grid-row: span 3; }
   }
   @media (max-width: 640px) {
     .gallery-grid { grid-template-columns: 1fr; }
@@ -523,6 +528,12 @@ function showAt(i) {
   lbIdx.textContent = lbCurrent + 1;
   lbTotal.textContent = flatList.length;
 
+  // Keep the URL in sync with whichever album is currently shown, without
+  // spamming browser history on every prev/next click.
+  if (lb.classList.contains('open')) {
+    history.replaceState({ galleryId: m.id }, '', '#item-' + m.id);
+  }
+
   if (item.type==='video') {
     lbImage.innerHTML = `<video src="${item.src}" controls autoplay style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000"></video>`;
   } else if (item.type==='image') {
@@ -550,23 +561,36 @@ function showAt(i) {
   });
 }
 
-function openLightbox(id) {
+function openLightbox(id, opts) {
+  opts = opts || {};
   buildFlatList();
   const i = flatList.findIndex(item => item.moment.id === id);
   if (i < 0) return;
   showAt(i);
   lb.classList.add('open');
   document.documentElement.classList.add('no-scroll');
+  const hash = '#item-' + id;
+  if (opts.fromPopstate) {
+    // Browser navigated here (back/forward) — don't push a new entry.
+  } else if (opts.fromHashOnLoad) {
+    history.replaceState({ galleryId: id }, '', hash);
+  } else {
+    history.pushState({ galleryId: id }, '', hash);
+  }
 }
 
-function closeLightbox() {
+function closeLightbox(opts) {
+  opts = opts || {};
   lb.classList.remove('open');
   document.documentElement.classList.remove('no-scroll');
   const vid = lb.querySelector('video');
   if (vid) vid.pause();
+  if (!opts.fromPopstate && location.hash.startsWith('#item-')) {
+    history.back();
+  }
 }
 
-lbClose.addEventListener('click', closeLightbox);
+lbClose.addEventListener('click', () => closeLightbox());
 lbPrev.addEventListener('click',  () => showAt(lbCurrent - 1));
 lbNext.addEventListener('click',  () => showAt(lbCurrent + 1));
 lb.addEventListener('click', e => { if (e.target===lb) closeLightbox(); });
@@ -577,5 +601,21 @@ document.addEventListener('keydown', e => {
   if (e.key==='ArrowLeft')  showAt(lbCurrent - 1);
 });
 buildFlatList();
+
+// ── preserve lightbox state across browser Back/Forward ──
+window.addEventListener('popstate', (e) => {
+  const id = e.state && e.state.galleryId;
+  if (id != null) {
+    openLightbox(id, { fromPopstate: true });
+  } else {
+    closeLightbox({ fromPopstate: true });
+  }
+});
+
+// Deep-link: opening the gallery with #item-<id> in the URL reopens that item.
+(function openFromHashOnLoad() {
+  const m = location.hash.match(/^#item-(\d+)$/);
+  if (m) openLightbox(parseInt(m[1], 10), { fromHashOnLoad: true });
+})();
 </script>
 {% endblock %}
