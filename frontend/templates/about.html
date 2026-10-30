@@ -46,13 +46,16 @@
     color: #2a2a2a;
     margin: 0 0 22px;
   }
+  /* .mission-body p is font-size:17px / line-height:1.85 -> one line = 31.45px.
+     Target: exactly 3 lines = 94.35px tall floated letter (font-size * line-height
+     with line-height:1, so font-size ~= 94px). */
   .mission-body p:first-child::first-letter {
     font-family: 'Playfair Display', serif;
-    font-size: 80px;
+    font-size: 94px;
     float: left;
-    line-height: 0.85;
-    margin: 8px 14px 0 0;
-    color: var(--gold);
+    line-height: 1;
+    margin: 0 16px 0 0;
+    color: #000;
     font-weight: 600;
   }
   .mission-body .ar-pull {

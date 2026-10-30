@@ -574,19 +574,26 @@ footer.site-footer {
   .footer-grid { grid-template-columns: 1fr; }
 }
 
-/* ============================  COMMON: gold accent letter  ============================ */
+/* ============================  COMMON: drop cap  ============================
+   .intro-body p is font-size:16px / line-height:1.85 -> one line = 29.6px.
+   Target: exactly 3 lines = 88.8px tall floated letter (font-size * line-height
+   with line-height:1, so font-size ~= 89px). Tune here if that paragraph's
+   type size ever changes. */
 .dropcap::first-letter {
   font-family: 'Playfair Display', serif;
-  font-size: 64px;
+  font-size: 89px;
+  line-height: 1;
   float: left;
-  line-height: 0.9;
-  margin: 6px 12px 0 0;
-  color: var(--gold);
+  margin: 0 14px 0 0;
+  color: #000;
   font-weight: 600;
 }
 
-/* Arabic paragraphs never use dropcap — Arabic letters connect */
-.dropcap.ar::first-letter { font-size: inherit; float: none; margin: 0; color: inherit; font-weight: inherit; }
+/* RTL: mirror the float so the letter sits on the right, text wraps to its left */
+.dropcap.ar::first-letter {
+  float: right;
+  margin: 0 0 0 14px;
+}
 
 /* ============================  EQUALIZER / WAVEFORM small  ============================ */
 .equalizer {
