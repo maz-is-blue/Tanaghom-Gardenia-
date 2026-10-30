@@ -210,8 +210,22 @@ def save_about_story():
 @login_required
 def save_about_goals():
     data = load('about', {})
-    data['goals'] = {k: request.form.get(k, '') for k in
-                     ('strategic_en', 'strategic_ar', 'general_en', 'general_ar')}
+    title_en = request.form.getlist('strategic_title_en')
+    title_ar = request.form.getlist('strategic_title_ar')
+    text_en  = request.form.getlist('strategic_text_en')
+    text_ar  = request.form.getlist('strategic_text_ar')
+    icon     = request.form.getlist('strategic_icon')
+    strategic = [
+        {'title_en': title_en[i], 'title_ar': title_ar[i],
+         'text_en': text_en[i], 'text_ar': text_ar[i], 'icon': icon[i]}
+        for i in range(len(title_en))
+    ]
+    data['goals'] = {
+        'strategic': strategic,
+        'general_visible': request.form.get('general_visible') == 'on',
+        'general_en': request.form.get('general_en', ''),
+        'general_ar': request.form.get('general_ar', ''),
+    }
     save_content('about', data)
     flash('Goals saved.', 'success')
     return redirect(url_for('admin.about_page'))

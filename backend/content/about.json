@@ -11,9 +11,15 @@
     "pull_ar": "مهمّتنا ربط الفن بالمواطنة وحقوق الإنسان، إيماناً بأن الثقافة قادرة على إعادة بناء الثقة والتضامن في المجتمعات ما بعد النزاع. نستخدم الغناء الجماعي والتعاون الفني أدواتٍ للحوار والمناصرة وتمكين المرأة."
   },
   "goals": {
-    "strategic_en": "PLACEHOLDER — ask Yara for the real Strategic Goals text.",
-    "strategic_ar": "نص تجريبي — يرجى من يارا تزويدنا بالأهداف الاستراتيجية الفعلية.",
-    "general_en": "PLACEHOLDER — ask Yara for the real General Goals text.",
-    "general_ar": "نص تجريبي — يرجى من يارا تزويدنا بالأهداف العامة الفعلية."
+    "strategic": [
+      {"title_en": "PLACEHOLDER — Strategic Goal 1", "title_ar": "نص تجريبي — هدف استراتيجي 1", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
+      {"title_en": "PLACEHOLDER — Strategic Goal 2", "title_ar": "نص تجريبي — هدف استراتيجي 2", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
+      {"title_en": "PLACEHOLDER — Strategic Goal 3", "title_ar": "نص تجريبي — هدف استراتيجي 3", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
+      {"title_en": "PLACEHOLDER — Strategic Goal 4", "title_ar": "نص تجريبي — هدف استراتيجي 4", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
+      {"title_en": "PLACEHOLDER — Strategic Goal 5", "title_ar": "نص تجريبي — هدف استراتيجي 5", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""}
+    ],
+    "general_visible": false,
+    "general_en": "PLACEHOLDER — pending confirmation from Safana Baqle. Ask Yara/Safana for the real General Goals text before turning this section on.",
+    "general_ar": "نص تجريبي — بانتظار تأكيد من سافانا بقلة. يرجى تزويدنا بالنص الفعلي للأهداف العامة قبل تفعيل هذا القسم."
   }
 }

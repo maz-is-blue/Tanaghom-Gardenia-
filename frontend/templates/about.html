@@ -461,30 +461,44 @@
   </div>
 </section>
 
-<!-- ─── GOALS ─── -->
+<!-- ─── STRATEGIC GOALS ─── -->
 <section class="values reveal">
   {% set goals = content.about.get('goals', {}) %}
+  {% set strategic = goals.get('strategic', []) %}
   <div class="values-head">
     <div class="section-eyebrow en" style="margin: 0 auto;">Where We're Headed</div>
     <div class="section-eyebrow ar" style="margin: 0 auto;">إلى أين نتجه</div>
-    <h2 class="section-title"><span class="en">Our Goals</span><span class="ar">أهدافنا</span></h2>
+    <h2 class="section-title"><span class="en">Strategic Goals</span><span class="ar">الأهداف الاستراتيجية</span></h2>
   </div>
 
-  <div class="values-grid" style="grid-template-columns: repeat(2, 1fr);">
+  <div class="values-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+    {% for g in strategic %}
     <div class="value-card">
-      <div class="v-num">01</div>
-      <h3><span class="en">Strategic Goals</span><span class="ar">الأهداف الاستراتيجية</span></h3>
-      <p class="en">{{ goals.get('strategic_en', '') }}</p>
-      <p class="ar" style="font-family: 'Zain', sans-serif;">{{ goals.get('strategic_ar', '') }}</p>
+      <div class="v-num">{{ '%02d' | format(loop.index) }}</div>
+      <h3><span class="en">{{ g.get('title_en', '') }}</span><span class="ar">{{ g.get('title_ar', '') }}</span></h3>
+      <p class="en">{{ g.get('text_en', '') }}</p>
+      <p class="ar" style="font-family: 'Zain', sans-serif;">{{ g.get('text_ar', '') }}</p>
     </div>
-    <div class="value-card">
-      <div class="v-num">02</div>
-      <h3><span class="en">General Goals</span><span class="ar">الأهداف العامة</span></h3>
+    {% endfor %}
+  </div>
+</section>
+
+{% if goals.get('general_visible') %}
+<!-- ─── GENERAL GOALS ─── -->
+<section class="values reveal">
+  <div class="values-head">
+    <div class="section-eyebrow en" style="margin: 0 auto;">Beyond the Strategy</div>
+    <div class="section-eyebrow ar" style="margin: 0 auto;">إلى جانب الاستراتيجية</div>
+    <h2 class="section-title"><span class="en">General Goals</span><span class="ar">الأهداف العامة</span></h2>
+  </div>
+  <div class="values-grid" style="grid-template-columns: 1fr; max-width: 820px; margin: 36px auto 0;">
+    <div class="value-card" style="text-align: center;">
       <p class="en">{{ goals.get('general_en', '') }}</p>
       <p class="ar" style="font-family: 'Zain', sans-serif;">{{ goals.get('general_ar', '') }}</p>
     </div>
   </div>
 </section>
+{% endif %}
 
 <!-- ─── STATS BAND ─── -->
 <section class="stats-band">

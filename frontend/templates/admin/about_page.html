@@ -34,20 +34,49 @@
   </form>
 </div>
 
+{% set strategic = goals.get('strategic', []) %}
 <div class="card">
-  <div class="card-title">Our Goals <span class="tag">Bilingual</span></div>
+  <div class="card-title">Strategic Goals <span class="tag">Exactly 5 items</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">Edit all 5 goals below, then save. The order here is the order they appear on the page.</p>
   <form method="POST" action="/admin/about/save-goals">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <div class="frow">
-      <div class="fg">
-        <label>Strategic Goals — English</label>
-        <textarea name="strategic_en">{{ goals.get('strategic_en','') }}</textarea>
+    {% for g in strategic %}
+    <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:16px;margin-bottom:14px">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Goal {{ loop.index }}</div>
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="strategic_title_en" value="{{ g.get('title_en','') }}">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="strategic_title_ar" value="{{ g.get('title_ar','') }}" class="ar">
+        </div>
       </div>
-      <div class="fg">
-        <label>Strategic Goals — Arabic</label>
-        <textarea name="strategic_ar" class="ar">{{ goals.get('strategic_ar','') }}</textarea>
+      <div class="frow">
+        <div class="fg">
+          <label>Short Text — English</label>
+          <textarea name="strategic_text_en">{{ g.get('text_en','') }}</textarea>
+        </div>
+        <div class="fg">
+          <label>Short Text — Arabic</label>
+          <textarea name="strategic_text_ar" class="ar">{{ g.get('text_ar','') }}</textarea>
+        </div>
+      </div>
+      <div class="frow single">
+        <div class="fg">
+          <label>Icon (optional — leave blank for none)</label>
+          <input type="text" name="strategic_icon" value="{{ g.get('icon','') }}" placeholder="e.g. a short label or emoji">
+        </div>
       </div>
     </div>
+    {% endfor %}
+
+    <div style="font-family:'Playfair Display',serif;font-size:16px;margin:24px 0 14px;color:var(--gold)">General Goals (optional section)</div>
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+      <input type="checkbox" name="general_visible" {% if goals.get('general_visible') %}checked{% endif %} style="width:auto">
+      Show the General Goals section on the About page (currently OFF by default — pending confirmation from Safana Baqle)
+    </label>
     <div class="frow">
       <div class="fg">
         <label>General Goals — English</label>
