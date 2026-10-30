@@ -1,0 +1,181 @@
+{% extends 'admin/base.html' %}
+{% block title %}Music{% endblock %}
+{% block page_title %}Music &amp; Albums{% endblock %}
+
+{% block content %}
+{% set items = data.get('items', []) | sort(attribute='order') %}
+
+<div class="card">
+  <div class="card-title">Display Limit <span class="tag">Configurable</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:18px">Only items marked "Visible" show on the public Music page, up to this many (in Order). Raise this number as you add more items.</p>
+  <form method="POST" action="/admin/music/save-limit">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow single">
+      <div class="fg">
+        <label>Max visible items on the page</label>
+        <input type="number" name="display_limit" value="{{ data.get('display_limit', 12) }}" min="1" style="max-width:160px">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Limit</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Albums &amp; Singles <span class="tag">{{ items|length }} items</span></div>
+
+  {% for item in items %}
+  <div style="background:var(--surf2);border:1px solid var(--line);border-radius:4px;padding:20px;margin-bottom:18px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px">{{ item.title_en }}</div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-top:4px">{{ item.type }} · {{ item.artist }} · order {{ item.order }}</div>
+      </div>
+      {% if item.visible %}
+      <div class="badge b-sage">Visible</div>
+      {% else %}
+      <div class="badge b-gray">Hidden</div>
+      {% endif %}
+    </div>
+
+    {% if item.cover %}
+    <div style="margin-bottom:14px">
+      <img src="{{ item.cover }}" alt="" style="height:70px;width:70px;object-fit:cover;border-radius:4px;border:1px solid var(--line)">
+    </div>
+    {% endif %}
+
+    <form method="POST" action="/admin/music/edit/{{ item.id }}" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="frow">
+        <div class="fg">
+          <label>Type</label>
+          <select name="type">
+            <option value="album" {% if item.type == 'album' %}selected{% endif %}>Album</option>
+            <option value="single" {% if item.type == 'single' %}selected{% endif %}>Single</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Artist</label>
+          <select name="artist">
+            <option value="tanaghom" {% if item.artist == 'tanaghom' %}selected{% endif %}>Tanaghom</option>
+            <option value="gardenia" {% if item.artist == 'gardenia' %}selected{% endif %}>Gardenia</option>
+            <option value="unspecified" {% if item.artist == 'unspecified' %}selected{% endif %}>Unspecified</option>
+          </select>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="title_en" value="{{ item.title_en }}">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="title_ar" value="{{ item.title_ar }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Subtitle — English</label>
+          <input type="text" name="subtitle_en" value="{{ item.subtitle_en }}" placeholder="Album · 2024">
+        </div>
+        <div class="fg">
+          <label>Subtitle — Arabic</label>
+          <input type="text" name="subtitle_ar" value="{{ item.subtitle_ar }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Listen link (Spotify, YouTube, SoundCloud...)</label>
+          <input type="text" name="link" value="{{ item.link }}" placeholder="https://...">
+        </div>
+        <div class="fg">
+          <label>Order (lower shows first)</label>
+          <input type="number" name="order" value="{{ item.order }}" style="max-width:120px">
+        </div>
+      </div>
+      <div class="frow single">
+        <div class="fg">
+          <label>Cover image</label>
+          <input type="file" name="cover" accept="image/*" style="padding:10px">
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+        <input type="checkbox" name="visible" {% if item.visible %}checked{% endif %} style="width:auto">
+        Visible on the public site
+      </label>
+      <button type="submit" class="btn btn-gold">Save</button>
+    </form>
+    <form method="POST" action="/admin/music/delete/{{ item.id }}" style="margin-top:10px" onsubmit="return confirm('Delete this item permanently? To just hide it, uncheck Visible instead and Save.')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+  {% else %}
+  <p style="color:var(--gray);font-size:13px">No albums or singles yet. Add one below.</p>
+  {% endfor %}
+</div>
+
+<div class="card">
+  <div class="card-title">Add a New Album or Single <span class="tag">New</span></div>
+  <form method="POST" action="/admin/music/add" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Type</label>
+        <select name="type">
+          <option value="album">Album</option>
+          <option value="single">Single</option>
+        </select>
+      </div>
+      <div class="fg">
+        <label>Artist</label>
+        <select name="artist">
+          <option value="tanaghom">Tanaghom</option>
+          <option value="gardenia">Gardenia</option>
+          <option value="unspecified">Unspecified</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Title — English</label>
+        <input type="text" name="title_en" placeholder="Album or song title">
+      </div>
+      <div class="fg">
+        <label>Title — Arabic</label>
+        <input type="text" name="title_ar" class="ar">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Subtitle — English</label>
+        <input type="text" name="subtitle_en" placeholder="Album · 2024">
+      </div>
+      <div class="fg">
+        <label>Subtitle — Arabic</label>
+        <input type="text" name="subtitle_ar" class="ar">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Listen link</label>
+        <input type="text" name="link" placeholder="https://...">
+      </div>
+      <div class="fg">
+        <label>Order (lower shows first)</label>
+        <input type="number" name="order" placeholder="10" style="max-width:120px">
+      </div>
+    </div>
+    <div class="frow single">
+      <div class="fg">
+        <label>Cover image</label>
+        <input type="file" name="cover" accept="image/*" style="padding:10px">
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+      <input type="checkbox" name="visible" checked style="width:auto">
+      Visible on the public site
+    </label>
+    <button type="submit" class="btn btn-gold">Add</button>
+  </form>
+</div>
+{% endblock %}

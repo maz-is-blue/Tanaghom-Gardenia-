@@ -17,3 +17,7 @@ def choirs():
 @pages_bp.route('/gallery')
 def gallery():
     return render_template('gallery.html', active='gallery')
+
+@pages_bp.route('/music')
+def music():
+    return render_template('music.html', active='music')

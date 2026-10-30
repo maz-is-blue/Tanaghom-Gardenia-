@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Music · Tanaghom Gardenia{% endblock %}
+
+{% block head_extra %}
+<style>
+  .music-section { padding: 70px 36px 40px; max-width: 1280px; margin: 0 auto; }
+  .music-section:last-of-type { padding-bottom: 130px; }
+  .music-group-title { margin-bottom: 36px; }
+  .music-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 26px;
+  }
+  .music-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  }
+  .music-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+  .music-cover {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: var(--paper);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .music-cover img { width: 100%; height: 100%; object-fit: cover; }
+  .music-cover-placeholder { font-size: 46px; color: var(--sage); opacity: 0.6; }
+  .music-tag {
+    position: absolute;
+    top: 12px; left: 12px;
+    background: rgba(17,33,21,0.75);
+    color: var(--white);
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    padding: 5px 11px;
+    border-radius: 999px;
+  }
+  .music-info { padding: 20px 20px 22px; }
+  .music-info h3 { font-size: 19px; line-height: 1.3; }
+  .music-info h3.ar { margin-top: 4px; font-size: 17px; }
+  .music-info p { margin-top: 8px; font-size: 12.5px; color: var(--gray); line-height: 1.5; }
+  .music-info .text-link { margin-top: 14px; font-size: 11px; }
+  .music-empty { color: var(--gray); font-size: 14px; padding: 20px 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- ─── PAGE HEAD ─── -->
+<section class="page-head">
+  {% set clef_color = 'rgba(160,160,160,0.10)' %}
+  {% include '_clef_svg.html' %}
+  <div class="inner">
+    <div class="breadcrumb">
+      <span class="en"><a href="/">Home</a><span class="sep">/</span><span>Music</span></span>
+      <span class="ar"><a href="/">الرئيسية</a><span class="sep">/</span><span>الموسيقى</span></span>
+    </div>
+    <div class="section-eyebrow en">Discography</div>
+    <div class="section-eyebrow ar">الأعمال الموسيقية</div>
+    <h1 class="en">Our <em>Music</em></h1>
+    <span class="ar">موسيقانا</span>
+    <p class="lede en">Albums and singles from Gardenia and Tanaghom — voices recorded, voices shared.</p>
+    <p class="lede ar" style="font-family: 'Zain', sans-serif;">ألبومات ومنفردات من غاردينيا وتناغم — أصوات سُجّلت لتُشارَك.</p>
+  </div>
+</section>
+
+{% set limit = content.music.get('display_limit', 999) %}
+{% set visible_items = content.music.get('items', []) | selectattr('visible') | sort(attribute='order') | list %}
+{% set shown_items = visible_items[:limit] %}
+{% set tanaghom_items = shown_items | selectattr('artist', 'equalto', 'tanaghom') | list %}
+{% set gardenia_items = shown_items | selectattr('artist', 'equalto', 'gardenia') | list %}
+{% set other_items = shown_items | rejectattr('artist', 'equalto', 'tanaghom') | rejectattr('artist', 'equalto', 'gardenia') | list %}
+
+{% macro music_card(item) %}
+  <div class="music-card">
+    <div class="music-cover">
+      {% if item.cover %}
+        <img src="{{ item.cover }}" alt="">
+      {% else %}
+        <div class="music-cover-placeholder">♪</div>
+      {% endif %}
+      <span class="music-tag en">{{ 'Album' if item.type == 'album' else 'Single' }}</span>
+      <span class="music-tag ar" style="font-family:'Zain',sans-serif;">{{ 'ألبوم' if item.type == 'album' else 'منفردة' }}</span>
+    </div>
+    <div class="music-info">
+      <h3 class="en">{{ item.title_en }}</h3>
+      <h3 class="ar" style="font-family:'Zain',sans-serif;">{{ item.title_ar }}</h3>
+      {% if item.subtitle_en %}<p class="en">{{ item.subtitle_en }}</p>{% endif %}
+      {% if item.subtitle_ar %}<p class="ar" style="font-family:'Zain',sans-serif;">{{ item.subtitle_ar }}</p>{% endif %}
+      {% if item.link %}
+        <a href="{{ item.link }}" target="_blank" rel="noopener" class="text-link en">Listen <span>→</span></a>
+        <a href="{{ item.link }}" target="_blank" rel="noopener" class="text-link ar" style="font-family:'Zain',sans-serif;">استمع <span>←</span></a>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}
+
+{% if tanaghom_items %}
+<section class="music-section">
+  <div class="music-group-title">
+    <div class="section-eyebrow en">Tanaghom</div>
+    <div class="section-eyebrow ar">تناغم</div>
+  </div>
+  <div class="music-grid">
+    {% for item in tanaghom_items %}{{ music_card(item) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if gardenia_items %}
+<section class="music-section">
+  <div class="music-group-title">
+    <div class="section-eyebrow en">Gardenia</div>
+    <div class="section-eyebrow ar">غاردينيا</div>
+  </div>
+  <div class="music-grid">
+    {% for item in gardenia_items %}{{ music_card(item) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if other_items %}
+<section class="music-section">
+  <div class="music-group-title">
+    <div class="section-eyebrow en">More</div>
+    <div class="section-eyebrow ar">المزيد</div>
+  </div>
+  <div class="music-grid">
+    {% for item in other_items %}{{ music_card(item) }}{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% if not shown_items %}
+<section class="music-section">
+  <p class="music-empty en">No music published yet.</p>
+  <p class="music-empty ar" style="font-family:'Zain',sans-serif;">لا توجد أعمال موسيقية منشورة بعد.</p>
+</section>
+{% endif %}
+{% endblock %}

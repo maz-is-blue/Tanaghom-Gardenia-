@@ -1,0 +1,122 @@
+{
+  "display_limit": 12,
+  "items": [
+    {
+      "id": "tanaghom-7song",
+      "type": "album",
+      "artist": "tanaghom",
+      "title_en": "Tanaghom",
+      "title_ar": "تناغم",
+      "subtitle_en": "7-song album · My Voice and Your Voice",
+      "subtitle_ar": "ألبوم من 7 أغانٍ · صوتي وصوتك",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 1
+    },
+    {
+      "id": "zaghareed",
+      "type": "album",
+      "artist": "gardenia",
+      "title_en": "Zaghareed — Syrian Wedding Folk Songs",
+      "title_ar": "زغاريد سورية",
+      "subtitle_en": "Album · Safeguarding Syrian Heritage · 2017",
+      "subtitle_ar": "ألبوم · صون التراث السوري · 2017",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 2
+    },
+    {
+      "id": "sahab-locations",
+      "type": "album",
+      "artist": "unspecified",
+      "title_en": "PLACEHOLDER — Sahab (Cloud) Locations",
+      "title_ar": "نص تجريبي — مواقع السحاب",
+      "subtitle_en": "PLACEHOLDER: confirm artist (Tanaghom/Gardenia), year, cover, link",
+      "subtitle_ar": "نص تجريبي: يرجى تأكيد الفنان والسنة والغلاف والرابط",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 3
+    },
+    {
+      "id": "women-who-loved-the-divine",
+      "type": "album",
+      "artist": "unspecified",
+      "title_en": "PLACEHOLDER — Women Who Loved the Divine",
+      "title_ar": "نص تجريبي — العنوان العربي مطلوب",
+      "subtitle_en": "PLACEHOLDER: confirm artist, exact Arabic title, year, cover, link",
+      "subtitle_ar": "نص تجريبي",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 4
+    },
+    {
+      "id": "syriac",
+      "type": "album",
+      "artist": "unspecified",
+      "title_en": "PLACEHOLDER — Syriac",
+      "title_ar": "نص تجريبي — السريانية",
+      "subtitle_en": "PLACEHOLDER: confirm artist, exact Arabic title, year, cover, link",
+      "subtitle_ar": "نص تجريبي",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 5
+    },
+    {
+      "id": "waslat",
+      "type": "single",
+      "artist": "tanaghom",
+      "title_en": "PLACEHOLDER — Waslat",
+      "title_ar": "نص تجريبي — وصلة",
+      "subtitle_en": "PLACEHOLDER: how many Waslat tracks, and their exact titles?",
+      "subtitle_ar": "نص تجريبي: كم عدد أجزاء الوصلة وما عناوينها بالضبط؟",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 6
+    },
+    {
+      "id": "hayya-ala-al-salam",
+      "type": "single",
+      "artist": "tanaghom",
+      "title_en": "PLACEHOLDER — Hayya ala al-Salam",
+      "title_ar": "نص تجريبي — حي على السلام",
+      "subtitle_en": "PLACEHOLDER: confirm exact Arabic title, cover, link",
+      "subtitle_ar": "نص تجريبي",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 7
+    },
+    {
+      "id": "lamma-tall-min-al-shibak",
+      "type": "single",
+      "artist": "gardenia",
+      "title_en": "When She Looked Out From the Window",
+      "title_ar": "لما طل من الشباك",
+      "subtitle_en": "PLACEHOLDER: confirm cover art & link",
+      "subtitle_ar": "نص تجريبي: يرجى تزويدنا بالغلاف والرابط",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 8
+    },
+    {
+      "id": "al-layla-al-wahida-baad-al-alf",
+      "type": "single",
+      "artist": "gardenia",
+      "title_en": "One Thousand and One Nights",
+      "title_ar": "الليلة الواحدة بعد الألف",
+      "subtitle_en": "PLACEHOLDER: confirm cover art & link",
+      "subtitle_ar": "نص تجريبي: يرجى تزويدنا بالغلاف والرابط",
+      "cover": "",
+      "link": "",
+      "visible": true,
+      "order": 9
+    }
+  ]
+}

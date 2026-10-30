@@ -233,6 +233,106 @@ def save_about_stats():
     flash('Stats saved.', 'success')
     return redirect(url_for('admin.about_page'))
 
+# ── music / albums ───────────────────────────────────────────────────────────
+
+@admin_bp.route('/music')
+@login_required
+def music_page():
+    return render_template('admin/music_page.html', active='music',
+                           data=load('music', {'items': [], 'display_limit': 12}))
+
+@admin_bp.route('/music/save-limit', methods=['POST'])
+@login_required
+def music_save_limit():
+    data = load('music', {'items': []})
+    try:
+        data['display_limit'] = int(request.form.get('display_limit', 12))
+    except ValueError:
+        data['display_limit'] = 12
+    save_content('music', data)
+    flash('Display limit saved.', 'success')
+    return redirect(url_for('admin.music_page'))
+
+@admin_bp.route('/music/add', methods=['POST'])
+@login_required
+def music_add():
+    data  = load('music', {'items': []})
+    items = data.get('items', [])
+    base_id = secure_filename(request.form.get('title_en', 'item')).lower() or 'item'
+    new_id = base_id
+    n = 1
+    existing_ids = {i['id'] for i in items}
+    while new_id in existing_ids:
+        n += 1
+        new_id = '{}-{}'.format(base_id, n)
+
+    cover = ''
+    f = request.files.get('cover')
+    if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
+        fname = 'music_{}_{}'.format(new_id, secure_filename(f.filename))
+        dest  = os.path.join(_upload_dir(), 'music', fname)
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        f.save(dest)
+        cover = '/static/uploads/music/' + fname
+
+    try:
+        order = int(request.form.get('order', len(items) + 1))
+    except ValueError:
+        order = len(items) + 1
+
+    items.append({
+        'id': new_id,
+        'type': request.form.get('type', 'album'),
+        'artist': request.form.get('artist', 'unspecified'),
+        'title_en': request.form.get('title_en', ''),
+        'title_ar': request.form.get('title_ar', ''),
+        'subtitle_en': request.form.get('subtitle_en', ''),
+        'subtitle_ar': request.form.get('subtitle_ar', ''),
+        'cover': cover,
+        'link': request.form.get('link', ''),
+        'visible': request.form.get('visible') == 'on',
+        'order': order,
+    })
+    data['items'] = items
+    save_content('music', data)
+    flash('Album/single added.', 'success')
+    return redirect(url_for('admin.music_page'))
+
+@admin_bp.route('/music/edit/<item_id>', methods=['POST'])
+@login_required
+def music_edit(item_id):
+    data = load('music', {'items': []})
+    for item in data.get('items', []):
+        if item['id'] == item_id:
+            for k in ('type', 'artist', 'title_en', 'title_ar',
+                      'subtitle_en', 'subtitle_ar', 'link'):
+                item[k] = request.form.get(k, item.get(k, ''))
+            item['visible'] = request.form.get('visible') == 'on'
+            try:
+                item['order'] = int(request.form.get('order', item.get('order', 0)))
+            except ValueError:
+                pass
+            f = request.files.get('cover')
+            if f and f.filename and _allowed(f.filename, ALLOWED_IMG):
+                fname = 'music_{}_{}'.format(item_id, secure_filename(f.filename))
+                dest  = os.path.join(_upload_dir(), 'music', fname)
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                f.save(dest)
+                item['cover'] = '/static/uploads/music/' + fname
+            break
+    save_content('music', data)
+    flash('Saved.', 'success')
+    return redirect(url_for('admin.music_page'))
+
+@admin_bp.route('/music/delete/<item_id>', methods=['POST'])
+@login_required
+def music_delete(item_id):
+    data = load('music', {'items': []})
+    data['items'] = [i for i in data.get('items', []) if i['id'] != item_id]
+    save_content('music', data)
+    flash('Deleted.', 'success')
+    return redirect(url_for('admin.music_page'))
+
 # ── choirs page ──────────────────────────────────────────────────────────────
 
 @admin_bp.route('/choirs')
