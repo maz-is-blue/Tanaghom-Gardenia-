@@ -14,5 +14,9 @@
     {"id":12, "title":"Wahdaki · وحدكِ",             "titleAr":"وحدكِ",                      "date":"Mar 2024",  "dateAr":"مارس 2024",     "venue":"Sursock Museum",    "venueAr":"متحف سرسق",        "ensemble":"tanaghom","type":"concert",   "year":"2024","size":"normal", "image":"","palette":["#112115","#3A2F12","#E4BE43"]},
     {"id":13, "title":"Section Read-Through",        "titleAr":"قراءة مقاطع",                "date":"Sep 2023",  "dateAr":"سبتمبر 2023",   "venue":"Rehearsal Hall",    "venueAr":"قاعة البروفات",    "ensemble":"tanaghom","type":"rehearsal", "year":"2023","size":"square", "image":"","palette":["#112115","#D3DB9A","#E4BE43"]},
     {"id":14, "title":"Bruckner · Os justi",         "titleAr":"بروكنر · Os justi",          "date":"Apr 2024",  "dateAr":"أبريل 2024",    "venue":"St. Joseph Church", "venueAr":"كنيسة مار يوسف",   "ensemble":"gardenia","type":"concert",   "year":"2024","size":"normal", "image":"","palette":["#1D3322","#112115","#FFFFFF"]}
-  ]
+  ],
+  "press": {
+    "text_en": "High-resolution photographs, press releases for each concert, and biographies of our conductors and singers are available on request.",
+    "text_ar": "صور عالية الدقة وبيانات صحفية لكل حفلة وسير المايسترو والمغنين متاحة عند الطلب."
+  }
 }

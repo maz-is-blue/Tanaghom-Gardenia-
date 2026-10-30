@@ -34,6 +34,81 @@
   </form>
 </div>
 
+{% set partners = data.get('partners', {}) %}
+{% set partner_cards = partners.get('cards', []) %}
+<div class="card">
+  <div class="card-title">Partners &amp; Awards <span class="tag">3 fixed cards</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the "Partners & Awards" section on the About page (Dubai Choir Award, UNDP Syria, Syrian Network). The intro line, and each card's role/title/text, are editable below.</p>
+  <form method="POST" action="/admin/about/save-partners">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Section intro — English</label>
+        <textarea name="intro_en">{{ partners.get('intro_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Section intro — Arabic</label>
+        <textarea name="intro_ar" class="ar">{{ partners.get('intro_ar','') }}</textarea>
+      </div>
+    </div>
+    {% for card in partner_cards %}
+    <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:16px;margin-bottom:14px">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Card {{ loop.index }}</div>
+      <div class="frow">
+        <div class="fg">
+          <label>Role / date label — English</label>
+          <input type="text" name="partner_role_en" value="{{ card.get('role_en','') }}">
+        </div>
+        <div class="fg">
+          <label>Role / date label — Arabic</label>
+          <input type="text" name="partner_role_ar" value="{{ card.get('role_ar','') }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="partner_title_en" value="{{ card.get('title_en','') }}">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="partner_title_ar" value="{{ card.get('title_ar','') }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Text — English</label>
+          <textarea name="partner_text_en">{{ card.get('text_en','') }}</textarea>
+        </div>
+        <div class="fg">
+          <label>Text — Arabic</label>
+          <textarea name="partner_text_ar" class="ar">{{ card.get('text_ar','') }}</textarea>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-gold">Save Partners &amp; Awards</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Support CTA Text <span class="tag">Bilingual</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the paragraph under "Support our work" at the bottom of the About page.</p>
+  <form method="POST" action="/admin/about/save-cta">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Text — English</label>
+        <textarea name="cta_en">{{ data.get('cta_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Text — Arabic</label>
+        <textarea name="cta_ar" class="ar">{{ data.get('cta_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save CTA Text</button>
+  </form>
+</div>
+
 {% set strategic = goals.get('strategic', []) %}
 <div class="card">
   <div class="card-title">Strategic Goals <span class="tag">Exactly 5 items</span></div>

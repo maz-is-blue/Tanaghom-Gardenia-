@@ -1,9 +1,29 @@
 {
   "stats": [
-    {"num": "250", "format": "+", "label_en": "Youth Trained",      "label_ar": "شاب متدرب"},
-    {"num": "12",  "format": "+", "label_en": "Concerts in 2025",   "label_ar": "حفلة في 2025"},
-    {"num": "17",  "format": "",  "label_en": "Workshops & Forums",  "label_ar": "ورشة ومنتدى"},
-    {"num": "2016","format": "",  "label_en": "Year Founded",        "label_ar": "سنة التأسيس"}
+    {
+      "num": "250",
+      "format": "+",
+      "label_en": "Youth Trained",
+      "label_ar": "شاب متدرب"
+    },
+    {
+      "num": "12",
+      "format": "+",
+      "label_en": "Concerts in 2025",
+      "label_ar": "حفلة في 2025"
+    },
+    {
+      "num": "17",
+      "format": "",
+      "label_en": "Workshops & Forums",
+      "label_ar": "ورشة ومنتدى"
+    },
+    {
+      "num": "2016",
+      "format": "",
+      "label_en": "Year Founded",
+      "label_ar": "سنة التأسيس"
+    }
   ],
   "story": {
     "para1_en": "Tanaghom Gardenia began as Gardenia Women Choir, founded in Damascus in 2016 in the midst of the Syrian conflict, as a response to the growing silencing of women's voices. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.",
@@ -12,14 +32,76 @@
   },
   "goals": {
     "strategic": [
-      {"title_en": "PLACEHOLDER — Strategic Goal 1", "title_ar": "نص تجريبي — هدف استراتيجي 1", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
-      {"title_en": "PLACEHOLDER — Strategic Goal 2", "title_ar": "نص تجريبي — هدف استراتيجي 2", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
-      {"title_en": "PLACEHOLDER — Strategic Goal 3", "title_ar": "نص تجريبي — هدف استراتيجي 3", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
-      {"title_en": "PLACEHOLDER — Strategic Goal 4", "title_ar": "نص تجريبي — هدف استراتيجي 4", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""},
-      {"title_en": "PLACEHOLDER — Strategic Goal 5", "title_ar": "نص تجريبي — هدف استراتيجي 5", "text_en": "Ask Yara for the real text.", "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.", "icon": ""}
+      {
+        "title_en": "PLACEHOLDER — Strategic Goal 1",
+        "title_ar": "نص تجريبي — هدف استراتيجي 1",
+        "text_en": "Ask Yara for the real text.",
+        "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+        "icon": ""
+      },
+      {
+        "title_en": "PLACEHOLDER — Strategic Goal 2",
+        "title_ar": "نص تجريبي — هدف استراتيجي 2",
+        "text_en": "Ask Yara for the real text.",
+        "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+        "icon": ""
+      },
+      {
+        "title_en": "PLACEHOLDER — Strategic Goal 3",
+        "title_ar": "نص تجريبي — هدف استراتيجي 3",
+        "text_en": "Ask Yara for the real text.",
+        "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+        "icon": ""
+      },
+      {
+        "title_en": "PLACEHOLDER — Strategic Goal 4",
+        "title_ar": "نص تجريبي — هدف استراتيجي 4",
+        "text_en": "Ask Yara for the real text.",
+        "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+        "icon": ""
+      },
+      {
+        "title_en": "PLACEHOLDER — Strategic Goal 5",
+        "title_ar": "نص تجريبي — هدف استراتيجي 5",
+        "text_en": "Ask Yara for the real text.",
+        "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+        "icon": ""
+      }
     ],
     "general_visible": false,
     "general_en": "PLACEHOLDER — pending confirmation from Safana Baqle. Ask Yara/Safana for the real General Goals text before turning this section on.",
     "general_ar": "نص تجريبي — بانتظار تأكيد من سافانا بقلة. يرجى تزويدنا بالنص الفعلي للأهداف العامة قبل تفعيل هذا القسم."
-  }
+  },
+  "partners": {
+    "intro_en": "Our work has been recognized internationally and supported by leading organizations committed to peacebuilding and cultural development.",
+    "intro_ar": "حظي عملنا باعتراف دولي ودعم من منظمات رائدة ملتزمة ببناء السلام والتنمية الثقافية.",
+    "cards": [
+      {
+        "role_en": "International Award · 2019",
+        "role_ar": "جائزة دولية · 2019",
+        "title_en": "Dubai Choir Award",
+        "title_ar": "جائزة دبي الكورالية",
+        "text_en": "Gardenia Women Choir received international recognition at the Dubai International Choir Festival, marking the ensemble's global debut.",
+        "text_ar": "حصلت جوقة غاردينيا النسائية على اعتراف دولي في مهرجان دبي الكورالي الدولي، مما أطلق انطلاقتها العالمية."
+      },
+      {
+        "role_en": "Partner · Since 2019",
+        "role_ar": "شريك منذ 2019",
+        "title_en": "UNDP Syria",
+        "title_ar": "برنامج الأمم المتحدة الإنمائي",
+        "text_en": "The Tanaghom Youth Choir was launched in partnership with UNDP Syria, bringing together 250 young Syrians through music for peacebuilding and social cohesion.",
+        "text_ar": "أُطلقت جوقة تناغم الشبابية بشراكة مع برنامج الأمم المتحدة الإنمائي في سوريا، جامعةً 250 شاباً سورياً عبر الموسيقى لبناء السلام والتماسك الاجتماعي."
+      },
+      {
+        "role_en": "Community · Since 2016",
+        "role_ar": "مجتمع منذ 2016",
+        "title_en": "Syrian Network",
+        "title_ar": "الشبكة السورية",
+        "text_en": "A growing network of artists, musicians, educators, and advocates across Syria and the diaspora — united by the conviction that art is a human right.",
+        "text_ar": "شبكة متنامية من الفنانين والموسيقيين والمعلمين والمناصرين في سوريا والمهجر، يجمعهم الإيمان بأن الفن حق للجميع."
+      }
+    ]
+  },
+  "cta_en": "We are a registered cultural and civic association. Our work is made possible through partnerships, grants, and a growing community of supporters who believe art is a human right.",
+  "cta_ar": "نحن جمعية ثقافية ومدنية مسجلة. يتحقق عملنا بفضل الشراكات والمنح ومجتمع متنامٍ من المؤيدين الذين يؤمنون بأن الفن حق للجميع."
 }

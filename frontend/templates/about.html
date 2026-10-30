@@ -517,40 +517,33 @@
 </section>
 
 <!-- ─── PARTNERS & RECOGNITION ─── -->
+{% set partners = content.about.get('partners', {}) %}
+{% set partner_cards = partners.get('cards', []) %}
+{% set partner_icons = [
+  '<path d="M16 8h16v9c0 5-3.6 9-8 9s-8-4-8-9V8z"/><path d="M16 10h-5.5c0 5.5 2.3 8.5 5.8 9M32 10h5.5c0 5.5-2.3 8.5-5.8 9"/><path d="M24 26v6"/><path d="M18.5 39h11l-1-4h-9l-1 4z"/>',
+  '<circle cx="18" cy="24" r="11"/><circle cx="30" cy="24" r="11"/>',
+  '<circle cx="24" cy="10" r="4"/><circle cx="10" cy="34" r="4"/><circle cx="38" cy="34" r="4"/><path d="M24 14 L11 30 M24 14 L37 30 M14 34 L34 34"/>'
+] %}
 <section class="leadership reveal">
   <div class="lead-head">
     <div class="section-eyebrow en" style="margin: 0 auto;">Recognition</div>
     <div class="section-eyebrow ar" style="margin: 0 auto;">تقدير وشراكات</div>
     <h2 class="section-title"><span class="en">Partners &amp; Awards</span><span class="ar">الشركاء والجوائز</span></h2>
-    <p class="en" style="margin-top: 18px; color: var(--gray);">Our work has been recognized internationally and supported by leading organizations committed to peacebuilding and cultural development.</p>
-    <p class="ar" style="margin-top: 18px; color: var(--gray); font-family: 'Zain', sans-serif;">حظي عملنا باعتراف دولي ودعم من منظمات رائدة ملتزمة ببناء السلام والتنمية الثقافية.</p>
+    <p class="en" style="margin-top: 18px; color: var(--gray);">{{ partners.get('intro_en', 'Our work has been recognized internationally and supported by leading organizations committed to peacebuilding and cultural development.') }}</p>
+    <p class="ar" style="margin-top: 18px; color: var(--gray); font-family: 'Zain', sans-serif;">{{ partners.get('intro_ar', 'حظي عملنا باعتراف دولي ودعم من منظمات رائدة ملتزمة ببناء السلام والتنمية الثقافية.') }}</p>
   </div>
 
   <div class="lead-grid reveal-stagger">
+    {% for card in partner_cards %}
     <div class="lead-card" style="text-align: center; padding: 48px 32px;">
-      <div style="color: var(--gold); margin-bottom: 18px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="margin:0 auto"><path d="M16 8h16v9c0 5-3.6 9-8 9s-8-4-8-9V8z"/><path d="M16 10h-5.5c0 5.5 2.3 8.5 5.8 9M32 10h5.5c0 5.5-2.3 8.5-5.8 9"/><path d="M24 26v6"/><path d="M18.5 39h11l-1-4h-9l-1 4z"/></svg></div>
-      <div class="role en">International Award · 2019</div>
-      <div class="role ar" style="font-family: 'Zain', sans-serif;">جائزة دولية · 2019</div>
-      <h3 style="margin-top: 12px;"><span class="en">Dubai Choir Award</span><span class="ar">جائزة دبي الكورالية</span></h3>
-      <p class="en" style="margin-top: 10px; font-size: 15px;">Gardenia Women Choir received international recognition at the Dubai International Choir Festival, marking the ensemble's global debut.</p>
-      <p class="ar" style="margin-top: 10px; font-size: 15px; font-family: 'Zain', sans-serif; direction: rtl;">حصلت جوقة غاردينيا النسائية على اعتراف دولي في مهرجان دبي الكورالي الدولي، مما أطلق انطلاقتها العالمية.</p>
+      <div style="color: var(--gold); margin-bottom: 18px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="margin:0 auto">{{ partner_icons[loop.index0] | safe if loop.index0 < partner_icons|length else '' }}</svg></div>
+      <div class="role en">{{ card.get('role_en', '') }}</div>
+      <div class="role ar" style="font-family: 'Zain', sans-serif;">{{ card.get('role_ar', '') }}</div>
+      <h3 style="margin-top: 12px;"><span class="en">{{ card.get('title_en', '') }}</span><span class="ar">{{ card.get('title_ar', '') }}</span></h3>
+      <p class="en" style="margin-top: 10px; font-size: 15px;">{{ card.get('text_en', '') }}</p>
+      <p class="ar" style="margin-top: 10px; font-size: 15px; font-family: 'Zain', sans-serif; direction: rtl;">{{ card.get('text_ar', '') }}</p>
     </div>
-    <div class="lead-card" style="text-align: center; padding: 48px 32px;">
-      <div style="color: var(--gold); margin-bottom: 18px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="margin:0 auto"><circle cx="18" cy="24" r="11"/><circle cx="30" cy="24" r="11"/></svg></div>
-      <div class="role en">Partner · Since 2019</div>
-      <div class="role ar" style="font-family: 'Zain', sans-serif;">شريك منذ 2019</div>
-      <h3 style="margin-top: 12px;"><span class="en">UNDP Syria</span><span class="ar">برنامج الأمم المتحدة الإنمائي</span></h3>
-      <p class="en" style="margin-top: 10px; font-size: 15px;">The Tanaghom Youth Choir was launched in partnership with UNDP Syria, bringing together 250 young Syrians through music for peacebuilding and social cohesion.</p>
-      <p class="ar" style="margin-top: 10px; font-size: 15px; font-family: 'Zain', sans-serif; direction: rtl;">أُطلقت جوقة تناغم الشبابية بشراكة مع برنامج الأمم المتحدة الإنمائي في سوريا، جامعةً 250 شاباً سورياً عبر الموسيقى لبناء السلام والتماسك الاجتماعي.</p>
-    </div>
-    <div class="lead-card" style="text-align: center; padding: 48px 32px;">
-      <div style="color: var(--gold); margin-bottom: 18px;"><svg width="44" height="44" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.4" style="margin:0 auto"><circle cx="24" cy="10" r="4"/><circle cx="10" cy="34" r="4"/><circle cx="38" cy="34" r="4"/><path d="M24 14 L11 30 M24 14 L37 30 M14 34 L34 34"/></svg></div>
-      <div class="role en">Community · Since 2016</div>
-      <div class="role ar" style="font-family: 'Zain', sans-serif;">مجتمع منذ 2016</div>
-      <h3 style="margin-top: 12px;"><span class="en">Syrian Network</span><span class="ar">الشبكة السورية</span></h3>
-      <p class="en" style="margin-top: 10px; font-size: 15px;">A growing network of artists, musicians, educators, and advocates across Syria and the diaspora — united by the conviction that art is a human right.</p>
-      <p class="ar" style="margin-top: 10px; font-size: 15px; font-family: 'Zain', sans-serif; direction: rtl;">شبكة متنامية من الفنانين والموسيقيين والمعلمين والمناصرين في سوريا والمهجر، يجمعهم الإيمان بأن الفن حق للجميع.</p>
-    </div>
+    {% endfor %}
   </div>
 </section>
 
@@ -559,8 +552,8 @@
   <div class="section-eyebrow en" style="margin: 0 auto;">Connect With Us</div>
   <div class="section-eyebrow ar" style="margin: 0 auto;">تواصل معنا</div>
   <h2 class="section-title" style="margin-top: 22px;"><span class="en">Support our work</span><span class="ar">ادعموا عملنا</span></h2>
-  <p class="en" style="max-width: 540px; margin: 22px auto 0; color: var(--gray);">We are a registered cultural and civic association. Our work is made possible through partnerships, grants, and a growing community of supporters who believe art is a human right.</p>
-  <p class="ar" style="max-width: 540px; margin: 22px auto 0; color: var(--gray); font-family: 'Zain', sans-serif;">نحن جمعية ثقافية ومدنية مسجلة. يتحقق عملنا بفضل الشراكات والمنح ومجتمع متنامٍ من المؤيدين الذين يؤمنون بأن الفن حق للجميع.</p>
+  <p class="en" style="max-width: 540px; margin: 22px auto 0; color: var(--gray);">{{ content.about.get('cta_en', 'We are a registered cultural and civic association. Our work is made possible through partnerships, grants, and a growing community of supporters who believe art is a human right.') }}</p>
+  <p class="ar" style="max-width: 540px; margin: 22px auto 0; color: var(--gray); font-family: 'Zain', sans-serif;">{{ content.about.get('cta_ar', 'نحن جمعية ثقافية ومدنية مسجلة. يتحقق عملنا بفضل الشراكات والمنح ومجتمع متنامٍ من المؤيدين الذين يؤمنون بأن الفن حق للجميع.') }}</p>
   <div style="display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 38px;">
     <a href="mailto:info@tanaghomgardenia.org" class="cta magnetic"><span class="en">Get in Touch <span class="arrow">→</span></span><span class="ar">تواصل معنا <span class="arrow">←</span></span></a>
     <a href="/choirs" class="text-link" style="color: var(--black); padding: 18px 0;"><span class="en">Our Choirs <span>→</span></span><span class="ar">جوقاتنا <span>←</span></span></a>

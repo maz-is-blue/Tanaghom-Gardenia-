@@ -60,8 +60,8 @@
   <div class="footer-grid">
     <div class="footer-brand">
       <img class="logo-full footer-logo" style="height:64px;object-fit:contain" src="{{ content.settings.get('logo') or asset_url('img/logo-full.svg') }}" alt="{{ content.settings.get('site_name_en','Tanaghom Gardenia') }}" />
-      <p class="en">A non-profit cultural and civic association, founded in Damascus in 2016.</p>
-      <p class="ar">جمعية ثقافية ومدنية غير ربحية، تأسست في دمشق عام 2016.</p>
+      <p class="en">{{ content.settings.get('footer_tagline_en', 'A non-profit cultural and civic association, founded in Damascus in 2016.') }}</p>
+      <p class="ar">{{ content.settings.get('footer_tagline_ar', 'جمعية ثقافية ومدنية غير ربحية، تأسست في دمشق عام 2016.') }}</p>
     </div>
     <div class="footer-col">
       <h4 class="en">Explore</h4>

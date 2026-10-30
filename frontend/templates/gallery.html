@@ -389,8 +389,9 @@
   <div class="section-eyebrow en" style="margin: 0 auto;">Press &amp; Media</div>
   <div class="section-eyebrow ar" style="margin: 0 auto;">الصحافة والإعلام</div>
   <h2 style="margin-top: 22px;"><span class="en">For press &amp; <em>media inquiries</em></span><span class="ar" style="display: block; margin-top: 14px; color: var(--gray); font-size: 0.55em;">للصحافة والإعلام</span></h2>
-  <p class="en">High-resolution photographs, press releases for each concert, and biographies of our conductors and singers are available on request.</p>
-  <p class="ar" style="font-family:'Zain',sans-serif;">صور عالية الدقة وبيانات صحفية لكل حفلة وسير المايسترو والمغنين متاحة عند الطلب.</p>
+  {% set press = content.gallery.get('press', {}) %}
+  <p class="en">{{ press.get('text_en', 'High-resolution photographs, press releases for each concert, and biographies of our conductors and singers are available on request.') }}</p>
+  <p class="ar" style="font-family:'Zain',sans-serif;">{{ press.get('text_ar', 'صور عالية الدقة وبيانات صحفية لكل حفلة وسير المايسترو والمغنين متاحة عند الطلب.') }}</p>
   <a href="mailto:press@tanaghomgardenia.org" class="cta magnetic" style="margin-top: 38px;">press@tanaghomgardenia.org <span class="arrow">→</span></a>
 </section>
 

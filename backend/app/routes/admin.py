@@ -247,6 +247,41 @@ def save_about_stats():
     flash('Stats saved.', 'success')
     return redirect(url_for('admin.about_page'))
 
+@admin_bp.route('/about/save-partners', methods=['POST'])
+@login_required
+def save_about_partners():
+    data = load('about', {})
+    role_en  = request.form.getlist('partner_role_en')
+    role_ar  = request.form.getlist('partner_role_ar')
+    title_en = request.form.getlist('partner_title_en')
+    title_ar = request.form.getlist('partner_title_ar')
+    text_en  = request.form.getlist('partner_text_en')
+    text_ar  = request.form.getlist('partner_text_ar')
+    cards = [
+        {'role_en': role_en[i], 'role_ar': role_ar[i],
+         'title_en': title_en[i], 'title_ar': title_ar[i],
+         'text_en': text_en[i], 'text_ar': text_ar[i]}
+        for i in range(len(role_en))
+    ]
+    data['partners'] = {
+        'intro_en': request.form.get('intro_en', ''),
+        'intro_ar': request.form.get('intro_ar', ''),
+        'cards': cards,
+    }
+    save_content('about', data)
+    flash('Partners & Awards saved.', 'success')
+    return redirect(url_for('admin.about_page'))
+
+@admin_bp.route('/about/save-cta', methods=['POST'])
+@login_required
+def save_about_cta():
+    data = load('about', {})
+    data['cta_en'] = request.form.get('cta_en', '')
+    data['cta_ar'] = request.form.get('cta_ar', '')
+    save_content('about', data)
+    flash('CTA text saved.', 'success')
+    return redirect(url_for('admin.about_page'))
+
 # ── music / albums ───────────────────────────────────────────────────────────
 
 @admin_bp.route('/music')
@@ -483,6 +518,18 @@ def gallery_upload_temp():
 def gallery_page():
     return render_template('admin/gallery_page.html', active='gallery',
                            data=load('gallery', {'items': []}))
+
+@admin_bp.route('/gallery/save-press', methods=['POST'])
+@login_required
+def gallery_save_press():
+    data = load('gallery', {'items': []})
+    data['press'] = {
+        'text_en': request.form.get('text_en', ''),
+        'text_ar': request.form.get('text_ar', ''),
+    }
+    save_content('gallery', data)
+    flash('Press text saved.', 'success')
+    return redirect(url_for('admin.gallery_page'))
 
 @admin_bp.route('/gallery/upload-video-temp', methods=['POST'])
 @login_required

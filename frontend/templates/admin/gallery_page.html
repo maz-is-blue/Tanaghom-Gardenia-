@@ -31,6 +31,26 @@
 
 {% block content %}
 {% set items = data.get('items', []) %}
+{% set press = data.get('press', {}) %}
+
+<div class="card">
+  <div class="card-title">Press &amp; Media Text <span class="tag">Bilingual</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the "For press & media inquiries" text at the bottom of the public Gallery page.</p>
+  <form method="POST" action="/admin/gallery/save-press">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Text — English</label>
+        <textarea name="text_en">{{ press.get('text_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Text — Arabic</label>
+        <textarea name="text_ar" class="ar">{{ press.get('text_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Press Text</button>
+  </form>
+</div>
 
 <!-- Upload progress overlay -->
 <div class="upload-overlay" id="upload-overlay">
