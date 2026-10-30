@@ -495,8 +495,9 @@
         <span class="en">Gardenia</span>
         <span class="ar">غاردينيا</span>
       </h2>
-      <p class="desc en">A professional all-female choir of young Syrian women — combining traditional melodies with original compositions, using music as a tool for healing, solidarity, and women's empowerment.</p>
-      <p class="desc ar" style="font-family: 'Zain', sans-serif; direction: rtl; text-align: right;">جوقة نسائية احترافية من الشابات السوريات — تجمع بين الألحان التراثية والتأليف الأصيل، مستخدمةً الموسيقى أداةً للتعافي والتضامن وتمكين المرأة.</p>
+      {% set gardenia_c = content.choirs.get('gardenia', {}) %}
+      <p class="desc en">{{ gardenia_c.get('desc_en', "A professional all-female choir of young Syrian women — combining traditional melodies with original compositions, using music as a tool for healing, solidarity, and women's empowerment.") }}</p>
+      <p class="desc ar" style="font-family: 'Zain', sans-serif; direction: rtl; text-align: right;">{{ gardenia_c.get('desc_ar', 'جوقة نسائية احترافية من الشابات السوريات — تجمع بين الألحان التراثية والتأليف الأصيل، مستخدمةً الموسيقى أداةً للتعافي والتضامن وتمكين المرأة.') }}</p>
       <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="#gardenia-listen" class="cta magnetic" style="background: var(--sage-deep); border-color: var(--sage-deep); color: var(--white);"><span class="en">Our Works <span class="arrow">→</span></span><span class="ar">أعمالنا <span class="arrow">←</span></span></a>
         <a href="#gardenia-audition" class="text-link" style="color: var(--black); padding: 18px 0;"><span class="en">Get Involved <span>→</span></span><span class="ar">شارك معنا <span>←</span></span></a>
@@ -622,8 +623,8 @@
       <div class="section-eyebrow en" style="color: var(--gold);">Awards &amp; Recognition</div>
       <div class="section-eyebrow ar" style="color: var(--gold);">الجوائز والتقدير</div>
       <h3 style="margin-top: 20px;"><span class="en">Internationally <em style="font-style: italic; color: var(--gold);">recognized</em></span><span class="ar">تقدير دولي</span></h3>
-      <p class="en">Gardenia has won production grants from Al Mawred Cultural Resource, AFAC, and Ettijahat for Independent Culture. In 2019, the choir won Best Regional Choir and Best Women's Choir at the Dubai Choir Festival.</p>
-      <p class="ar" style="font-family: 'Zain', sans-serif; direction: rtl;">فازت غاردينيا بمنح إنتاج من المورد الثقافي وأفاك واتجاهات للثقافة المستقلة. وفي 2019، حصلت على جائزتَي أفضل جوقة نسائية وأفضل جوقة إقليمية في مهرجان دبي الكورالي.</p>
+      <p class="en">{{ gardenia_c.get('achievements_en', 'Gardenia has won production grants from Al Mawred Cultural Resource, AFAC, and Ettijahat for Independent Culture. In 2019, the choir won Best Regional Choir and Best Women\'s Choir at the Dubai Choir Festival.') }}</p>
+      <p class="ar" style="font-family: 'Zain', sans-serif; direction: rtl;">{{ gardenia_c.get('achievements_ar', 'فازت غاردينيا بمنح إنتاج من المورد الثقافي وأفاك واتجاهات للثقافة المستقلة. وفي 2019، حصلت على جائزتَي أفضل جوقة نسائية وأفضل جوقة إقليمية في مهرجان دبي الكورالي.') }}</p>
     </div>
     <div class="next-list">
       <div class="row"><span class="when">Dubai 2019</span><span class="where en">Best Women's Choir</span><span class="where ar" style="font-family:'Zain',sans-serif;">أفضل جوقة نسائية</span></div>
@@ -643,8 +644,9 @@
         <span class="en">Tanaghom</span>
         <span class="ar">تناغم</span>
       </h2>
-      <p class="desc en">A Syrian family of 250 young men and women from all walks of life — using music and group singing as a tool for positive communication, social cohesion, and peacebuilding across Syria.</p>
-      <p class="desc ar" style="font-family: 'Zain', sans-serif; direction: rtl; text-align: right;">عائلة سورية من 250 شاباً وشابةً من مختلف شرائح المجتمع — تستخدم الموسيقى والغناء الجماعي أداةً للتواصل الإيجابي والتماسك الاجتماعي وبناء السلام في سوريا.</p>
+      {% set tanaghom_c = content.choirs.get('tanaghom', {}) %}
+      <p class="desc en">{{ tanaghom_c.get('desc_en', 'A Syrian family of 250 young men and women from all walks of life — using music and group singing as a tool for positive communication, social cohesion, and peacebuilding across Syria.') }}</p>
+      <p class="desc ar" style="font-family: 'Zain', sans-serif; direction: rtl; text-align: right;">{{ tanaghom_c.get('desc_ar', 'عائلة سورية من 250 شاباً وشابةً من مختلف شرائح المجتمع — تستخدم الموسيقى والغناء الجماعي أداةً للتواصل الإيجابي والتماسك الاجتماعي وبناء السلام في سوريا.') }}</p>
       <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;">
         <a href="#tanaghom-listen" class="cta magnetic"><span class="en">Our Album <span class="arrow">→</span></span><span class="ar">ألبومنا <span class="arrow">←</span></span></a>
         <a href="#tanaghom-audition" class="text-link on-dark"><span class="en">Join Us <span>→</span></span><span class="ar">انضم إلينا <span>←</span></span></a>
@@ -736,8 +738,8 @@
       <div class="section-eyebrow en" style="color: var(--black);">Join Tanaghom</div>
       <div class="section-eyebrow ar" style="color: var(--black);">انضم إلى تناغم</div>
       <h3 style="margin-top: 20px;"><span class="en">A Syrian family <em style="font-style: italic;">open to all</em></span><span class="ar">عائلة سورية مفتوحة</span></h3>
-      <p class="en">Tanaghom Choir believes that diversity and dialogue are the key to peace and social cohesion. The choir community remains active and a new phase of the project is planned. If you are a young Syrian who believes in the power of music, we want to hear from you.</p>
-      <p class="ar" style="font-family: 'Zain', sans-serif; direction: rtl;">يؤمن كورال تناغم بأن التنوع والحوار مفتاح السلام والتماسك الاجتماعي. يبقى مجتمع الجوقة نشطاً ومرحلة جديدة من المشروع قيد التخطيط. إذا كنت شاباً سورياً يؤمن بقوة الموسيقى، نريد أن نسمع منك.</p>
+      <p class="en">{{ tanaghom_c.get('get_involved_en', 'Tanaghom Choir believes that diversity and dialogue are the key to peace and social cohesion. The choir community remains active and a new phase of the project is planned. If you are a young Syrian who believes in the power of music, we want to hear from you.') }}</p>
+      <p class="ar" style="font-family: 'Zain', sans-serif; direction: rtl;">{{ tanaghom_c.get('get_involved_ar', 'يؤمن كورال تناغم بأن التنوع والحوار مفتاح السلام والتماسك الاجتماعي. يبقى مجتمع الجوقة نشطاً ومرحلة جديدة من المشروع قيد التخطيط. إذا كنت شاباً سورياً يؤمن بقوة الموسيقى، نريد أن نسمع منك.') }}</p>
     </div>
     <div class="next-list">
       <div class="row"><span class="when en">Coming Soon</span><span class="when ar" style="font-family:'Zain',sans-serif;">قريباً</span><span class="where en">New Phase</span><span class="where ar" style="font-family:'Zain',sans-serif;">مرحلة جديدة</span></div>

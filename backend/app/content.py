@@ -31,4 +31,5 @@ def load_all():
         'audio':    audio_data,
         'audio_by_id': audio_by_id,
         'music':    load('music', {'items': [], 'display_limit': 999}),
+        'choirs':   load('choirs', {}),
     }

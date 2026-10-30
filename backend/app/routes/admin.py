@@ -339,7 +339,20 @@ def music_delete(item_id):
 @login_required
 def choirs_page():
     return render_template('admin/choirs_page.html', active='choirs',
-                           data=load('audio', {'tracks': []}))
+                           data=load('audio', {'tracks': []}),
+                           choirs_text=load('choirs', {}))
+
+@admin_bp.route('/choirs/save-text', methods=['POST'])
+@login_required
+def save_choirs_text():
+    data = load('choirs', {})
+    data['gardenia'] = {k: request.form.get('gardenia_' + k, '') for k in
+                        ('desc_en', 'desc_ar', 'achievements_en', 'achievements_ar')}
+    data['tanaghom'] = {k: request.form.get('tanaghom_' + k, '') for k in
+                        ('desc_en', 'desc_ar', 'get_involved_en', 'get_involved_ar')}
+    save_content('choirs', data)
+    flash('Choir descriptions saved.', 'success')
+    return redirect(url_for('admin.choirs_page'))
 
 @admin_bp.route('/choirs/save-track/<track_id>', methods=['POST'])
 @login_required

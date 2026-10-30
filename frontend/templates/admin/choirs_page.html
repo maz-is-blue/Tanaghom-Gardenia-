@@ -4,6 +4,61 @@
 
 {% block content %}
 {% set tracks = data.get('tracks', []) %}
+{% set gardenia_c = choirs_text.get('gardenia', {}) %}
+{% set tanaghom_c = choirs_text.get('tanaghom', {}) %}
+
+<div class="card">
+  <div class="card-title">Choir Descriptions &amp; Text <span class="tag">Bilingual</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the written description, awards, and "get involved" text on the Choirs page for each ensemble.</p>
+  <form method="POST" action="/admin/choirs/save-text">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div style="font-family:'Playfair Display',serif;font-size:16px;margin-bottom:14px;color:var(--gold)">Gardenia</div>
+    <div class="frow">
+      <div class="fg">
+        <label>Description — English</label>
+        <textarea name="gardenia_desc_en">{{ gardenia_c.get('desc_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Description — Arabic</label>
+        <textarea name="gardenia_desc_ar" class="ar">{{ gardenia_c.get('desc_ar','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Awards &amp; Achievements — English</label>
+        <textarea name="gardenia_achievements_en">{{ gardenia_c.get('achievements_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Awards &amp; Achievements — Arabic</label>
+        <textarea name="gardenia_achievements_ar" class="ar">{{ gardenia_c.get('achievements_ar','') }}</textarea>
+      </div>
+    </div>
+
+    <div style="font-family:'Playfair Display',serif;font-size:16px;margin:24px 0 14px;color:var(--gold)">Tanaghom</div>
+    <div class="frow">
+      <div class="fg">
+        <label>Description — English</label>
+        <textarea name="tanaghom_desc_en">{{ tanaghom_c.get('desc_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Description — Arabic</label>
+        <textarea name="tanaghom_desc_ar" class="ar">{{ tanaghom_c.get('desc_ar','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Get Involved — English</label>
+        <textarea name="tanaghom_get_involved_en">{{ tanaghom_c.get('get_involved_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Get Involved — Arabic</label>
+        <textarea name="tanaghom_get_involved_ar" class="ar">{{ tanaghom_c.get('get_involved_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Choir Text</button>
+  </form>
+</div>
 
 <div class="card">
   <div class="card-title">Audio Tracks <span class="tag">{{ tracks|length }} tracks</span></div>
