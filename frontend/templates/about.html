@@ -417,14 +417,15 @@
       </p>
     </div>
     <div class="mission-body">
+      {% set story = content.about.get('story', {}) %}
       <p class="en">
-        Tanaghom Gardenia began as Gardenia Women Choir, founded in Damascus in 2016 in the midst of the Syrian conflict, as a response to the growing silencing of women's voices. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.
+        {{ story.get('para1_en', "Tanaghom Gardenia began as Gardenia Women Choir, founded in Damascus in 2016 in the midst of the Syrian conflict, as a response to the growing silencing of women's voices. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.") | safe }}
       </p>
       <p class="en">
-        We use collective singing and artistic collaboration as tools for dialogue, advocacy, and women's empowerment. Our strategy integrates three pillars: artistic creation that amplifies women's voices and shared values; cultural participation that builds community connection and social cohesion; and civic engagement through partnerships and public dialogue around justice, equality, and freedom of expression.
+        {{ story.get('para2_en', "We use collective singing and artistic collaboration as tools for dialogue, advocacy, and women's empowerment. Our strategy integrates three pillars: artistic creation that amplifies women's voices and shared values; cultural participation that builds community connection and social cohesion; and civic engagement through partnerships and public dialogue around justice, equality, and freedom of expression.") | safe }}
       </p>
       <div class="ar-pull ar">
-        مهمّتنا ربط الفن بالمواطنة وحقوق الإنسان، إيماناً بأن الثقافة قادرة على إعادة بناء الثقة والتضامن في المجتمعات ما بعد النزاع. نستخدم الغناء الجماعي والتعاون الفني أدواتٍ للحوار والمناصرة وتمكين المرأة.
+        {{ story.get('pull_ar', 'مهمّتنا ربط الفن بالمواطنة وحقوق الإنسان، إيماناً بأن الثقافة قادرة على إعادة بناء الثقة والتضامن في المجتمعات ما بعد النزاع. نستخدم الغناء الجماعي والتعاون الفني أدواتٍ للحوار والمناصرة وتمكين المرأة.') | safe }}
       </div>
     </div>
   </div>
@@ -456,6 +457,31 @@
       <h3><span class="en">Civic Engagement</span><span class="ar">المشاركة المدنية</span></h3>
       <p class="en">Partnerships and public dialogue around justice, equality, and freedom of expression — because art is a tool for advocacy as much as beauty.</p>
       <p class="ar" style="font-family: 'Zain', sans-serif;">شراكات وحوار عام حول العدالة والمساواة وحرية التعبير — لأن الفن أداة مناصرة بقدر ما هو جمال.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GOALS ─── -->
+<section class="values reveal">
+  {% set goals = content.about.get('goals', {}) %}
+  <div class="values-head">
+    <div class="section-eyebrow en" style="margin: 0 auto;">Where We're Headed</div>
+    <div class="section-eyebrow ar" style="margin: 0 auto;">إلى أين نتجه</div>
+    <h2 class="section-title"><span class="en">Our Goals</span><span class="ar">أهدافنا</span></h2>
+  </div>
+
+  <div class="values-grid" style="grid-template-columns: repeat(2, 1fr);">
+    <div class="value-card">
+      <div class="v-num">01</div>
+      <h3><span class="en">Strategic Goals</span><span class="ar">الأهداف الاستراتيجية</span></h3>
+      <p class="en">{{ goals.get('strategic_en', '') }}</p>
+      <p class="ar" style="font-family: 'Zain', sans-serif;">{{ goals.get('strategic_ar', '') }}</p>
+    </div>
+    <div class="value-card">
+      <div class="v-num">02</div>
+      <h3><span class="en">General Goals</span><span class="ar">الأهداف العامة</span></h3>
+      <p class="en">{{ goals.get('general_en', '') }}</p>
+      <p class="ar" style="font-family: 'Zain', sans-serif;">{{ goals.get('general_ar', '') }}</p>
     </div>
   </div>
 </section>

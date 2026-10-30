@@ -4,6 +4,63 @@
 
 {% block content %}
 {% set stats = data.get('stats', []) %}
+{% set story = data.get('story', {}) %}
+{% set goals = data.get('goals', {}) %}
+
+<div class="card">
+  <div class="card-title">Our Story <span class="tag">Bilingual</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the "Tanaghom Gardenia began as Gardenia Women Choir..." text in the Mission section. Note: this is separate from the Home page's "Our Story" text — each page has its own.</p>
+  <form method="POST" action="/admin/about/save-story">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow single">
+      <div class="fg">
+        <label>Paragraph 1 — English</label>
+        <textarea name="para1_en">{{ story.get('para1_en','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow single">
+      <div class="fg">
+        <label>Paragraph 2 — English</label>
+        <textarea name="para2_en">{{ story.get('para2_en','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow single">
+      <div class="fg">
+        <label>Arabic summary (shown as the pull-quote)</label>
+        <textarea name="pull_ar" class="ar">{{ story.get('pull_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Our Story</button>
+  </form>
+</div>
+
+<div class="card">
+  <div class="card-title">Our Goals <span class="tag">Bilingual</span></div>
+  <form method="POST" action="/admin/about/save-goals">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Strategic Goals — English</label>
+        <textarea name="strategic_en">{{ goals.get('strategic_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Strategic Goals — Arabic</label>
+        <textarea name="strategic_ar" class="ar">{{ goals.get('strategic_ar','') }}</textarea>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>General Goals — English</label>
+        <textarea name="general_en">{{ goals.get('general_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>General Goals — Arabic</label>
+        <textarea name="general_ar" class="ar">{{ goals.get('general_ar','') }}</textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-gold">Save Goals</button>
+  </form>
+</div>
 
 <div class="card">
   <div class="card-title">About Stats <span class="tag">{{ stats|length }} items</span></div>

@@ -4,5 +4,16 @@
     {"num": "12",  "format": "+", "label_en": "Concerts in 2025",   "label_ar": "حفلة في 2025"},
     {"num": "17",  "format": "",  "label_en": "Workshops & Forums",  "label_ar": "ورشة ومنتدى"},
     {"num": "2016","format": "",  "label_en": "Year Founded",        "label_ar": "سنة التأسيس"}
-  ]
+  ],
+  "story": {
+    "para1_en": "Tanaghom Gardenia began as Gardenia Women Choir, founded in Damascus in 2016 in the midst of the Syrian conflict, as a response to the growing silencing of women's voices. The founders — artists, musicians, and human rights advocates — believed that choral singing could become a peaceful, inclusive form of resistance and healing.",
+    "para2_en": "We use collective singing and artistic collaboration as tools for dialogue, advocacy, and women's empowerment. Our strategy integrates three pillars: artistic creation that amplifies women's voices and shared values; cultural participation that builds community connection and social cohesion; and civic engagement through partnerships and public dialogue around justice, equality, and freedom of expression.",
+    "pull_ar": "مهمّتنا ربط الفن بالمواطنة وحقوق الإنسان، إيماناً بأن الثقافة قادرة على إعادة بناء الثقة والتضامن في المجتمعات ما بعد النزاع. نستخدم الغناء الجماعي والتعاون الفني أدواتٍ للحوار والمناصرة وتمكين المرأة."
+  },
+  "goals": {
+    "strategic_en": "PLACEHOLDER — ask Yara for the real Strategic Goals text.",
+    "strategic_ar": "نص تجريبي — يرجى من يارا تزويدنا بالأهداف الاستراتيجية الفعلية.",
+    "general_en": "PLACEHOLDER — ask Yara for the real General Goals text.",
+    "general_ar": "نص تجريبي — يرجى من يارا تزويدنا بالأهداف العامة الفعلية."
+  }
 }

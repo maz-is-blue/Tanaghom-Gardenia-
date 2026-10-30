@@ -196,6 +196,26 @@ def about_page():
     return render_template('admin/about_page.html', active='about',
                            data=load('about', {}))
 
+@admin_bp.route('/about/save-story', methods=['POST'])
+@login_required
+def save_about_story():
+    data = load('about', {})
+    data['story'] = {k: request.form.get(k, '') for k in
+                     ('para1_en', 'para2_en', 'pull_ar')}
+    save_content('about', data)
+    flash('Our Story saved.', 'success')
+    return redirect(url_for('admin.about_page'))
+
+@admin_bp.route('/about/save-goals', methods=['POST'])
+@login_required
+def save_about_goals():
+    data = load('about', {})
+    data['goals'] = {k: request.form.get(k, '') for k in
+                     ('strategic_en', 'strategic_ar', 'general_en', 'general_ar')}
+    save_content('about', data)
+    flash('Goals saved.', 'success')
+    return redirect(url_for('admin.about_page'))
+
 @admin_bp.route('/about/save-stats', methods=['POST'])
 @login_required
 def save_about_stats():
