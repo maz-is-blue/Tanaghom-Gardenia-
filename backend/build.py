@@ -22,6 +22,7 @@ PAGES = [
     ('/choirs',  'choirs/index.html'),
     ('/gallery', 'gallery/index.html'),
     ('/music',   'music/index.html'),
+    ('/calendar','calendar/index.html'),
 ]
 
 def make_replacements(base):

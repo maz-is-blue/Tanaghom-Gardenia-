@@ -347,6 +347,57 @@ def music_delete(item_id):
     flash('Deleted.', 'success')
     return redirect(url_for('admin.music_page'))
 
+# ── calendar ─────────────────────────────────────────────────────────────────
+
+CALENDAR_FIELDS = ('title_en', 'title_ar', 'date', 'end_date', 'time',
+                   'location_en', 'location_ar', 'description_en',
+                   'description_ar', 'link')
+
+@admin_bp.route('/calendar')
+@login_required
+def calendar_page():
+    return render_template('admin/calendar_page.html', active='calendar',
+                           data=load('calendar', {'events': []}))
+
+@admin_bp.route('/calendar/add', methods=['POST'])
+@login_required
+def calendar_add():
+    data   = load('calendar', {'events': []})
+    events = data.get('events', [])
+    new_id = max((e['id'] for e in events), default=0) + 1
+    events.append({
+        'id': new_id,
+        **{k: request.form.get(k, '') for k in CALENDAR_FIELDS},
+        'visible': request.form.get('visible') == 'on',
+    })
+    data['events'] = events
+    save_content('calendar', data)
+    flash('Event added.', 'success')
+    return redirect(url_for('admin.calendar_page'))
+
+@admin_bp.route('/calendar/edit/<int:eid>', methods=['POST'])
+@login_required
+def calendar_edit(eid):
+    data = load('calendar', {'events': []})
+    for e in data.get('events', []):
+        if e['id'] == eid:
+            for k in CALENDAR_FIELDS:
+                e[k] = request.form.get(k, e.get(k, ''))
+            e['visible'] = request.form.get('visible') == 'on'
+            break
+    save_content('calendar', data)
+    flash('Event updated.', 'success')
+    return redirect(url_for('admin.calendar_page'))
+
+@admin_bp.route('/calendar/delete/<int:eid>', methods=['POST'])
+@login_required
+def calendar_delete(eid):
+    data = load('calendar', {'events': []})
+    data['events'] = [e for e in data.get('events', []) if e['id'] != eid]
+    save_content('calendar', data)
+    flash('Event deleted.', 'success')
+    return redirect(url_for('admin.calendar_page'))
+
 # ── choirs page ──────────────────────────────────────────────────────────────
 
 @admin_bp.route('/choirs')

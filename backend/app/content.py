@@ -32,4 +32,5 @@ def load_all():
         'audio_by_id': audio_by_id,
         'music':    load('music', {'items': [], 'display_limit': 999}),
         'choirs':   load('choirs', {}),
+        'calendar': load('calendar', {'events': []}),
     }

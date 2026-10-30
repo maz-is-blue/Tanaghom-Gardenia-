@@ -21,3 +21,7 @@ def gallery():
 @pages_bp.route('/music')
 def music():
     return render_template('music.html', active='music')
+
+@pages_bp.route('/calendar')
+def calendar():
+    return render_template('calendar.html', active='calendar')

@@ -1,0 +1,155 @@
+{% extends 'admin/base.html' %}
+{% block title %}Calendar{% endblock %}
+{% block page_title %}Calendar Events{% endblock %}
+
+{% block content %}
+{% set events = data.get('events', []) | sort(attribute='date') %}
+
+<div class="card">
+  <div class="card-title">Events <span class="tag">{{ events|length }} items</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">These appear on the public Calendar page. Only events marked "Visible" show up. Date format: YYYY-MM-DD.</p>
+
+  {% for e in events %}
+  <div style="background:var(--surf2);border:1px solid var(--line);border-radius:4px;padding:20px;margin-bottom:18px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div>
+        <div style="font-family:'Playfair Display',serif;font-size:17px">{{ e.title_en }}</div>
+        <div style="font-size:11px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-top:4px">{{ e.date }}{% if e.end_date %} &ndash; {{ e.end_date }}{% endif %}</div>
+      </div>
+      {% if e.visible %}
+      <div class="badge b-sage">Visible</div>
+      {% else %}
+      <div class="badge b-gray">Hidden</div>
+      {% endif %}
+    </div>
+
+    <form method="POST" action="/admin/calendar/edit/{{ e.id }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="title_en" value="{{ e.title_en }}">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="title_ar" value="{{ e.title_ar }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Date</label>
+          <input type="date" name="date" value="{{ e.date }}">
+        </div>
+        <div class="fg">
+          <label>End date (optional, for multi-day events)</label>
+          <input type="date" name="end_date" value="{{ e.end_date }}">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Time (optional)</label>
+          <input type="text" name="time" value="{{ e.time }}" placeholder="e.g. 7:00 PM">
+        </div>
+        <div class="fg">
+          <label>Link (optional)</label>
+          <input type="text" name="link" value="{{ e.link }}" placeholder="https://...">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Location — English</label>
+          <input type="text" name="location_en" value="{{ e.location_en }}">
+        </div>
+        <div class="fg">
+          <label>Location — Arabic</label>
+          <input type="text" name="location_ar" value="{{ e.location_ar }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Description — English</label>
+          <textarea name="description_en">{{ e.description_en }}</textarea>
+        </div>
+        <div class="fg">
+          <label>Description — Arabic</label>
+          <textarea name="description_ar" class="ar">{{ e.description_ar }}</textarea>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+        <input type="checkbox" name="visible" {% if e.visible %}checked{% endif %} style="width:auto">
+        Visible on the public site
+      </label>
+      <button type="submit" class="btn btn-gold">Save</button>
+    </form>
+    <form method="POST" action="/admin/calendar/delete/{{ e.id }}" style="margin-top:10px" onsubmit="return confirm('Delete this event permanently? To just hide it, uncheck Visible instead and Save.')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+  {% else %}
+  <p style="color:var(--gray);font-size:13px">No events yet. Add one below.</p>
+  {% endfor %}
+</div>
+
+<div class="card">
+  <div class="card-title">Add a New Event <span class="tag">New</span></div>
+  <form method="POST" action="/admin/calendar/add">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Title — English</label>
+        <input type="text" name="title_en" placeholder="Event title">
+      </div>
+      <div class="fg">
+        <label>Title — Arabic</label>
+        <input type="text" name="title_ar" class="ar">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Date</label>
+        <input type="date" name="date">
+      </div>
+      <div class="fg">
+        <label>End date (optional, for multi-day events)</label>
+        <input type="date" name="end_date">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Time (optional)</label>
+        <input type="text" name="time" placeholder="e.g. 7:00 PM">
+      </div>
+      <div class="fg">
+        <label>Link (optional)</label>
+        <input type="text" name="link" placeholder="https://...">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Location — English</label>
+        <input type="text" name="location_en">
+      </div>
+      <div class="fg">
+        <label>Location — Arabic</label>
+        <input type="text" name="location_ar" class="ar">
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg">
+        <label>Description — English</label>
+        <textarea name="description_en"></textarea>
+      </div>
+      <div class="fg">
+        <label>Description — Arabic</label>
+        <textarea name="description_ar" class="ar"></textarea>
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+      <input type="checkbox" name="visible" checked style="width:auto">
+      Visible on the public site
+    </label>
+    <button type="submit" class="btn btn-gold">Add</button>
+  </form>
+</div>
+{% endblock %}
