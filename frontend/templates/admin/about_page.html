@@ -9,19 +9,27 @@
 
 <div class="card">
   <div class="card-title">Our Story <span class="tag">Bilingual</span></div>
-  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the "Tanaghom Gardenia began as Gardenia Women Choir..." text in the Mission section. Note: this is separate from the Home page's "Our Story" text — each page has its own.</p>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">This is the "Tanaghom Gardenia began as Gardenia Women Choir..." text in the Mission section. Note: this is separate from the Home page's "Our Story" text — each page has its own. The Arabic paragraphs below are a draft translation — please review and correct before publishing.</p>
   <form method="POST" action="/admin/about/save-story">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <div class="frow single">
+    <div class="frow">
       <div class="fg">
         <label>Paragraph 1 — English</label>
         <textarea name="para1_en">{{ story.get('para1_en','') }}</textarea>
       </div>
+      <div class="fg">
+        <label>Paragraph 1 — Arabic <span class="tag" style="background:rgba(245,208,0,.15);color:var(--gold)">Draft — please review</span></label>
+        <textarea name="para1_ar" class="ar">{{ story.get('para1_ar','') }}</textarea>
+      </div>
     </div>
-    <div class="frow single">
+    <div class="frow">
       <div class="fg">
         <label>Paragraph 2 — English</label>
         <textarea name="para2_en">{{ story.get('para2_en','') }}</textarea>
+      </div>
+      <div class="fg">
+        <label>Paragraph 2 — Arabic <span class="tag" style="background:rgba(245,208,0,.15);color:var(--gold)">Draft — please review</span></label>
+        <textarea name="para2_ar" class="ar">{{ story.get('para2_ar','') }}</textarea>
       </div>
     </div>
     <div class="frow single">

@@ -264,7 +264,7 @@ def about_page():
 def save_about_story():
     data = load('about', {})
     data['story'] = {k: request.form.get(k, '') for k in
-                     ('para1_en', 'para2_en', 'pull_ar')}
+                     ('para1_en', 'para1_ar', 'para2_en', 'para2_ar', 'pull_ar')}
     save_content('about', data)
     flash('Our Story saved.', 'success')
     return redirect(url_for('admin.about_page'))
