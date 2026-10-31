@@ -67,11 +67,40 @@
         "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
         "icon": ""
       }
-    ],
-    "general_visible": false,
-    "general_en": "PLACEHOLDER — pending confirmation from Safana Baqle. Ask Yara/Safana for the real General Goals text before turning this section on.",
-    "general_ar": "نص تجريبي — بانتظار تأكيد من سافانا بقلة. يرجى تزويدنا بالنص الفعلي للأهداف العامة قبل تفعيل هذا القسم."
+    ]
   },
+  "values": [
+    {
+      "id": 1,
+      "title_en": "PLACEHOLDER — Value 1",
+      "title_ar": "نص تجريبي — قيمة 1",
+      "text_en": "Ask Yara for the real text.",
+      "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+      "icon": "",
+      "visible": true,
+      "order": 1
+    },
+    {
+      "id": 2,
+      "title_en": "PLACEHOLDER — Value 2",
+      "title_ar": "نص تجريبي — قيمة 2",
+      "text_en": "Ask Yara for the real text.",
+      "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+      "icon": "",
+      "visible": true,
+      "order": 2
+    },
+    {
+      "id": 3,
+      "title_en": "PLACEHOLDER — Value 3",
+      "title_ar": "نص تجريبي — قيمة 3",
+      "text_en": "Ask Yara for the real text.",
+      "text_ar": "يرجى من يارا تزويدنا بالنص الفعلي.",
+      "icon": "",
+      "visible": true,
+      "order": 3
+    }
+  ],
   "partners": {
     "intro_en": "Our work has been recognized internationally and supported by leading organizations committed to peacebuilding and cultural development.",
     "intro_ar": "حظي عملنا باعتراف دولي ودعم من منظمات رائدة ملتزمة ببناء السلام والتنمية الثقافية.",

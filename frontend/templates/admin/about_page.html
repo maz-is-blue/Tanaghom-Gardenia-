@@ -146,24 +146,109 @@
       </div>
     </div>
     {% endfor %}
-
-    <div style="font-family:'Playfair Display',serif;font-size:16px;margin:24px 0 14px;color:var(--gold)">General Goals (optional section)</div>
-    <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
-      <input type="checkbox" name="general_visible" {% if goals.get('general_visible') %}checked{% endif %} style="width:auto">
-      Show the General Goals section on the About page (currently OFF by default — pending confirmation from Safana Baqle)
-    </label>
-    <div class="frow">
-      <div class="fg">
-        <label>General Goals — English</label>
-        <textarea name="general_en">{{ goals.get('general_en','') }}</textarea>
-      </div>
-      <div class="fg">
-        <label>General Goals — Arabic</label>
-        <textarea name="general_ar" class="ar">{{ goals.get('general_ar','') }}</textarea>
-      </div>
-    </div>
     <button type="submit" class="btn btn-gold">Save Goals</button>
   </form>
+</div>
+
+{% set values = data.get('values', []) | sort(attribute='order') %}
+<div class="card">
+  <div class="card-title">Values <span class="tag">{{ values|length }} items</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">Shown on the About page below Strategic Goals. Add, remove, reorder, or hide items as needed — there's no fixed number.</p>
+
+  {% for v in values %}
+  <div style="background:var(--surf2);border:1px solid var(--line);border-radius:3px;padding:16px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)">Value {{ loop.index }}</div>
+      {% if v.visible %}<div class="badge b-sage">Visible</div>{% else %}<div class="badge b-gray">Hidden</div>{% endif %}
+    </div>
+    <form method="POST" action="/admin/about/values/edit/{{ v.id }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="title_en" value="{{ v.get('title_en','') }}">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="title_ar" value="{{ v.get('title_ar','') }}" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Short Text — English</label>
+          <textarea name="text_en">{{ v.get('text_en','') }}</textarea>
+        </div>
+        <div class="fg">
+          <label>Short Text — Arabic</label>
+          <textarea name="text_ar" class="ar">{{ v.get('text_ar','') }}</textarea>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Icon (optional — leave blank for none)</label>
+          <input type="text" name="icon" value="{{ v.get('icon','') }}" placeholder="e.g. a short label or emoji">
+        </div>
+        <div class="fg">
+          <label>Order (lower shows first)</label>
+          <input type="number" name="order" value="{{ v.order }}" style="max-width:120px">
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+        <input type="checkbox" name="visible" {% if v.visible %}checked{% endif %} style="width:auto">
+        Visible on the public site
+      </label>
+      <button type="submit" class="btn btn-gold">Save</button>
+    </form>
+    <form method="POST" action="/admin/about/values/delete/{{ v.id }}" style="margin-top:10px" onsubmit="return confirm('Delete this value permanently? To just hide it, uncheck Visible instead and Save.')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+  {% else %}
+  <p style="color:var(--gray);font-size:13px">No values yet. Add one below.</p>
+  {% endfor %}
+
+  <div style="background:var(--surf2);border:1px solid rgba(245,208,0,.25);border-radius:3px;padding:16px;margin-top:10px">
+    <div style="font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Add a New Value</div>
+    <form method="POST" action="/admin/about/values/add">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="frow">
+        <div class="fg">
+          <label>Title — English</label>
+          <input type="text" name="title_en">
+        </div>
+        <div class="fg">
+          <label>Title — Arabic</label>
+          <input type="text" name="title_ar" class="ar">
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Short Text — English</label>
+          <textarea name="text_en"></textarea>
+        </div>
+        <div class="fg">
+          <label>Short Text — Arabic</label>
+          <textarea name="text_ar" class="ar"></textarea>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg">
+          <label>Icon (optional)</label>
+          <input type="text" name="icon" placeholder="e.g. a short label or emoji">
+        </div>
+        <div class="fg">
+          <label>Order</label>
+          <input type="number" name="order" placeholder="{{ values|length + 1 }}" style="max-width:120px">
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+        <input type="checkbox" name="visible" checked style="width:auto">
+        Visible on the public site
+      </label>
+      <button type="submit" class="btn btn-gold">Add Value</button>
+    </form>
+  </div>
 </div>
 
 <div class="card">

@@ -283,14 +283,61 @@ def save_about_goals():
          'text_en': text_en[i], 'text_ar': text_ar[i], 'icon': icon[i]}
         for i in range(len(title_en))
     ]
-    data['goals'] = {
-        'strategic': strategic,
-        'general_visible': request.form.get('general_visible') == 'on',
-        'general_en': request.form.get('general_en', ''),
-        'general_ar': request.form.get('general_ar', ''),
-    }
+    data['goals'] = {'strategic': strategic}
     save_content('about', data)
     flash('Goals saved.', 'success')
+    return redirect(url_for('admin.about_page'))
+
+@admin_bp.route('/about/values/add', methods=['POST'])
+@login_required
+def about_value_add():
+    data   = load('about', {})
+    values = data.get('values', [])
+    new_id = max((v['id'] for v in values), default=0) + 1
+    try:
+        order = int(request.form.get('order', len(values) + 1))
+    except ValueError:
+        order = len(values) + 1
+    values.append({
+        'id': new_id,
+        'title_en': request.form.get('title_en', ''),
+        'title_ar': request.form.get('title_ar', ''),
+        'text_en': request.form.get('text_en', ''),
+        'text_ar': request.form.get('text_ar', ''),
+        'icon': request.form.get('icon', ''),
+        'visible': request.form.get('visible') == 'on',
+        'order': order,
+    })
+    data['values'] = values
+    save_content('about', data)
+    flash('Value added.', 'success')
+    return redirect(url_for('admin.about_page'))
+
+@admin_bp.route('/about/values/edit/<int:vid>', methods=['POST'])
+@login_required
+def about_value_edit(vid):
+    data = load('about', {})
+    for v in data.get('values', []):
+        if v['id'] == vid:
+            for k in ('title_en', 'title_ar', 'text_en', 'text_ar', 'icon'):
+                v[k] = request.form.get(k, v.get(k, ''))
+            v['visible'] = request.form.get('visible') == 'on'
+            try:
+                v['order'] = int(request.form.get('order', v.get('order', 0)))
+            except ValueError:
+                pass
+            break
+    save_content('about', data)
+    flash('Value updated.', 'success')
+    return redirect(url_for('admin.about_page'))
+
+@admin_bp.route('/about/values/delete/<int:vid>', methods=['POST'])
+@login_required
+def about_value_delete(vid):
+    data = load('about', {})
+    data['values'] = [v for v in data.get('values', []) if v['id'] != vid]
+    save_content('about', data)
+    flash('Value deleted.', 'success')
     return redirect(url_for('admin.about_page'))
 
 @admin_bp.route('/about/save-stats', methods=['POST'])
