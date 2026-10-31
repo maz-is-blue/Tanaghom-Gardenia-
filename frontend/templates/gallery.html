@@ -476,7 +476,7 @@ document.querySelectorAll('.filter-chip').forEach(chip => {
     document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
     currentFilter = chip.dataset.filter;
-    applyFilter(); buildFlatList();
+    applyFilter();
   });
 });
 function applyFilter() {
@@ -492,7 +492,11 @@ function applyFilter() {
   if (fcAr) fcAr.textContent = shown;
 }
 
-/* Lightbox */
+/* Lightbox — photo navigation is scoped to ONE album at a time.
+   currentAlbum/currentPhotos are rebuilt fresh every time an album is
+   opened, so prev/next can never cross into another album's photos
+   (the old flat-list-of-everything approach let last-photo-of-A roll
+   into first-photo-of-B). Each album gets its own #album-<id> URL. */
 const lb      = document.getElementById('lightbox');
 const lbClose = document.getElementById('lbClose');
 const lbPrev  = document.getElementById('lbPrev');
@@ -503,36 +507,39 @@ const lbDate  = document.getElementById('lbDate');
 const lbVenue = document.getElementById('lbVenue');
 const lbIdx   = document.getElementById('lbIdx');
 const lbTotal = document.getElementById('lbTotal');
-let flatList = [], lbCurrent = 0;
 
-function buildFlatList() {
-  const visible = moments.filter(m => currentFilter==='all'||m.ensemble===currentFilter||m.type===currentFilter||m.year===currentFilter);
-  flatList = [];
-  visible.forEach(m => {
-    const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
-    imgs.forEach(src => flatList.push({moment:m, type:'image', src}));
-    if (m.video) flatList.push({moment:m, type:'video', src:m.video});
-    if (!imgs.length && !m.video) flatList.push({moment:m, type: m.cover ? 'image' : 'placeholder', src: m.cover || null});
-  });
+let currentAlbum  = null;  // the moment object currently open, or null
+let currentPhotos = [];    // THIS album's own photo list only
+let lbCurrent     = 0;     // index within currentPhotos
+let savedScrollY  = null;  // grid scroll position to restore when the lightbox closes via Back
+
+function photosFor(m) {
+  const imgs = m.images && m.images.length ? m.images : (m.image ? [m.image] : []);
+  const list = imgs.map(src => ({type: 'image', src}));
+  if (m.video) list.push({type: 'video', src: m.video});
+  if (!list.length) list.push({type: m.cover ? 'image' : 'placeholder', src: m.cover || null});
+  return list;
 }
 
 const SPINNER_HTML = `<div class="lb-spinner"><svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="none" stroke="rgba(245,208,0,0.25)" stroke-width="3"/><path d="M20 4 a16 16 0 0 1 16 16" fill="none" stroke="#E4BE43" stroke-width="3" stroke-linecap="round"/></svg></div>`;
 
 function showAt(i) {
-  if (!flatList.length) return;
-  lbCurrent = (i + flatList.length) % flatList.length;
-  const item = flatList[lbCurrent], m = item.moment;
+  if (!currentAlbum || !currentPhotos.length) return;
+  lbCurrent = (i + currentPhotos.length) % currentPhotos.length;
+  const item = currentPhotos[lbCurrent], m = currentAlbum;
+  const albumAtRequest = m;
 
   lbTitle.innerHTML = `<span class="en">${m.title}</span><span class="ar" style="font-family:'Zain',sans-serif;">${m.titleAr}</span>`;
   lbDate.innerHTML  = `<span class="en">${m.date}</span><span class="ar">${m.dateAr}</span>`;
   lbVenue.innerHTML = `<span class="en">${m.venue}</span><span class="ar">${m.venueAr}</span>`;
   lbIdx.textContent = lbCurrent + 1;
-  lbTotal.textContent = flatList.length;
+  lbTotal.textContent = currentPhotos.length;
 
-  // Keep the URL in sync with whichever album is currently shown, without
-  // spamming browser history on every prev/next click.
+  // Keep the URL in sync with the current album + photo, without spamming
+  // browser history on every prev/next click.
   if (lb.classList.contains('open')) {
-    history.replaceState({ galleryId: m.id }, '', '#item-' + m.id);
+    const hash = '#album-' + m.id + (lbCurrent > 0 ? '-' + lbCurrent : '');
+    history.replaceState({ albumId: m.id, photoIdx: lbCurrent }, '', hash);
   }
 
   if (item.type==='video') {
@@ -542,41 +549,50 @@ function showAt(i) {
     const img = new Image();
     const expectedIdx = lbCurrent;
     img.onload = () => {
-      if (lbCurrent !== expectedIdx) return;
+      if (currentAlbum !== albumAtRequest || lbCurrent !== expectedIdx) return;
       lbImage.innerHTML = `<img src="${item.src}" alt="${m.title}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.35s">`;
       requestAnimationFrame(() => {
         const el = lbImage.querySelector('img');
         if (el) el.style.opacity = '1';
       });
     };
-    img.onerror = () => { if (lbCurrent === expectedIdx) lbImage.innerHTML = bgFor(m); };
+    img.onerror = () => { if (currentAlbum === albumAtRequest && lbCurrent === expectedIdx) lbImage.innerHTML = bgFor(m); };
     img.src = item.src;
   } else {
     lbImage.innerHTML = bgFor(m);
   }
 
-  // Preload neighbours
+  // Preload neighbours — within this album only.
   [lbCurrent + 1, lbCurrent - 1].forEach(j => {
-    const nb = flatList[(j + flatList.length) % flatList.length];
+    const nb = currentPhotos[(j + currentPhotos.length) % currentPhotos.length];
     if (nb && nb.type === 'image') new Image().src = nb.src;
   });
 }
 
 function openLightbox(id, opts) {
   opts = opts || {};
-  buildFlatList();
-  const i = flatList.findIndex(item => item.moment.id === id);
-  if (i < 0) return;
-  showAt(i);
+  const m = moments.find(x => x.id === id);
+  if (!m) return;
+
+  if (!opts.fromPopstate && !opts.fromHashOnLoad) {
+    savedScrollY = window.scrollY;
+  }
+
+  currentAlbum  = m;
+  currentPhotos = photosFor(m);
+  const startIdx = opts.photoIdx || 0;
+
+  showAt(startIdx);
   lb.classList.add('open');
   document.documentElement.classList.add('no-scroll');
-  const hash = '#item-' + id;
+
+  const hash = '#album-' + id + (startIdx > 0 ? '-' + startIdx : '');
   if (opts.fromPopstate) {
     // Browser navigated here (back/forward) — don't push a new entry.
   } else if (opts.fromHashOnLoad) {
-    history.replaceState({ galleryId: id }, '', hash);
+    history.replaceState({ albumId: id, photoIdx: startIdx }, '', hash);
   } else {
-    history.pushState({ galleryId: id }, '', hash);
+    history.pushState({ albumId: id, photoIdx: startIdx }, '', hash);
   }
 }
 
@@ -586,8 +602,14 @@ function closeLightbox(opts) {
   document.documentElement.classList.remove('no-scroll');
   const vid = lb.querySelector('video');
   if (vid) vid.pause();
-  if (!opts.fromPopstate && location.hash.startsWith('#item-')) {
+  currentAlbum = null;
+  currentPhotos = [];
+  if (!opts.fromPopstate && location.hash.startsWith('#album-')) {
     history.back();
+  }
+  if (opts.fromPopstate && savedScrollY != null) {
+    window.scrollTo(0, savedScrollY);
+    savedScrollY = null;
   }
 }
 
@@ -601,22 +623,22 @@ document.addEventListener('keydown', e => {
   if (e.key==='ArrowRight') showAt(lbCurrent + 1);
   if (e.key==='ArrowLeft')  showAt(lbCurrent - 1);
 });
-buildFlatList();
 
 // ── preserve lightbox state across browser Back/Forward ──
 window.addEventListener('popstate', (e) => {
-  const id = e.state && e.state.galleryId;
-  if (id != null) {
-    openLightbox(id, { fromPopstate: true });
+  const st = e.state;
+  if (st && st.albumId != null) {
+    openLightbox(st.albumId, { fromPopstate: true, photoIdx: st.photoIdx || 0 });
   } else {
     closeLightbox({ fromPopstate: true });
   }
 });
 
-// Deep-link: opening the gallery with #item-<id> in the URL reopens that item.
+// Deep-link: opening the gallery with #album-<id> (optionally -<photoIdx>)
+// in the URL reopens that exact album and photo.
 (function openFromHashOnLoad() {
-  const m = location.hash.match(/^#item-(\d+)$/);
-  if (m) openLightbox(parseInt(m[1], 10), { fromHashOnLoad: true });
+  const m = location.hash.match(/^#album-(\d+)(?:-(\d+))?$/);
+  if (m) openLightbox(parseInt(m[1], 10), { fromHashOnLoad: true, photoIdx: m[2] ? parseInt(m[2], 10) : 0 });
 })();
 </script>
 {% endblock %}
