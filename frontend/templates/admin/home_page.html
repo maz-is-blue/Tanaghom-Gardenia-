@@ -7,6 +7,7 @@
 {% set intro  = data.get('intro', {}) %}
 {% set stats  = data.get('stats', []) %}
 {% set events = data.get('events', []) %}
+{% set hero_videos = data.get('hero_videos', []) | sort(attribute='order') %}
 
 <!-- Hero Section -->
 <div class="card">
@@ -34,6 +35,59 @@
       </div>
     </div>
     <button type="submit" class="btn btn-gold">Save Hero</button>
+  </form>
+</div>
+
+<!-- Hero Background Videos -->
+<div class="card">
+  <div class="card-title">Hero Background Videos <span class="tag">{{ hero_videos|length }} videos</span></div>
+  <p style="font-size:13px;color:var(--gray);margin-bottom:20px">These play muted and on loop as a cross-fading background behind the hero text on the Home page. If none are visible, the hero falls back to the plain background. Keep video files short and compressed — large files slow down the page.</p>
+
+  {% for v in hero_videos %}
+  <div style="background:var(--surf2);border:1px solid var(--line);border-radius:4px;padding:16px;margin-bottom:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <video src="{{ v.file }}" muted style="width:120px;height:68px;object-fit:cover;border-radius:4px;background:#000" preload="metadata"></video>
+    <form method="POST" action="/admin/home/hero-video/edit/{{ v.id }}" enctype="multipart/form-data" style="flex:1;min-width:260px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="fg" style="margin:0">
+        <label>Order</label>
+        <input type="number" name="order" value="{{ v.order }}" style="max-width:100px">
+      </div>
+      <div class="fg" style="margin:0">
+        <label>Replace video (optional)</label>
+        <input type="file" name="video_file" accept="video/*" style="padding:8px">
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+        <input type="checkbox" name="visible" {% if v.visible %}checked{% endif %} style="width:auto">
+        Visible
+      </label>
+      <button type="submit" class="btn btn-gold btn-sm">Save</button>
+    </form>
+    <form method="POST" action="/admin/home/hero-video/delete/{{ v.id }}" onsubmit="return confirm('Delete this hero video permanently?')">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+  </div>
+  {% else %}
+  <p style="color:var(--gray);font-size:13px;margin-bottom:16px">No hero videos yet. Add one below.</p>
+  {% endfor %}
+
+  <form method="POST" action="/admin/home/hero-video/add" enctype="multipart/form-data" style="margin-top:10px">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="frow">
+      <div class="fg">
+        <label>Video file</label>
+        <input type="file" name="video_file" accept="video/*" style="padding:10px">
+      </div>
+      <div class="fg">
+        <label>Order (lower shows first)</label>
+        <input type="number" name="order" placeholder="10" style="max-width:120px">
+      </div>
+    </div>
+    <label style="display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:12px;color:var(--gray-lt);cursor:pointer">
+      <input type="checkbox" name="visible" checked style="width:auto">
+      Visible on the public site
+    </label>
+    <button type="submit" class="btn btn-gold">Add Hero Video</button>
   </form>
 </div>
 

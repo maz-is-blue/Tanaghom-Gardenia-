@@ -188,6 +188,69 @@ def event_delete(eid):
     flash('Event deleted.', 'success')
     return redirect(url_for('admin.home_page'))
 
+@admin_bp.route('/home/hero-video/add', methods=['POST'])
+@login_required
+def hero_video_add():
+    data   = load('home', {})
+    videos = data.get('hero_videos', [])
+    f = request.files.get('video_file')
+    if not f or not f.filename or not _allowed(f.filename, ALLOWED_VIDEO):
+        flash('Please choose a valid video file (mp4, webm, mov, avi).', 'error')
+        return redirect(url_for('admin.home_page'))
+    new_id = max((v['id'] for v in videos), default=0) + 1
+    ext    = f.filename.rsplit('.', 1)[1].lower()
+    fname  = 'hero_video_{}.{}'.format(new_id, ext)
+    dest   = os.path.join(_upload_dir(), 'hero', fname)
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    f.save(dest)
+    try:
+        order = int(request.form.get('order', len(videos) + 1))
+    except ValueError:
+        order = len(videos) + 1
+    videos.append({
+        'id': new_id,
+        'file': '/static/uploads/hero/' + fname,
+        'order': order,
+        'visible': request.form.get('visible') == 'on',
+    })
+    data['hero_videos'] = videos
+    save_content('home', data)
+    flash('Hero video added.', 'success')
+    return redirect(url_for('admin.home_page'))
+
+@admin_bp.route('/home/hero-video/edit/<int:vid>', methods=['POST'])
+@login_required
+def hero_video_edit(vid):
+    data = load('home', {})
+    for v in data.get('hero_videos', []):
+        if v['id'] == vid:
+            try:
+                v['order'] = int(request.form.get('order', v.get('order', 0)))
+            except ValueError:
+                pass
+            v['visible'] = request.form.get('visible') == 'on'
+            f = request.files.get('video_file')
+            if f and f.filename and _allowed(f.filename, ALLOWED_VIDEO):
+                ext   = f.filename.rsplit('.', 1)[1].lower()
+                fname = 'hero_video_{}.{}'.format(vid, ext)
+                dest  = os.path.join(_upload_dir(), 'hero', fname)
+                os.makedirs(os.path.dirname(dest), exist_ok=True)
+                f.save(dest)
+                v['file'] = '/static/uploads/hero/' + fname
+            break
+    save_content('home', data)
+    flash('Hero video updated.', 'success')
+    return redirect(url_for('admin.home_page'))
+
+@admin_bp.route('/home/hero-video/delete/<int:vid>', methods=['POST'])
+@login_required
+def hero_video_delete(vid):
+    data = load('home', {})
+    data['hero_videos'] = [v for v in data.get('hero_videos', []) if v['id'] != vid]
+    save_content('home', data)
+    flash('Hero video deleted.', 'success')
+    return redirect(url_for('admin.home_page'))
+
 # ── about page ───────────────────────────────────────────────────────────────
 
 @admin_bp.route('/about')
