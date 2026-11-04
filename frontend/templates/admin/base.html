@@ -46,6 +46,8 @@ button,input,textarea,select{font-family:'Inter',sans-serif}
 .topbar h1{font-family:'Playfair Display',serif;font-size:22px;font-weight:400}
 .pub-btn{padding:10px 22px;background:var(--gold);color:var(--black);border:none;border-radius:2px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;font-weight:700;cursor:pointer;transition:opacity .2s}
 .pub-btn:hover{opacity:.85}
+.pub-btn.pending{animation:pubPulse 1.6s ease-in-out infinite}
+@keyframes pubPulse{0%,100%{box-shadow:0 0 0 0 rgba(245,208,0,.55)}50%{box-shadow:0 0 0 7px rgba(245,208,0,0)}}
 .content{padding:36px 34px;flex:1}
 
 /* ─ card ─ */
@@ -76,6 +78,7 @@ button,input,textarea,select{font-family:'Inter',sans-serif}
 .flash{padding:13px 18px;border-radius:3px;margin-bottom:18px;font-size:13px}
 .flash.success{background:rgba(39,174,96,.14);border:1px solid rgba(39,174,96,.3);color:#2ecc71}
 .flash.error{background:rgba(192,57,43,.14);border:1px solid rgba(192,57,43,.3);color:#e74c3c}
+.flash.warn{background:rgba(245,208,0,.12);border:1px solid rgba(245,208,0,.35);color:var(--gold)}
 
 /* ─ table ─ */
 .tbl-wrap{overflow-x:auto}
@@ -176,7 +179,7 @@ button,input,textarea,select{font-family:'Inter',sans-serif}
     <h1>{% block page_title %}Dashboard{% endblock %}</h1>
     <form action="/admin/publish" method="post" style="display:inline">
       <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-      <button type="submit" class="pub-btn">↑ Publish Site</button>
+      <button type="submit" class="pub-btn {% if has_unpublished_changes %}pending{% endif %}">↑ Publish Site</button>
     </form>
   </div>
   <div class="content">
@@ -185,6 +188,9 @@ button,input,textarea,select{font-family:'Inter',sans-serif}
         <div class="flash {{ cat }}">{{ msg }}</div>
       {% endfor %}{% endif %}
     {% endwith %}
+    {% if has_unpublished_changes %}
+    <div class="flash warn">⚠️ You have changes saved here that are <strong>not live on the website yet</strong>. Click <strong>↑ Publish Site</strong> above to make them visible to visitors.</div>
+    {% endif %}
     {% block content %}{% endblock %}
   </div>
 </div>

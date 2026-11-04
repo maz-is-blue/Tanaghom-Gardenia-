@@ -7,7 +7,7 @@ from functools import wraps
 from flask import (Blueprint, render_template, request, session,
                    redirect, url_for, flash, current_app)
 from werkzeug.utils import secure_filename
-from ..content import load, save as save_content
+from ..content import load, save as save_content, CONTENT_DIR
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -18,6 +18,44 @@ def _upload_dir():
 
 def _project_root():
     return os.path.dirname(os.path.dirname(current_app.root_path))
+
+# ── publish state ────────────────────────────────────────────────────────────
+# The public site is served from a static, pre-rendered snapshot (built by
+# backend/build.py and copied into the live webroot) -- NOT read live from
+# these JSON files. Saving in the dashboard updates the content immediately
+# here in /admin, but visitors won't see it until "Publish Site" rebuilds and
+# redeploys that snapshot. This tracks whether a save has happened since the
+# last publish, so the dashboard can show that state instead of saves
+# appearing to silently do nothing on the live site.
+
+_PUBLISH_MARKER = os.path.join(CONTENT_DIR, '.last_published')
+
+def _last_published_at():
+    if not os.path.exists(_PUBLISH_MARKER):
+        return 0
+    try:
+        with open(_PUBLISH_MARKER) as f:
+            return float(f.read().strip())
+    except (ValueError, OSError):
+        return 0
+
+def _last_content_change():
+    latest = 0
+    if os.path.isdir(CONTENT_DIR):
+        for fname in os.listdir(CONTENT_DIR):
+            if fname.endswith('.json'):
+                latest = max(latest, os.path.getmtime(os.path.join(CONTENT_DIR, fname)))
+    return latest
+
+def _mark_published():
+    with open(_PUBLISH_MARKER, 'w') as f:
+        f.write(str(time.time()))
+
+@admin_bp.context_processor
+def inject_publish_state():
+    if not session.get('admin_logged_in'):
+        return {}
+    return {'has_unpublished_changes': _last_content_change() > _last_published_at()}
 
 # In-memory per-process login throttle (fine for the single-worker deployment
 # this app runs under; resets on restart).
@@ -868,9 +906,10 @@ def publish():
                     shutil.copytree(s, d)
                 else:
                     shutil.copy2(s, d)
+            _mark_published()
             flash('Site published and deployed successfully.', 'success')
         else:
-            flash('Build complete. Copy dist/ manually to deploy.', 'success')
+            flash('Build complete, but no deploy folder (~/tanaghomgardenia.org) was found here -- copy dist/ manually to make this live.', 'error')
     except Exception as e:
         flash('Publish error: ' + str(e), 'error')
     return redirect(url_for('admin.dashboard'))

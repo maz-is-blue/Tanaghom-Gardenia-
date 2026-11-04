@@ -25,6 +25,9 @@ env/
 instance/
 .webassets-cache
 
+# Admin publish-state marker (runtime, per-server)
+backend/content/.last_published
+
 # Editor
 .vscode/
 .idea/
