@@ -71,16 +71,22 @@
     margin: 0 auto 70px;
     text-align: center;
   }
+  /* Flex + wrap + center so any item count (not just multiples of 3)
+     lays out cleanly -- a trailing partial row is centered instead of
+     leaving unfilled grid cells/broken-looking gaps on the right. */
   .values-grid {
     max-width: 1180px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 4px;
-    background: var(--line);
   }
   .value-card {
     background: var(--white);
+    border: 1px solid var(--line);
+    flex: 1 1 320px;
+    max-width: 380px;
     padding: 50px 32px;
     transition: background 0.5s var(--ease), color 0.5s var(--ease);
     position: relative;
@@ -122,10 +128,10 @@
   .value-card:hover p { color: rgba(255,255,255,0.78); }
   .value-card:hover h3 .ar { color: var(--gold); }
   @media (max-width: 900px) {
-    .values-grid { grid-template-columns: 1fr 1fr; }
+    .value-card { flex-basis: calc(50% - 4px); max-width: calc(50% - 4px); }
   }
   @media (max-width: 560px) {
-    .values-grid { grid-template-columns: 1fr; }
+    .value-card { flex-basis: 100%; max-width: 100%; }
   }
 
   /* ─── timeline ─── */
@@ -468,7 +474,7 @@
     <h2 class="section-title"><span class="en">Strategic Goals</span><span class="ar">الأهداف الاستراتيجية</span></h2>
   </div>
 
-  <div class="values-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+  <div class="values-grid">
     {% for g in strategic %}
     <div class="value-card">
       <div class="v-num">{{ '%02d' | format(loop.index) }}</div>
@@ -490,7 +496,7 @@
     <h2 class="section-title"><span class="en">Values</span><span class="ar">القيم</span></h2>
   </div>
 
-  <div class="values-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+  <div class="values-grid">
     {% for v in about_values %}
     <div class="value-card">
       <div class="v-num">{{ '%02d' | format(loop.index) }}</div>
